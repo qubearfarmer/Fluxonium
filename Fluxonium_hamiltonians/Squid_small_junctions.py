@@ -31,6 +31,21 @@ def bare_hamiltonian_alt(N, E_l, E_c, E_j_sum, d, phi_squid, phi_ext):
     H = 4.0*E_c*na**2.0 + 0.5*E_l*phi**2.0 - 0.5*E_j*(ope.expm() + (-ope).expm())
     return H
 
+def coupled_hamiltonian(Na, E_l, E_c, E_j_sum, d, phi_squid, phi_ext, Nr, wr, g):
+    E_j1 = 0.5*E_j_sum*(1 + d)
+    E_j2 = 0.5*E_j_sum*(1 - d)
+    a = tensor(destroy(Na), qeye(Nr))
+    b = tensor(qeye(Na), destroy(Nr))
+    phi = (a + a.dag())*(8.0*E_c/E_l)**(0.25)/np.sqrt(2.0)
+    na = 1.0j*(a.dag() - a)*(E_l/(8*E_c))**(0.25)/np.sqrt(2.0)
+    ope1 = 1.0j*(phi_ext - phi)
+    ope2 = 1.0j*(phi + phi_squid - phi_ext)
+    H_f = 4.0*E_c*na**2 + 0.5 * E_l*(phi)** 2 - 0.5*E_j1*(ope1.expm()+(-ope1).expm()) - 0.5*E_j2*(ope2.expm()+(-ope2).expm())
+    H_r = wr*(b.dag()*b + 1.0/2)
+    H_c = -g * na * (b.dag + b)
+    H = H_f + H_r + H_c
+    return H
+
 def charge_matrix_element(N, E_l, E_c, E_j_sum, d, phi_squid, phi_ext, iState, fState):
     E_j1 = 0.5 * E_j_sum * (1 + d)
     E_j2 = 0.5 * E_j_sum * (1 - d)
