@@ -89,7 +89,7 @@ def qp_matrix_element(N, E_l, E_c, E_j_sum, d, phi_squid, phi_ext, iState, fStat
     element2 = sin2.matrix_element(evectors[iState], evectors[fState])
     return abs(element1), abs(element2)
 
-def charge_dispersive_shift(N, E_l, E_c, E_j_sum, d, phi_squid, phi_ext, iState, fState, wr, g):
+def charge_dispersive_shift(N, level_num, E_l, E_c, E_j_sum, d, phi_squid, phi_ext, iState, fState, wr, g):
     eValues, eVectors = bare_hamiltonian(N, E_l, E_c, E_j_sum, d, phi_squid, phi_ext).eigenstates()
     shift_iState = 0
     shift_fState = 0
