@@ -24,7 +24,7 @@ A_c = 1.49982268962e-10
 beta_squid = 0.00378012644185
 beta_ext = 0.341308382441
 d=0.0996032153487
-current = np.linspace(0,0.05,1000)
+current = np.linspace(0.041,0.046,400)
 energies = np.zeros((len(current),level_num))
 
 #Compute eigenenergies
