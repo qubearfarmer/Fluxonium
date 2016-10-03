@@ -20,11 +20,12 @@ A_c = 1.49982268962e-10
 beta_squid = 2.22e-3
 beta_ext = 0.341308382441
 d=9.9299e-2
-current = np.linspace(0.041,0.046,400)
+current = np.linspace(0.0405,0.0418,130)
 chi = np.zeros(len(current))
 energies = np.zeros((len(current),level_num))
+
 iState = 0
-fState = 1
+fState = 2
 wr = 10.304
 g = 0.08
 
