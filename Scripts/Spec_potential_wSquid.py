@@ -57,7 +57,7 @@ fig, ax = plt.subplots()
 plt.subplots_adjust(left=0.25, bottom=0.25)
 #potential
 l, = plt.plot(phi,potential_f[:,0], color = 'k', linewidth = '2')
-plt.ylim([-5,10])
+# plt.ylim([-5,10])
 #energy
 energy = np.zeros(len(phi))
 d = {}

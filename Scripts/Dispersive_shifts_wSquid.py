@@ -25,7 +25,7 @@ A_c = 1.49982268962e-10
 beta_squid = 2.22e-3
 beta_ext = 0.341308382441
 d=9.9299e-2
-current = np.linspace(0,0.05,5001)
+current = np.linspace(0,0.05,6)
 chi = np.zeros(len(current))
 energies = np.zeros((len(current),level_num))
 
@@ -70,7 +70,7 @@ for tl in ax1.get_yticklabels():
 ax2 = ax1.twinx()
 ax2.plot(current*1e3, chi*1e3, 'b.')
 ax2.set_ylabel('Dispersive shift (MHz)')
-ax2.set_ylim([-0.5,0.5])
+# ax2.set_ylim([-0.5,0.5])
 for t2 in ax2.get_yticklabels():
     t2.set_color('b')
 ax1.tick_params(labelsize=18)
