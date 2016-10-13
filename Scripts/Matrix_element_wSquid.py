@@ -34,7 +34,7 @@ n_element = np.zeros(len(current))
 p_element = np.zeros(len(current))
 
 iState = 0
-fState = 2
+fState = 1
 
 path = path+'_'+str(iState)+'to'+str(fState)+'_from_' + str(current[0]*1e3) +'to'+ str(current[-1]*1e3) +'mA'
 ########################################################################################################################

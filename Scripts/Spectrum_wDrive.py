@@ -10,7 +10,7 @@ E_l = 0.5
 E_c = 2.5
 E_j = 10
 level_num = 10
-wd = 8.89
+# wd = 8.89
 g = 0.2
 
 phi_ext = 0
@@ -24,7 +24,7 @@ for idx in range (level_num):
     for idy in range (level_num):
         nElement[idx,idy] = nem(N, E_l, E_c, E_j, phi_ext, idx, idy)
 
-# wd = energies[1] - energies[0]
+wd = energies[1] - energies[0]
 #Interaction Hamiltonian
 state = basis(level_num,0)
 H=state*state.dag()*energies[0]
@@ -41,7 +41,7 @@ time_list = np.linspace(0,1000,1001)
 psi0 = basis(level_num,0)
 collapse_ops = []
 ope1 = basis(level_num,0)*basis(level_num,0).dag()
-ope2 = basis(level_num,2)*basis(level_num,2).dag()
+ope2 = basis(level_num,1)*basis(level_num,1).dag()
 quantum_operators = [ope1, ope2]
 output = mesolve(H, psi0, time_list, collapse_ops, quantum_operators)
 st0 = output.expect[0]

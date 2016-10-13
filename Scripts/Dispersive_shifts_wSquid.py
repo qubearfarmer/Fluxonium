@@ -13,7 +13,6 @@ h = 6.62e-34    #Placnk's constant
 phi_o = h/(2*e) #Flux quantum
 
 #Qubit and computation parameters
-
 N = 50
 E_l = 0.746959655208
 E_c = 0.547943694372
@@ -25,17 +24,18 @@ A_c = 1.49982268962e-10
 beta_squid = 2.22e-3
 beta_ext = 0.341308382441
 d=9.9299e-2
-current = np.linspace(0,0.05,6)
+current = np.linspace(0.041,0.0425,101)
 chi = np.zeros(len(current))
 energies = np.zeros((len(current),level_num))
 
 iState = 0
-fState = 1
+fState = 2
 wr = 10.304
 g = 0.084
 
 #######################################################################################################################
 #Simulation part
+'''
 #Compute spectrum
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
@@ -55,6 +55,7 @@ for idx, curr in enumerate(current):
 
 np.savetxt(path+"_"+str(iState)+str(fState)+"_energies.txt", energies)
 np.savetxt(path+"_"+str(iState)+str(fState)+"_chi.txt", chi)
+'''
 #######################################################################################################################
 #Plotting part
 energies = np.genfromtxt(path+"_"+str(iState)+str(fState)+"_energies.txt")
@@ -70,7 +71,7 @@ for tl in ax1.get_yticklabels():
 ax2 = ax1.twinx()
 ax2.plot(current*1e3, chi*1e3, 'b.')
 ax2.set_ylabel('Dispersive shift (MHz)')
-# ax2.set_ylim([-0.5,0.5])
+ax2.set_ylim([-0.5,0.5])
 for t2 in ax2.get_yticklabels():
     t2.set_color('b')
 ax1.tick_params(labelsize=18)

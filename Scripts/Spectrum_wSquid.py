@@ -9,11 +9,6 @@ phi_o = h/(2*e) #Flux quantum
 
 #Qubit and computation parameters
 N = 50
-E_l = 0.5
-E_c = 2.5
-E_j_sum = 20
-
-N = 50
 E_l = 0.746959655208
 E_c = 0.547943694372
 E_j_sum = 21.9627179709

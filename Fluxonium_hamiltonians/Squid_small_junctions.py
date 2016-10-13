@@ -83,8 +83,8 @@ def qp_matrix_element(N, E_l, E_c, E_j_sum, d, phi_squid, phi_ext, iState, fStat
     H = 4.0 * E_c * na ** 2 + 0.5 * E_l * (phi) ** 2 - 0.5 * E_j1 * (ope1.expm() + (-ope1).expm()) - 0.5 * E_j2 * (
     ope2.expm() + (-ope2).expm())
     evalues, evectors = H.eigenstates()
-    sin1 = ((ope1/2.0).expm() - (-ope1/2).expm())/2.0j
-    sin2 = ((ope2 / 2.0).expm() - (-ope2 / 2).expm()) / 2.0j
+    sin1 = ((ope1/2.0).expm() - (-ope1/2.0).expm())/2.0j
+    sin2 = ((ope2 / 2.0).expm() - (-ope2 / 2.0).expm()) / 2.0j
     element1 = sin1.matrix_element(evectors[iState], evectors[fState])
     element2 = sin2.matrix_element(evectors[iState], evectors[fState])
     return abs(element1), abs(element2)
