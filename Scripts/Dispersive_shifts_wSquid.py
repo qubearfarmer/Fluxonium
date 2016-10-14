@@ -24,18 +24,18 @@ A_c = 1.49982268962e-10
 beta_squid = 2.22e-3
 beta_ext = 0.341308382441
 d=9.9299e-2
-current = np.linspace(0.041,0.0425,101)
+current = np.linspace(0.038,0.042,101)
 chi = np.zeros(len(current))
 energies = np.zeros((len(current),level_num))
 
 iState = 0
-fState = 2
+fState = 1
 wr = 10.304
 g = 0.084
 
 #######################################################################################################################
 #Simulation part
-'''
+# '''
 #Compute spectrum
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
@@ -55,7 +55,7 @@ for idx, curr in enumerate(current):
 
 np.savetxt(path+"_"+str(iState)+str(fState)+"_energies.txt", energies)
 np.savetxt(path+"_"+str(iState)+str(fState)+"_chi.txt", chi)
-'''
+# '''
 #######################################################################################################################
 #Plotting part
 energies = np.genfromtxt(path+"_"+str(iState)+str(fState)+"_energies.txt")

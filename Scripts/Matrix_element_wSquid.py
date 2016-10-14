@@ -27,8 +27,8 @@ A_c = 1.49982268962e-10
 beta_squid = 0.00378012644185
 beta_ext = 0.341308382441
 d=0.0996032153487
-current = np.linspace(0.04,0.05,1000)
-energy = np.zeros(len(current))
+current = np.linspace(0.038,0.042,100)
+energies = np.zeros((len(current),level_num))
 qp_element = np.zeros((len(current),2))
 n_element = np.zeros(len(current))
 p_element = np.zeros(len(current))
@@ -39,13 +39,14 @@ fState = 1
 path = path+'_'+str(iState)+'to'+str(fState)+'_from_' + str(current[0]*1e3) +'to'+ str(current[-1]*1e3) +'mA'
 ########################################################################################################################
 # Compute eigenenergies and matrix elements
-'''
+# '''
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
     flux_ext = curr*B_coeff*A_c*1e-4
     H = bare_hamiltonian(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
                          2 * np.pi * (flux_ext / phi_o - beta_ext))
-    energy[idx] = H.eigenenergies()[fState]-H.eigenenergies()[iState]
+    for idy in range(level_num):
+        energies[idx, idy] = H.eigenenergies()[idy]
     n_element [idx] = nem(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
                          2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
     p_element[idx] = pem(  N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
@@ -53,25 +54,26 @@ for idx, curr in enumerate(current):
     qp_element[idx,:] = qpem(N, E_l, E_c, E_j_sum, d, 2*np.pi*(flux_squid/phi_o - beta_squid),
                          2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
 
-np.savetxt(path+'_energy.txt', energy)
+np.savetxt(path+'_energies.txt', energies)
 np.savetxt(path+'_chargeElement.txt', n_element)
 np.savetxt(path+'_qpElement.txt', qp_element)
-'''
+# '''
 ########################################################################################################################
-energy = np.genfromtxt(path+'_energy.txt')
+energies = np.genfromtxt(path+'_energies.txt')
 n_element = np.genfromtxt(path+'_chargeElement.txt')
 qp_element = np.genfromtxt(path+'_qpElement.txt')
 
+trans_energy = energies[:,1] - energies[:,0]
 fig, ax1 = plt.subplots()
-ax1.plot(current*1e3,energy, color = 'k', linewidth = '2')
+ax1.plot(current*1e3, trans_energy, color = 'k', linewidth = '2')
 ax1.set_ylabel('Transition energy')
 ax1.set_xlabel('Current (mA)')
 for tl in ax1.get_yticklabels():
     tl.set_color('k')
 
 ax2 = ax1.twinx()
-# ax2.plot(current*1e3, n_element, 'b--')
-ax2.plot(current*1e3, qp_element[:,0],'b--', current*1e3, qp_element[:,1], 'r-.')
+ax2.plot(current*1e3, n_element, 'b--')
+# ax2.plot(current*1e3, qp_element[:,0],'b--', current*1e3, qp_element[:,1], 'r-.')
 ax2.set_ylabel('Matrix element')
 # ax2.set_ylim([-0.5,0.5])
 for t2 in ax2.get_yticklabels():
