@@ -34,9 +34,10 @@ for idx, phi in enumerate(phi_ext):
 trans_energy = energies[:,fState]-energies[:,iState]
 #######################################################################################
 # '''
+print ("Step 1")
 gamma_cap = np.zeros(len(phi_ext))
 gamma_ind = np.zeros(len(phi_ext))
-Q_cap = 3e6
+Q_cap = 3.0e6
 Q_ind = 10e6
 Q_qp = 0.3e6
 w = trans_energy*1e9*2*np.pi
@@ -51,18 +52,49 @@ delta_alum = 5.447400321e-23 #J
 cap = e**2/(2*E_c)
 ind = hbar**2/(4*e**2*E_l)
 Gt = 8*E_j*e**2/(delta_alum*h)
-
+Q_cap = 3.0e6
 Y_cap = w*cap/Q_cap
 Y_ind = 1.0/(w*ind*Q_ind)
 Y_qp = (Gt/(2*Q_qp))*(2*delta_alum/(hbar*w))**(1.5)
+print ("Step 2")
 for idx in range(len(phi_ext)):
     gamma_cap[idx] = (phi_o*p_element[idx]/hbar/(2*np.pi))**2*hbar*w[idx]*Y_cap[idx]*(1+1.0/np.tanh(hbar*w[idx]/(2*kB*T)))
     gamma_ind[idx] = (phi_o*p_element[idx]/hbar/(2*np.pi))**2*hbar*w[idx]*Y_ind[idx]*(1+1.0/np.tanh(hbar*w[idx]/(2*kB*T)))
 phi_ext_alt = phi_ext[0:-5]
 gamma_qp = np.zeros(len(phi_ext_alt))
-for idx in range(len(phi_ext_alt)):
-    gamma_qp[idx] = (qp_element[idx])**2*w[idx]*Y_qp[idx]*(1+1.0/np.tanh(hbar*w[idx]/(2*kB*T)))
+# for idx in range(len(phi_ext_alt)):
+#     gamma_qp[idx] = (qp_element[idx])**2*w[idx]*Y_qp[idx]*(1+1.0/np.tanh(hbar*w[idx]/(2*kB*T)))
 plt.semilogy(phi_ext,1/gamma_cap*1e6)
+
+Q_cap = 1.0e6
+Y_cap = w*cap/Q_cap
+Y_ind = 1.0/(w*ind*Q_ind)
+Y_qp = (Gt/(2*Q_qp))*(2*delta_alum/(hbar*w))**(1.5)
+print ("Step 2")
+for idx in range(len(phi_ext)):
+    gamma_cap[idx] = (phi_o*p_element[idx]/hbar/(2*np.pi))**2*hbar*w[idx]*Y_cap[idx]*(1+1.0/np.tanh(hbar*w[idx]/(2*kB*T)))
+    gamma_ind[idx] = (phi_o*p_element[idx]/hbar/(2*np.pi))**2*hbar*w[idx]*Y_ind[idx]*(1+1.0/np.tanh(hbar*w[idx]/(2*kB*T)))
+phi_ext_alt = phi_ext[0:-5]
+gamma_qp = np.zeros(len(phi_ext_alt))
+# for idx in range(len(phi_ext_alt)):
+#     gamma_qp[idx] = (qp_element[idx])**2*w[idx]*Y_qp[idx]*(1+1.0/np.tanh(hbar*w[idx]/(2*kB*T)))
+plt.semilogy(phi_ext,1/gamma_cap*1e6)
+
+Q_cap = 10.0e6
+Y_cap = w*cap/Q_cap
+Y_ind = 1.0/(w*ind*Q_ind)
+Y_qp = (Gt/(2*Q_qp))*(2*delta_alum/(hbar*w))**(1.5)
+print ("Step 2")
+for idx in range(len(phi_ext)):
+    gamma_cap[idx] = (phi_o*p_element[idx]/hbar/(2*np.pi))**2*hbar*w[idx]*Y_cap[idx]*(1+1.0/np.tanh(hbar*w[idx]/(2*kB*T)))
+    gamma_ind[idx] = (phi_o*p_element[idx]/hbar/(2*np.pi))**2*hbar*w[idx]*Y_ind[idx]*(1+1.0/np.tanh(hbar*w[idx]/(2*kB*T)))
+phi_ext_alt = phi_ext[0:-5]
+gamma_qp = np.zeros(len(phi_ext_alt))
+# for idx in range(len(phi_ext_alt)):
+#     gamma_qp[idx] = (qp_element[idx])**2*w[idx]*Y_qp[idx]*(1+1.0/np.tanh(hbar*w[idx]/(2*kB*T)))
+plt.semilogy(phi_ext,1/gamma_cap*1e6)
+
+
 plt.ylim([0.1,1.1e5])
 # plt.semilogy(phi_ext_alt,1/gamma_qp*1e6)
 plt.grid()
