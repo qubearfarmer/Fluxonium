@@ -1,44 +1,18 @@
-# Same as basic_example, but writes files using a single MovieWriter instance
-# without putting on screen
-# -*- noplot -*-
 import numpy as np
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+from matplotlib import pyplot as plt
 
+e = 1.602e-19
+h = 6.626e-34
+Cj = 5e-15 #Fara
+Ec = 2 #GHz
+C_sum = e**2/(2*Ec*1e9*h)
+Cs = C_sum - Cj
 
-def update_line(num, data, line):
-    line.set_data(data[..., :num])
-    return line,
+f = 7.66
+L = 100e-9
+f = f*2*np.pi*1e9
+Cs = 1/(f**2*L)
+print "Cs=" + str(Cs*1e15) +"fF"
 
-# Set up formatting for the movie files
-plt.rcParams['animation.ffmpeg_path'] ='E:\\Media\\ffmpeg\\bin\\ffmpeg.exe'
-Writer = animation.writers['ffmpeg']
-writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
-
-
-fig1 = plt.figure()
-
-data = np.random.rand(2, 25)
-l, = plt.plot([], [], 'r-')
-plt.xlim(0, 1)
-plt.ylim(0, 1)
-plt.xlabel('x')
-plt.title('test')
-line_ani = animation.FuncAnimation(fig1, update_line, 25, fargs=(data, l),
-                                   interval=50, blit=True)
-line_ani.save('lines.mp4', writer=writer)
-
-fig2 = plt.figure()
-
-x = np.arange(-9, 10)
-y = np.arange(-9, 10).reshape(-1, 1)
-base = np.hypot(x, y)
-ims = []
-for add in np.arange(15):
-    ims.append((plt.pcolor(x, y, base + add, norm=plt.Normalize(0, 30)),))
-
-im_ani = animation.ArtistAnimation(fig2, ims, interval=50, repeat_delay=3000,
-                                   blit=True)
-im_ani.save('im.mp4', writer=writer)
+w = 2*np.pi*6*1e9
+print 1.0/(w*100e-6)

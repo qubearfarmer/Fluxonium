@@ -39,7 +39,7 @@ fState = 1
 path = path+'_'+str(iState)+'to'+str(fState)+'_from_' + str(current[0]*1e3) +'to'+ str(current[-1]*1e3) +'mA'
 ########################################################################################################################
 # Compute eigenenergies and matrix elements
-# '''
+'''
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
     flux_ext = curr*B_coeff*A_c*1e-4
@@ -57,7 +57,7 @@ for idx, curr in enumerate(current):
 np.savetxt(path+'_energies.txt', energies)
 np.savetxt(path+'_chargeElement.txt', n_element)
 np.savetxt(path+'_qpElement.txt', qp_element)
-# '''
+'''
 ########################################################################################################################
 energies = np.genfromtxt(path+'_energies.txt')
 n_element = np.genfromtxt(path+'_chargeElement.txt')
@@ -72,8 +72,8 @@ for tl in ax1.get_yticklabels():
     tl.set_color('k')
 
 ax2 = ax1.twinx()
-ax2.plot(current*1e3, n_element, 'b--')
-# ax2.plot(current*1e3, qp_element[:,0],'b--', current*1e3, qp_element[:,1], 'r-.')
+# ax2.plot(current*1e3, n_element, 'b--')
+ax2.plot(current*1e3, qp_element[:,0],'b--', current*1e3, qp_element[:,1], 'r-.')
 ax2.set_ylabel('Matrix element')
 # ax2.set_ylim([-0.5,0.5])
 for t2 in ax2.get_yticklabels():

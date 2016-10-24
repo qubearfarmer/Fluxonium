@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 
 #Define file directory
 directory = "C:\Data\Fluxonium #10 simulations"
-simulation = "Dispersive_shifts_wSquid"
+simulation = "Dispersive_shifts_wSquid_check"
 path = directory + "\\" + simulation
 #Define constants
 e = 1.602e-19    #Fundamental charge
@@ -14,7 +14,7 @@ phi_o = h/(2*e) #Flux quantum
 
 #Qubit and computation parameters
 N = 50
-E_l = 0.746959655208
+E_l = 1#0.746959655208
 E_c = 0.547943694372
 E_j_sum = 21.9627179709
 level_num = 20
@@ -30,12 +30,12 @@ energies = np.zeros((len(current),level_num))
 
 iState = 0
 fState = 1
-wr = 10.304
+wr = 7
 g = 0.084
 
 #######################################################################################################################
 #Simulation part
-# '''
+'''
 #Compute spectrum
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
@@ -55,7 +55,7 @@ for idx, curr in enumerate(current):
 
 np.savetxt(path+"_"+str(iState)+str(fState)+"_energies.txt", energies)
 np.savetxt(path+"_"+str(iState)+str(fState)+"_chi.txt", chi)
-# '''
+'''
 #######################################################################################################################
 #Plotting part
 energies = np.genfromtxt(path+"_"+str(iState)+str(fState)+"_energies.txt")
@@ -71,7 +71,7 @@ for tl in ax1.get_yticklabels():
 ax2 = ax1.twinx()
 ax2.plot(current*1e3, chi*1e3, 'b.')
 ax2.set_ylabel('Dispersive shift (MHz)')
-ax2.set_ylim([-0.5,0.5])
+ax2.set_ylim([-5,5])
 for t2 in ax2.get_yticklabels():
     t2.set_color('b')
 ax1.tick_params(labelsize=18)
