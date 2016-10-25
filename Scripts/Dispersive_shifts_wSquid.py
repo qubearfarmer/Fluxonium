@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 
 #Define file directory
 directory = "C:\Data\Fluxonium #10 simulations"
-simulation = "Dispersive_shifts_wSquid_check"
+simulation = "Dispersive_shifts_wSquid"
 path = directory + "\\" + simulation
 #Define constants
 e = 1.602e-19    #Fundamental charge
@@ -23,14 +23,14 @@ A_j = 3.7971e-12
 A_c = 1.49982268962e-10
 beta_squid = 2.22e-3
 beta_ext = 0.341308382441
-d=9.9299e-2
+d = 9.9299e-2
 current = np.linspace(0.038,0.042,101)
 chi = np.zeros(len(current))
 energies = np.zeros((len(current),level_num))
 
 iState = 0
 fState = 1
-wr = 7
+wr = 10.304
 g = 0.084
 
 #######################################################################################################################
@@ -71,9 +71,29 @@ for tl in ax1.get_yticklabels():
 ax2 = ax1.twinx()
 ax2.plot(current*1e3, chi*1e3, 'b.')
 ax2.set_ylabel('Dispersive shift (MHz)')
-ax2.set_ylim([-5,5])
+ax2.set_ylim([-2,2])
 for t2 in ax2.get_yticklabels():
     t2.set_color('b')
+
+iState = 0
+fState = 2
+energies = np.genfromtxt(path + "_" + str(iState) + str(fState) + "_energies.txt")
+chi = np.genfromtxt(path + "_" + str(iState) + str(fState) + "_chi.txt")
+
+# fig, ax1 = plt.subplots()
+ax1.plot(current * 1e3, energies[:, fState] - energies[:, iState], color='k')
+# ax1.set_ylabel('Transition energy')
+# ax1.set_xlabel('Current (mA)')
+for tl in ax1.get_yticklabels():
+    tl.set_color('k')
+
+# ax2 = ax1.twinx()
+ax2.plot(current * 1e3, chi * 1e3, 'g.')
+# ax2.set_ylabel('Dispersive shift (MHz)')
+# ax2.set_ylim([-5, 5])
+for t2 in ax2.get_yticklabels():
+    t2.set_color('g')
+
 ax1.tick_params(labelsize=18)
 ax2.tick_params(labelsize=18)
 plt.grid()

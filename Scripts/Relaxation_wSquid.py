@@ -34,9 +34,10 @@ n_element = np.zeros(len(current))
 p_element = np.zeros(len(current))
 qp_element = np.zeros((len(current),2))
 energies = np.zeros((len(current),level_num))
-iState = 0
-fState = 1
 
+iState = 0
+fState = 2
+path = path + "_" + str(iState)+ str(fState)
 '''
 #######################################################################################
 for idx, curr in enumerate(current):
@@ -58,13 +59,12 @@ energies = np.genfromtxt(path+'_energies.txt')
 n_element = np.genfromtxt(path+'_chargeElement.txt')
 p_element = np.genfromtxt(path+'_fluxElement.txt')
 qp_element = np.genfromtxt(path+'_qpElement.txt')
-trans_energy = energies[:,fState]-energies[:,iState]
-
+'''
+#T1 data for 01 transition
 directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10"
 simulation = "T1avg(0to1)vs flux 41p52 to 42p0mA.csv"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path, delimiter =',',dtype=float)
-print data
 plt.plot(data[1::,0], data[1::,2], 'ro')
 directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10"
 simulation = "T1_T2_vs YOKO 43p65_45p4mA.csv"
@@ -76,15 +76,20 @@ simulation = "T1 avg_T2_qubit f(0to1) vs flux_39p46 to 39p39mA.csv"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path, delimiter =',',dtype=float)
 plt.plot(data[1::,0], data[1::,2], 'ro')
+'''
 
+#T1 data for 02 transition
+directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10"
+simulation = "T1 avg_T2_qubit f(0to2) vs flux_41p5 to 42mA.csv"
+path = directory + "\\" + simulation
+data = np.genfromtxt(path, delimiter =',',dtype=float)
+plt.plot(data[1::,0], data[1::,2], 'ro')
+directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10"
+simulation = "T1 avg_T2_qubit f(0to2) vs flux_39p37 to mA.csv"
+path = directory + "\\" + simulation
+data = np.genfromtxt(path, delimiter =',',dtype=float)
+plt.plot(data[1::,0], data[1::,2], 'ro')
 
-gamma_cap = np.zeros(len(current))
-gamma_ind = np.zeros(len(current))
-gamma_qp = np.zeros((len(current),2))
-Q_cap = 0.8e6
-Q_ind = 0.8e6
-Q_qp = 12e6
-w = trans_energy*1e9*2*np.pi
 hbar = h/(2*np.pi)
 kB=1.38064852e-23
 T=1e-2
@@ -95,25 +100,74 @@ E_j1 = 0.5*E_j_sum*(1 + d)
 E_j2 = 0.5*E_j_sum*(1 - d)
 delta_alum = 5.447400321e-23 #J
 
+Q_cap = 0.5e6
+Q_ind = 3e5
+Q_qp = 50e6
+
 cap = e**2/(2.0*E_c)
 ind = hbar**2/(4.0*e**2*E_l)
 gk = e**2.0/h
 g1 = 8.0*E_j1*gk/delta_alum
 g2 = 8.0*E_j2*gk/delta_alum
+
+trans_energy = energies[:,fState]-energies[:,iState]
+w = trans_energy*1e9*2*np.pi
+
 Y_cap = w*cap/Q_cap
 Y_ind = 1.0/(w*ind*Q_ind)
 Y_qp1 = (g1/(2*Q_qp))*(2*delta_alum/(hbar*w))**(1.5)
 Y_qp2 = (g2/(2*Q_qp))*(2*delta_alum/(hbar*w))**(1.5)
 
-R_cap = 1.0/(w*cap*Q_cap)
-R_ind = (w*ind/Q_ind)
+gamma_cap1 = np.zeros(len(current))
+gamma_ind1 = np.zeros(len(current))
+gamma_qp1 = np.zeros((len(current),2))
+
 for idx in range(len(current)):
-    gamma_cap[idx] = (phi_o * p_element[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w[idx] * Y_cap[idx] * (1 + 1.0 / np.tanh(hbar * w[idx] / (2 * kB * T)))
-    gamma_ind[idx] = (phi_o * p_element[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w[idx] * Y_ind[idx] * (1 + 1.0 / np.tanh(hbar * w[idx] / (2 * kB * T)))
-    gamma_qp[idx,0] = (qp_element[idx,0]) ** 2 * (w[idx] / np.pi / gk) * Y_qp1[idx]
-    gamma_qp[idx, 1] = (qp_element[idx, 1]) ** 2 * (w[idx] / np.pi / gk) * Y_qp2[idx]
-plt.semilogy(current*1e3 + (41.6813-41.6413),1/gamma_cap*1e6, 'b-', current*1e3+ (41.6813-41.6413), 1/gamma_qp[:,0]*1e6, 'r-',current*1e3+ (41.6813-41.6413), 1/1/gamma_qp[:,1]*1e6, 'g-',current*1e3+ (41.6813-41.6413), 1/1/gamma_ind*1e6, 'y-')
+    gamma_cap1[idx] = (phi_o * p_element[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w[idx] * Y_cap[idx] * (1 + 1.0 / np.tanh(hbar * w[idx] / (2 * kB * T)))
+    gamma_ind1[idx] = (phi_o * p_element[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w[idx] * Y_ind[idx] * (1 + 1.0 / np.tanh(hbar * w[idx] / (2 * kB * T)))
+    gamma_qp1[idx,0] = (qp_element[idx,0]) ** 2 * (w[idx] / np.pi / gk) * Y_qp1[idx]
+    gamma_qp1[idx, 1] = (qp_element[idx, 1]) ** 2 * (w[idx] / np.pi / gk) * Y_qp2[idx]
+
+######################################################################################
+directory = "C:\Data\Fluxonium #10 simulations"
+simulation = "Relaxation_wSquid"
+path = directory + "\\" + simulation
+iState = 1
+fState = 2
+path = path+"_" + str(iState)+ str(fState)
+n_element = np.genfromtxt(path+'_chargeElement.txt')
+p_element = np.genfromtxt(path+'_fluxElement.txt')
+qp_element = np.genfromtxt(path+'_qpElement.txt')
+trans_energy = energies[:,fState]-energies[:,iState]
+w = trans_energy*1e9*2*np.pi
+
+Y_cap = w*cap/Q_cap
+Y_ind = 1.0/(w*ind*Q_ind)
+Y_qp1 = (g1/(2*Q_qp))*(2*delta_alum/(hbar*w))**(1.5)
+Y_qp2 = (g2/(2*Q_qp))*(2*delta_alum/(hbar*w))**(1.5)
+
+gamma_cap2 = np.zeros(len(current))
+gamma_ind2 = np.zeros(len(current))
+gamma_qp2 = np.zeros((len(current),2))
+
+for idx in range(len(current)):
+    gamma_cap2[idx] = (phi_o * p_element[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w[idx] * Y_cap[idx] * (1 + 1.0 / np.tanh(hbar * w[idx] / (2 * kB * T)))
+    gamma_ind2[idx] = (phi_o * p_element[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w[idx] * Y_ind[idx] * (1 + 1.0 / np.tanh(hbar * w[idx] / (2 * kB * T)))
+    gamma_qp2[idx,0] = (qp_element[idx,0]) ** 2 * (w[idx] / np.pi / gk) * Y_qp1[idx]
+    gamma_qp2[idx, 1] = (qp_element[idx, 1]) ** 2 * (w[idx] / np.pi / gk) * Y_qp2[idx]
+
+gamma_cap = gamma_cap1 + gamma_cap2
+gamma_ind = gamma_ind1 + gamma_ind2
+gamma_qp = gamma_qp1 + gamma_qp2
+
+# plt.semilogy(current*1e3 + (41.6813-41.6413),1/gamma_cap2*1e6,'b-')
+# plt.semilogy(current*1e3 + (41.6813-41.6413),1/gamma_ind1*1e6,'y-')
+# plt.semilogy(current*1e3 + (41.6813-41.6413),1/gamma_qp[:,0]*1e6,'g-')
+plt.semilogy(current*1e3 + (41.6813-41.6413),1/gamma_qp2[:,1]*1e6,'r-')
 plt.grid()
+plt.xlim([39,42.5])
+plt.ylim([10,1e3])
 plt.xlabel("Current (mA")
 plt.ylabel("T1(us)")
 plt.show()
+# '''

@@ -8,7 +8,7 @@ E_l = 0.5
 E_c = 2.5
 E_j = 10
 
-phi_ext = np.linspace(-1,1,100)
+phi_ext = np.linspace(0,1,100)
 level_num = 10
 energies = np.zeros((len(phi_ext),level_num))
 
@@ -28,8 +28,8 @@ plt.ylim(top=30)
 
 #Plot transition energies
 fig2 = plt.figure(2)
-for idx in range(1,level_num):
-    plt.plot(phi_ext, energies[:,idx]-energies[:,0], linewidth = '2')
+for idx in range(2,level_num):
+    plt.plot(phi_ext, energies[:,idx]-energies[:,1], linewidth = '2')
 plt.xlabel(r'$\varphi_\mathrm{ext}/2\pi$')
 plt.ylabel(r'$\mathrm{E_i} - \mathrm{E_0}$')
 plt.ylim([0,30])
