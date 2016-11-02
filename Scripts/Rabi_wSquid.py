@@ -1,26 +1,40 @@
-from Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian
-from Fluxonium_hamiltonians.Single_small_junction import charge_matrix_element as nem
+from Fluxonium_hamiltonians.Squid_small_junctions import bare_hamiltonian
+from Fluxonium_hamiltonians.Squid_small_junctions import charge_matrix_element as nem
 import numpy as np
 from matplotlib import pyplot as plt
 from qutip import*
 
 #Qubit and computation parameters
-N = 60
-E_l = 0.5
-E_c = 2.5
-E_j = 10
-level_num = 10
-phi_ext = 0.0
+#Define constants
+e = 1.602e-19    #Fundamental charge
+h = 6.62e-34    #Placnk's constant
+phi_o = h/(2*e) #Flux quantum
 
-#Compute eigenenergies and matrix elements
-energies = np.zeros(level_num)
-nElement = np.zeros((level_num,level_num))
-H = bare_hamiltonian(N, E_l, E_c, E_j, phi_ext*2*np.pi)
-for idx in range(level_num):
-    energies[idx]=H.eigenenergies()[idx]
-for idx in range (level_num):
-    for idy in range (level_num):
-        nElement[idx,idy] = nem(N, E_l, E_c, E_j, phi_ext*2*np.pi, idx, idy)
+#Qubit and computation parameters
+N = 50
+E_l = 0.746959655208
+E_c = 0.547943694372
+E_j_sum = 21.9627179709
+level_num = 10
+B_coeff = 60
+A_j = 3.80888914574e-12
+A_c = 1.49982268962e-10
+beta_squid = 0.00378012644185
+beta_ext = 0.341308382441
+d=0.0996032153487
+current = np.linspace(0.03,0.045,1501)
+energies = np.zeros((len(current),level_num))
+shift = (41.6713-41.6413)
+
+#Compute eigenenergies
+for idx, curr in enumerate(current):
+    curr = curr + shift * 1e-3
+    flux_squid = curr*B_coeff*A_j*1e-4
+    flux_ext = curr*B_coeff*A_c*1e-4
+    H = bare_hamiltonian(N, E_l, E_c, E_j_sum, d, 2*np.pi*(flux_squid/phi_o - beta_squid),
+                         2 * np.pi * (flux_ext / phi_o - beta_ext))
+    for idy in range(level_num):
+        energies[idx,idy] = H.eigenenergies()[idy]
 
 wd = 9.5#energies[2] - energies[0]
 g = 0.05

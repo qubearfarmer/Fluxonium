@@ -4,8 +4,8 @@ from matplotlib import pyplot as plt
 
 #Qubit and computation parameters
 N = 50
-E_l = 0.5
-E_c = 2.5
+E_l = 0.1
+E_c = 10
 E_j = 10
 
 phi_ext = np.linspace(0,1,100)

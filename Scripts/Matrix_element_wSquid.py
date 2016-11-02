@@ -27,14 +27,14 @@ A_c = 1.49982268962e-10
 beta_squid = 0.00378012644185
 beta_ext = 0.341308382441
 d=0.0996032153487
-current = np.linspace(0.038,0.042,100)
+current = np.linspace(0.035,0.045,501)
 energies = np.zeros((len(current),level_num))
 qp_element = np.zeros((len(current),2))
 n_element = np.zeros(len(current))
 p_element = np.zeros(len(current))
 
-iState = 0
-fState = 1
+iState = 1
+fState = 2
 
 path = path+'_'+str(iState)+'to'+str(fState)+'_from_' + str(current[0]*1e3) +'to'+ str(current[-1]*1e3) +'mA'
 ########################################################################################################################
@@ -62,7 +62,7 @@ np.savetxt(path+'_qpElement.txt', qp_element)
 energies = np.genfromtxt(path+'_energies.txt')
 n_element = np.genfromtxt(path+'_chargeElement.txt')
 qp_element = np.genfromtxt(path+'_qpElement.txt')
-
+print path
 trans_energy = energies[:,1] - energies[:,0]
 fig, ax1 = plt.subplots()
 ax1.plot(current*1e3, trans_energy, color = 'k', linewidth = '2')
