@@ -6,7 +6,7 @@ import numpy as np
 
 #Define constants
 e = 1.602e-19    #Fundamental charge
-h = 6.62e-34    #Placnk's constant
+h = 6.626e-34    #Placnk's constant
 phi_o = h/(2*e) #Flux quantum
 
 def bare_hamiltonian(N, E_l, E_c, E_j, phi_ext):

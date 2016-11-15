@@ -17,9 +17,9 @@ phi_o = h/(2*e) #Flux quantum
 
 #######################################################################################
 N = 50
-E_l = 0.46
-E_c = 3.6
-E_j = 10.2
+E_l = 0.1
+E_c = 10
+E_j = 5
 level_num = 10
 iState = 0
 fState = 1
@@ -29,7 +29,7 @@ p_element = np.zeros(len(phi_ext))
 n_element = np.zeros(len(phi_ext))
 qp_element = np.zeros(len(phi_ext))
 energies = np.zeros((len(phi_ext),level_num))
-'''
+# '''
 #######################################################################################
 for idx, phi in enumerate(phi_ext):
     p_element[idx]=abs(pem(N, E_l, E_c, E_j, phi*2*np.pi, iState, fState))
@@ -43,7 +43,7 @@ np.savetxt(path + '_chargeElement.txt', n_element)
 np.savetxt(path + '_fluxElement.txt', p_element)
 np.savetxt(path + '_qpElement.txt', qp_element)
 ######################################################################################
-'''
+# '''
 energies = np.genfromtxt(path+'_energies.txt')
 n_element = np.genfromtxt(path+'_chargeElement.txt')
 p_element = np.genfromtxt(path+'_fluxElement.txt')
@@ -80,13 +80,16 @@ for idx in range(len(phi_ext)):
     gamma_qp[idx] = (qp_element[idx]) ** 2 *(w[idx]/np.pi/gk)*Y_qp[idx]
 
 plt.semilogy(phi_ext,1/gamma_cap*1e6,phi_ext,1/gamma_ind*1e6)
+# plt.plot(phi_ext,p_element)
 for idx in range(len(phi_ext)):
     if gamma_qp[idx] == 0:
         gamma_qp_alt=np.delete(gamma_qp, idx)
         phi_ext_alt = np.delete(phi_ext, idx)
 plt.semilogy(phi_ext_alt,1/gamma_qp_alt*1e6)
-
+plt.xlabel(r'$\varphi_{ext}/2\pi$')
+plt.ylabel('T1/Q')
 ###########################################################
+
 phi_ext = np.linspace(-0.05,0.55,601)
 R_cap = 1.0/(w*cap*Q_cap)
 R_ind = (w*ind/Q_ind)

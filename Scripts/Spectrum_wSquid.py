@@ -32,8 +32,8 @@ for idx, curr in enumerate(current):
         energies[idx,idy] = H.eigenenergies()[idy]
 
 #Plot transition energies
-for idx in range(0, level_num):
-    plt.plot(current, energies[:,idx])#-energies[:,0])
+for idx in range(2, level_num):
+    plt.plot(current, energies[:,idx]-energies[:,1])
 
 #Alternate Hamiltonian
 # for idx, curr in enumerate(current):

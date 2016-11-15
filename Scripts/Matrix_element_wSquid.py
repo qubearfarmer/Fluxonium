@@ -27,14 +27,14 @@ A_c = 1.49982268962e-10
 beta_squid = 0.00378012644185
 beta_ext = 0.341308382441
 d=0.0996032153487
-current = np.linspace(0.035,0.045,501)
+current = np.linspace(0.035,0.045,1001)
 energies = np.zeros((len(current),level_num))
 qp_element = np.zeros((len(current),2))
 n_element = np.zeros(len(current))
 p_element = np.zeros(len(current))
 
-iState = 1
-fState = 2
+iState = 0
+fState = 1
 
 path = path+'_'+str(iState)+'to'+str(fState)+'_from_' + str(current[0]*1e3) +'to'+ str(current[-1]*1e3) +'mA'
 ########################################################################################################################
@@ -56,14 +56,15 @@ for idx, curr in enumerate(current):
 
 np.savetxt(path+'_energies.txt', energies)
 np.savetxt(path+'_chargeElement.txt', n_element)
+np.savetxt(path+'_phaseElement.txt', p_element)
 np.savetxt(path+'_qpElement.txt', qp_element)
 '''
 ########################################################################################################################
 energies = np.genfromtxt(path+'_energies.txt')
 n_element = np.genfromtxt(path+'_chargeElement.txt')
+p_element = np.genfromtxt(path+'_phaseElement.txt')
 qp_element = np.genfromtxt(path+'_qpElement.txt')
-print path
-trans_energy = energies[:,1] - energies[:,0]
+trans_energy = energies[:,fState] - energies[:,iState]
 fig, ax1 = plt.subplots()
 ax1.plot(current*1e3, trans_energy, color = 'k', linewidth = '2')
 ax1.set_ylabel('Transition energy')
@@ -72,10 +73,10 @@ for tl in ax1.get_yticklabels():
     tl.set_color('k')
 
 ax2 = ax1.twinx()
-# ax2.plot(current*1e3, n_element, 'b--')
-ax2.plot(current*1e3, qp_element[:,0],'b--', current*1e3, qp_element[:,1], 'r-.')
+ax2.plot(current*1e3, n_element, 'b--')
+# ax2.plot(current*1e3, qp_element[:,0],'b--', current*1e3, qp_element[:,1], 'r-.')
 ax2.set_ylabel('Matrix element')
-# ax2.set_ylim([-0.5,0.5])
+ax2.set_ylim([0,2])
 for t2 in ax2.get_yticklabels():
     t2.set_color('b')
 ax1.tick_params(labelsize=18)

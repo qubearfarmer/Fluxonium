@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 N = 50
 E_l = 0.1
 E_c = 10
-E_j = 10
+E_j = 5
 
 phi_ext = np.linspace(0,1,100)
 level_num = 10
