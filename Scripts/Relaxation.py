@@ -29,7 +29,7 @@ p_element = np.zeros(len(phi_ext))
 n_element = np.zeros(len(phi_ext))
 qp_element = np.zeros(len(phi_ext))
 energies = np.zeros((len(phi_ext),level_num))
-# '''
+'''
 #######################################################################################
 for idx, phi in enumerate(phi_ext):
     p_element[idx]=abs(pem(N, E_l, E_c, E_j, phi*2*np.pi, iState, fState))
@@ -43,7 +43,7 @@ np.savetxt(path + '_chargeElement.txt', n_element)
 np.savetxt(path + '_fluxElement.txt', p_element)
 np.savetxt(path + '_qpElement.txt', qp_element)
 ######################################################################################
-# '''
+'''
 energies = np.genfromtxt(path+'_energies.txt')
 n_element = np.genfromtxt(path+'_chargeElement.txt')
 p_element = np.genfromtxt(path+'_fluxElement.txt')

@@ -5,10 +5,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 N = 50
-E_l = 0.1
-E_c = 10
+E_l = 0.5
+E_c = 2.5
 E_j = 10
-iState = 0
+iState = 1
 fState = 1
 
 phi_ext = np.linspace(0,0.5,100)

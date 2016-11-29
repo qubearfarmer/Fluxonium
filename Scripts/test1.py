@@ -61,7 +61,7 @@ path = directory + "\\" + simulation
 data = np.genfromtxt(path, delimiter =',',dtype=float)
 ax1.semilogy(data[1::,0], data[1::,2], 'ro')
 directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10"
-simulation = "T1 avg_T2_qubit f(0to2) vs flux_38p76 to mA.csv"
+simulation = "T1 avg_T2_qubit f(0to2) vs flux_38p76 to 38p26mA.csv"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path, delimiter =',',dtype=float)
 ax1.semilogy(data[1::,0], data[1::,2], 'ro')

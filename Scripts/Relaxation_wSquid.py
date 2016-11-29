@@ -30,15 +30,16 @@ beta_ext = 0.341308382441
 d=0.0996032153487
 current = np.linspace(0.038, 0.046, 801)
 
+
 n_element = np.zeros(len(current))
 p_element = np.zeros(len(current))
 qp_element = np.zeros((len(current),2))
 energies = np.zeros((len(current),level_num))
 
 iState = 0
-fState = 2
+fState = 1
 path = path+'_'+str(iState)+'to'+str(fState)+'_from_' + str(current[0]*1e3) +'to'+ str(current[-1]*1e3) +'mA'
-# '''
+'''
 #######################################################################################
 for idx, curr in enumerate(current):
     flux_squid = curr * B_coeff * A_j * 1e-4
@@ -63,39 +64,74 @@ qp_element = np.genfromtxt(path+'_qpElement.txt')
 
 # '''
 #T1 data for 01 transition
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10"
+directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Corrected flux"
+
 simulation = "T1avg(0to1)vs flux 41p52 to 42p0mA.csv"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path, delimiter =',',dtype=float)
-plt.plot(data[1::,0], data[1::,2], 'ro')
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10"
-simulation = "T1_T2_vs YOKO 43p65_45p4mA.csv"
+plt.plot(data[1::,1], data[1::,2], 'ro')
+
+simulation = "T1_T2_qubit f(0to1)vs flux 43p65_45p4mA.csv"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path, delimiter =',',dtype=float)
-plt.plot(data[1::,0], data[1::,2], 'ro')
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10"
+plt.plot(data[1::,1], data[1::,2], 'ro')
+
 simulation = "T1 avg_T2_qubit f(0to1) vs flux_39p46 to 39p39mA.csv"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path, delimiter =',',dtype=float)
-plt.plot(data[1::,0], data[1::,2], 'ro')
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10"
+plt.plot(data[1::,1], data[1::,2], 'ro')
+
 simulation = "T1 avg_T2_qubit f(0to1) vs flux_38p5 to 38p76mA.csv"
+path = directory + "\\" + simulation
+data = np.genfromtxt(path, delimiter =',',dtype=float)
+plt.plot(data[1::,1], data[1::,2], 'ro')
+'''
+#Automation T1
+#T1 data for 01 transition
+directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Automation code"
+
+simulation = "T1_auto_35to36p1mA.csv"
+path = directory + "\\" + simulation
+data = np.genfromtxt(path)
+plt.plot(data[:,0], data[:,2], 'r.')
+
+simulation = "T1_auto_37p2to38p5mA.csv"
+path = directory + "\\" + simulation
+data = np.genfromtxt(path)
+plt.plot(data[:,0], data[:,2], 'r.')
+
+simulation = "T1_auto_39p5to40p7mA.csv"
+path = directory + "\\" + simulation
+data = np.genfromtxt(path)
+plt.plot(data[:,0], data[:,2], 'r.')
+
+simulation = "T1_auto_41p8to42p9mA.csv"
+path = directory + "\\" + simulation
+data = np.genfromtxt(path)
+plt.plot(data[:,0], data[:,2], 'r.')
+
+simulation = "T1_auto_44to45mA.csv"
+path = directory + "\\" + simulation
+data = np.genfromtxt(path)
+plt.plot(data[:,0], data[:,2], 'r.')
+
+#T1 data for 02 transition
+directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Corrected flux"
+
+simulation = "T1 avg_T2_qubit f(0to2) vs flux_38p76 to 38p26mA.csv"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path, delimiter =',',dtype=float)
 plt.plot(data[1::,0], data[1::,2], 'ro')
 
-'''
-#T1 data for 02 transition
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10"
+simulation = "T1 avg_T2_qubit f(0to2) vs flux_39p37 to 39p78mA.csv"
+path = directory + "\\" + simulation
+data = np.genfromtxt(path, delimiter =',',dtype=float)
+plt.plot(data[1::,0], data[1::,2], 'ro')
+
 simulation = "T1 avg_T2_qubit f(0to2) vs flux_41p5 to 42mA.csv"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path, delimiter =',',dtype=float)
-plt.plot(data[1::,0], data[1::,2], 'r-o')
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10"
-simulation = "T1 avg_T2_qubit f(0to2) vs flux_39p37 to mA.csv"
-path = directory + "\\" + simulation
-data = np.genfromtxt(path, delimiter =',',dtype=float)
-plt.plot(data[1::,0], data[1::,2], 'ro-')
+plt.plot(data[1::,0], data[1::,2], 'ro')
 '''
 
 hbar = h/(2*np.pi)
@@ -110,8 +146,8 @@ delta_alum = 5.447400321e-23 #J
 
 Q_cap = 3e6
 Q_ind = 0.8e6
-Q_qp1 = 14e6
-Q_qp2 = 14e6
+Q_qp1 = 20e6
+Q_qp2 = 20e6
 
 cap = e**2/(2.0*E_c)
 ind = hbar**2/(4.0*e**2*E_l)
@@ -136,11 +172,13 @@ for idx in range(len(current)):
     gamma_ind1[idx] = (phi_o * p_element[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w[idx] * Y_ind[idx] * (1 + 1.0 / np.tanh(hbar * w[idx] / (2 * kB * T)))
     gamma_qp1[idx,0] = (qp_element[idx,0]) ** 2 * (w[idx] / np.pi / gk) * Y_qp1[idx]
     gamma_qp1[idx, 1] = (qp_element[idx, 1]) ** 2 * (w[idx] / np.pi / gk) * Y_qp2[idx]
-
-# plt.semilogy(current*1e3 + (41.6813-41.6413),1.0/gamma_cap1*1e6,'b-')
-# plt.semilogy(current*1e3 + (41.6813-41.6413),1.0/gamma_qp1[:,0]*1e6,'g-')
-# plt.semilogy(current*1e3 + (41.6813-41.6413),1.0/gamma_qp1[:,1]*1e6,'m-')
-# plt.semilogy(current*1e3 + (41.6813-41.6413),1.0/gamma_ind1*1e6,'y-')
+gamma = gamma_qp1[:,0] + gamma_qp1[:,1]
+# plt.semilogy(current*1e3 ,1.0/gamma_cap1*1e6,'b-')
+# plt.semilogy(current*1e3 ,1.0/gamma_qp1[:,0]*1e6,'g-')
+# plt.semilogy(current*1e3 ,1.0/gamma_qp1[:,1]*1e6,'m-')
+# plt.semilogy(current*1e3 ,1.0/gamma*1e6,'g-')
+# plt.semilogy(current*1e3 ,1.0/gamma_ind1*1e6,'y-')
+# plt.ylim([1,10e3])
 '''
 ######################################################################################
 directory = "C:\Data\Fluxonium #10 simulations"
@@ -182,8 +220,7 @@ gamma = gamma_cap + gamma_ind + gamma_qp1[:,0] + gamma_qp1[:,1] + gamma_qp2[:,0]
 '''
 # plt.semilogy(current*1e3 + (41.6813-41.6413),1.0/gamma*1e6,'k-')
 plt.grid()
-# plt.xlim([39.2,42.2])
-# plt.ylim([10,1e3])
-plt.xlabel("Current (mA")
-plt.ylabel("T1(us)")
+# plt.xlim([current[0]*1e3,current[-1]*1e3])
+# plt.xlabel("Current (mA")
+# plt.ylabel("T1(us)")
 plt.show()

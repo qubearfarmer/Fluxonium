@@ -65,21 +65,32 @@ n_element = np.genfromtxt(path+'_chargeElement.txt')
 p_element = np.genfromtxt(path+'_phaseElement.txt')
 qp_element = np.genfromtxt(path+'_qpElement.txt')
 trans_energy = energies[:,fState] - energies[:,iState]
-fig, ax1 = plt.subplots()
-ax1.plot(current*1e3, trans_energy, color = 'k', linewidth = '2')
-ax1.set_ylabel('Transition energy')
-ax1.set_xlabel('Current (mA)')
-for tl in ax1.get_yticklabels():
-    tl.set_color('k')
+# fig, ax1 = plt.subplots()
+# ax1.plot(current*1e3, trans_energy, color = 'k', linewidth = '2')
+# ax1.set_ylabel('Transition energy')
+# ax1.set_xlabel('Current (mA)')
+# for tl in ax1.get_yticklabels():
+#     tl.set_color('k')
+#
+# ax2 = ax1.twinx()
+# ax2.plot(current*1e3, qp_element[:,0]**2 + qp_element[:,1]**2, 'b--')
+# # ax2.plot(current*1e3, qp_element[:,0],'b--', current*1e3, qp_element[:,1], 'r-.')
+# ax2.set_ylabel('Matrix element')
+# ax2.set_ylim([0,0.4])
+# for t2 in ax2.get_yticklabels():
+#     t2.set_color('b')
+# ax1.tick_params(labelsize=18)
+# ax2.tick_params(labelsize=18)
 
-ax2 = ax1.twinx()
-ax2.plot(current*1e3, n_element, 'b--')
-# ax2.plot(current*1e3, qp_element[:,0],'b--', current*1e3, qp_element[:,1], 'r-.')
-ax2.set_ylabel('Matrix element')
-ax2.set_ylim([0,2])
-for t2 in ax2.get_yticklabels():
-    t2.set_color('b')
-ax1.tick_params(labelsize=18)
-ax2.tick_params(labelsize=18)
-
+#Plot trans frequency vs matrix element here
+plt.plot(trans_energy, p_element)
+# iState = 1
+# fState = 2
+# directory = "C:\Data\Fluxonium #10 simulations"
+# simulation = "MElements_wSquid"
+# path = directory + "\\" + simulation
+# path = path+'_'+str(iState)+'to'+str(fState)+'_from_' + str(current[0]*1e3) +'to'+ str(current[-1]*1e3) +'mA'
+# p_element = np.genfromtxt(path+'_phaseElement.txt')
+# qp_element = np.genfromtxt(path+'_qpElement.txt')
+# ax2.plot(current*1e3, qp_element[:,0]**2 + qp_element[:,1]**2, 'r--')
 plt.show()
