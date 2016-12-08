@@ -1,5 +1,3 @@
-from Fluxonium_hamiltonians.Squid_small_junctions import charge_dispersive_shift as nChi
-from Fluxonium_hamiltonians.Squid_small_junctions import bare_hamiltonian
 import numpy as np
 from matplotlib import pyplot as plt
 
@@ -29,7 +27,7 @@ chi = np.zeros(len(current))
 energies = np.zeros((len(current),level_num))
 
 iState = 0
-fState = 2
+fState = 1
 wr = 10.304
 g = 0.084
 path = path+"_"+str(iState)+str(fState)+"_"+str(current[0]*1e3)+"to"+str(current[-1]*1e3)+"mA"
@@ -70,14 +68,14 @@ ax1.set_xlabel('Current (mA)')
 for tl in ax1.get_yticklabels():
     tl.set_color('k')
 
-# ax2 = ax1.twinx()
-# ax2.plot(current*1e3 + (41.6713-41.6413), chi*1e3, 'b.')
-# ax2.set_ylabel('Dispersive shift (MHz)')
-# ax2.set_ylim([-2,2])
-# for t2 in ax2.get_yticklabels():
-#     t2.set_color('b')
+ax2 = ax1.twinx()
+ax2.plot(current * 1e3 + (41.6713 - 41.6413), chi * 1e3, 'b.')
+ax2.set_ylabel('Dispersive shift (MHz)')
+ax2.set_ylim([-2, 2])
+for t2 in ax2.get_yticklabels():
+    t2.set_color('b')
 
 ax1.tick_params(labelsize=18)
-# ax2.tick_params(labelsize=18)
+ax2.tick_params(labelsize=18)
 plt.grid()
 plt.show()

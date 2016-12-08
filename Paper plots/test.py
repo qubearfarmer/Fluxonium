@@ -1,3 +1,4 @@
+# HFSS plots
 import numpy as np
 
 print "First: calculate C_shunt"
@@ -21,3 +22,6 @@ print (f1+f2)/2.0
 print "Fourth: Calculate coupling"
 g = (f2-f1)/2.0
 print "g="+str(g*1e3)+"MHz"
+
+print ('0.3%f'
+3.999999)

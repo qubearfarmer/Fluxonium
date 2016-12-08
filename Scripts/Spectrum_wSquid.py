@@ -1,7 +1,8 @@
-from Fluxonium_hamiltonians.Squid_small_junctions import bare_hamiltonian
-from Fluxonium_hamiltonians.Squid_small_junctions import bare_hamiltonian_alt
 import numpy as np
 from matplotlib import pyplot as plt
+
+from Fluxonium_hamiltonians.Squid_small_junctions import bare_hamiltonian
+
 #Define constants
 e = 1.602e-19    #Fundamental charge
 h = 6.62e-34    #Placnk's constant
@@ -19,7 +20,7 @@ A_c = 1.49982268962e-10
 beta_squid = 0.00378012644185
 beta_ext = 0.341308382441
 d=0.0996032153487
-current = np.linspace(0.038,0.046,801)
+current = np.linspace(0.03862, 0.03868, 61)
 energies = np.zeros((len(current),level_num))
 # current = current + (41.6813-41.6413)*1e-3
 sim_dat = np.zeros((len(current),3))
@@ -52,53 +53,55 @@ for idx in range(1, level_num):
 ##############################################################################################
 #Measured spectrum
 #01 transition
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Corrected flux"
-
-simulation = "T1avg(0to1)vs flux 41p52 to 42p0mA.csv"
-path = directory + "\\" + simulation
-data = np.genfromtxt(path, delimiter =',',dtype=float)
-plt.plot(data[1::,0], data[1::,1], 'ro')
-
-simulation = "T1_T2_qubit f(0to1)vs flux 43p65_45p4mA.csv"
-path = directory + "\\" + simulation
-data = np.genfromtxt(path, delimiter =',',dtype=float)
-plt.plot(data[1::,0], data[1::,1], 'ro')
-
-simulation = "T1 avg_T2_qubit f(0to1) vs flux_39p46 to 39p39mA.csv"
-path = directory + "\\" + simulation
-data = np.genfromtxt(path, delimiter =',',dtype=float)
-plt.plot(data[1::,0], data[1::,1], 'ro')
-
-simulation = "T1 avg_T2_qubit f(0to1) vs flux_38p5 to 38p76mA.csv"
-path = directory + "\\" + simulation
-data = np.genfromtxt(path, delimiter =',',dtype=float)
-plt.plot(data[1::,0], data[1::,1], 'ro')
-
-#02 transition
-simulation = "T1 avg_T2_qubit f(0to2) vs flux_38p76 to 38p26mA.csv"
-path = directory + "\\" + simulation
-data = np.genfromtxt(path, delimiter =',',dtype=float)
-plt.plot(data[1::,0], data[1::,1], 'ro')
-
-simulation = "T1 avg_T2_qubit f(0to2) vs flux_39p37 to 39p78mA.csv"
-path = directory + "\\" + simulation
-data = np.genfromtxt(path, delimiter =',',dtype=float)
-plt.plot(data[1::,0], data[1::,1], 'ro')
-
-simulation = "T1 avg_T2_qubit f(0to2) vs flux_41p5 to 42mA.csv"
-path = directory + "\\" + simulation
-data = np.genfromtxt(path, delimiter =',',dtype=float)
-plt.plot(data[1::,0], data[1::,1], 'ro')
+# directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Corrected flux"
+#
+# simulation = "T1avg(0to1)vs flux 41p52 to 42p0mA.csv"
+# path = directory + "\\" + simulation
+# data = np.genfromtxt(path, delimiter =',',dtype=float)
+# plt.plot(data[1::,0], data[1::,1], 'ro')
+#
+# simulation = "T1_T2_qubit f(0to1)vs flux 43p65_45p4mA.csv"
+# path = directory + "\\" + simulation
+# data = np.genfromtxt(path, delimiter =',',dtype=float)
+# plt.plot(data[1::,0], data[1::,1], 'ro')
+#
+# simulation = "T1 avg_T2_qubit f(0to1) vs flux_39p46 to 39p39mA.csv"
+# path = directory + "\\" + simulation
+# data = np.genfromtxt(path, delimiter =',',dtype=float)
+# plt.plot(data[1::,0], data[1::,1], 'ro')
+#
+# simulation = "T1 avg_T2_qubit f(0to1) vs flux_38p5 to 38p76mA.csv"
+# path = directory + "\\" + simulation
+# data = np.genfromtxt(path, delimiter =',',dtype=float)
+# plt.plot(data[1::,0], data[1::,1], 'ro')
+#
+# #02 transition
+# simulation = "T1 avg_T2_qubit f(0to2) vs flux_38p76 to 38p26mA.csv"
+# path = directory + "\\" + simulation
+# data = np.genfromtxt(path, delimiter =',',dtype=float)
+# plt.plot(data[1::,0], data[1::,1], 'ro')
+#
+# simulation = "T1 avg_T2_qubit f(0to2) vs flux_39p37 to 39p78mA.csv"
+# path = directory + "\\" + simulation
+# data = np.genfromtxt(path, delimiter =',',dtype=float)
+# plt.plot(data[1::,0], data[1::,1], 'ro')
+#
+# simulation = "T1 avg_T2_qubit f(0to2) vs flux_41p5 to 42mA.csv"
+# path = directory + "\\" + simulation
+# data = np.genfromtxt(path, delimiter =',',dtype=float)
+# plt.plot(data[1::,0], data[1::,1], 'ro')
 ##############################################################################################
 #Saving data
-# directory = "G:\Projects\Fluxonium\Data\Fluxonium #10 simulations\Input_for_auto_meas"
-# simulation = "Trans_energy"
-# path = directory + "\\" + simulation
-# path = path+'_'+str(iState)+'to'+str(fState)+'_from_' + str(current[0]*1.0e3) +'to'+ str(current[-1]*1.0e3) +'mA'
-# sim_dat[:,0] = current*1e3
-# sim_dat[:,1] = energies[:,1]-energies[:,0]
-# sim_dat[:,2] = 10.3048
-# np.savetxt(path+'.csv', sim_dat)
-
+directory = "G:\Projects\Fluxonium\Data\Fluxonium #10 simulations\Input_for_auto_meas"
+simulation = "Trans_energy"
+path = directory + "\\" + simulation
+path = path + '_' + str(iState) + 'to' + str(fState) + '_from_' + str(current[0] * 1.0e3) + 'to' + str(
+    current[-1] * 1.0e3) + 'mA'
+current = current * 1e3 + 0.016
+print current
+sim_dat[:, 0] = current
+sim_dat[:, 1] = (energies[:, 1] - energies[:, 0]) - 0.03
+sim_dat[:, 2] = 10.3045
+np.savetxt(path + '.csv', sim_dat, fmt='%.4f')
 
 plt.show()
