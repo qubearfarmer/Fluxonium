@@ -106,8 +106,8 @@ for idx in range(len(T1_array)):
         qpem_final_2 = np.append(qpem_final_2, qp_element[idx, 1])
 
 # plt.plot(freq_12, T1_array, 'bo')
-plt.loglog(qpem_final_1 ** 2 + qpem_final_2 ** 2, T1_final, 'D', mfc='none', mew='2', mec='red')
-# plt.loglog(pem_final, T1_final, 'D', mfc='none', mew='2', mec='red')
+# plt.loglog(qpem_final_1 ** 2 + qpem_final_2 ** 2, T1_final, 'D', mfc='none', mew='2', mec='red')
+plt.loglog(pem_final, T1_final, 'D', mfc='none', mew='2', mec='red')
 
 #######################Simulation#######################
 hbar = h / (2 * np.pi)
@@ -236,61 +236,61 @@ flux_array = np.append(flux_array, flux)
 freq_array = np.append(freq_array, freq)
 #
 # #########################################################################################
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Automation code"
-simulation = "T1_auto_41to41p05mA.csv"
+directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Automation code\corrected flux with Rabi A new"
+simulation = "T1_rabi_41to41p05mA_corrected flux.TXT"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path)
-flux = data[:, 0] - 0.04
+flux = data[:, 0]
 freq = data[:, 1]
 T1 = data[:, 2]
 T1_array = np.append(T1_array, T1)
 flux_array = np.append(flux_array, flux)
 freq_array = np.append(freq_array, freq)
 
-simulation = "T1_auto_41p55to41p6mA.csv"
+simulation = "T1_rabi_41p55to41p6mA_corrected flux.TXT"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path)
-flux = data[:, 0] - 0.04
+flux = data[:, 0]
 freq = data[:, 1]
 T1 = data[:, 2]
 T1_array = np.append(T1_array, T1)
 flux_array = np.append(flux_array, flux)
 freq_array = np.append(freq_array, freq)
 
-simulation = "T1_auto_37p2to38p5mA_1.csv"
+simulation = "T1_rabi_37p2to38p5mA_5usStep_corrected flux.TXT"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path)
-flux = data[:, 0] - 0.04
+flux = data[:, 0]
 freq = data[:, 1]
 T1 = data[:, 2]
 T1_array = np.append(T1_array, T1)
 flux_array = np.append(flux_array, flux)
 freq_array = np.append(freq_array, freq)
 
-simulation = "T1_auto_38p5to38p6mA.csv"
+simulation = "T1_rabi_38p5to38p6mA_corrected flux.TXT"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path)
-flux = data[:, 0] - 0.04
+flux = data[:, 0]
 freq = data[:, 1]
 T1 = data[:, 2]
 T1_array = np.append(T1_array, T1)
 flux_array = np.append(flux_array, flux)
 freq_array = np.append(freq_array, freq)
 
-simulation = "T1_auto_38p58to38p62mA.csv"
+simulation = "T1_rabi_38p58to38p62mA_corrected flux.TXT"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path)
-flux = data[:, 0] - 0.04
+flux = data[:, 0]
 freq = data[:, 1]
 T1 = data[:, 2]
 T1_array = np.append(T1_array, T1)
 flux_array = np.append(flux_array, flux)
 freq_array = np.append(freq_array, freq)
 
-simulation = "T1_auto_38p62to38p68mA.csv"
+simulation = "T1_rabi_38p62to38p68mA_corrected flux.TXT"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path)
-flux = data[:, 0] - 0.04
+flux = data[:, 0]
 freq = data[:, 1]
 T1 = data[:, 2]
 T1_array = np.append(T1_array, T1)
@@ -340,8 +340,8 @@ for idx, curr in enumerate(current):
     qp_element[idx, :] = qpem(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
                               2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
 
-plt.loglog(qp_element[:, 0] ** 2 + qp_element[:, 1] ** 2, T1_final, 's', mfc='none', mew='2', mec='blue')
-# plt.loglog(p_element ** 2, T1_final, 's', mfc='none', mew='2', mec='blue')
+# plt.loglog(qp_element[:, 0] ** 2 + qp_element[:, 1] ** 2, T1_final, 's', mfc='none', mew='2', mec='blue')
+plt.loglog(p_element ** 2, T1_final, 's', mfc='none', mew='2', mec='blue')
 #######################Simulation#######################
 hbar = h / (2 * np.pi)
 kB = 1.38064852e-23
@@ -354,9 +354,9 @@ E_j2 = 0.5 * E_j_sum * (1 - d)
 delta_alum = 5.447400321e-23  # J
 current = flux_final * 1e-3
 ##########Upper limit
-Q_cap = 1.05e6
+Q_cap = 0.95e6
 Q_ind = 0.8e6
-Q_qp = 10e6
+Q_qp = 9.5e6
 
 cap = e ** 2 / (2.0 * E_c)
 ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
@@ -382,10 +382,10 @@ for idx in range(len(qpem_sim)):
     # gamma_ind[idx] = (phi_o * pem_sim[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w * Y_ind * (1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
     gamma_qp[idx, 0] = (qpem_sim[idx]) ** 2 * (w / np.pi / gk) * Y_qp1
     gamma_qp[idx, 1] = (qpem_sim[idx]) ** 2 * (w / np.pi / gk) * Y_qp2
-# T1_sim = 1/gamma_cap
-# plt.loglog(pem_sim**2, T1_sim*1e6,linewidth = '2', color = 'k', linestyle ='--')
-T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1])
-plt.loglog(2 * qpem_sim ** 2, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
+T1_sim = 1 / gamma_cap
+plt.loglog(pem_sim ** 2, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
+# T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1])
+# plt.loglog(2 * qpem_sim ** 2, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
 ##########Lower limit
 Q_cap = 0.26e5
 Q_ind = 0.8e6
@@ -415,16 +415,16 @@ for idx in range(len(qpem_sim)):
     # gamma_ind[idx] = (phi_o * pem_sim[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w * Y_ind * (1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
     gamma_qp[idx, 0] = (qpem_sim[idx]) ** 2 * (w / np.pi / gk) * Y_qp1
     gamma_qp[idx, 1] = (qpem_sim[idx]) ** 2 * (w / np.pi / gk) * Y_qp2
-# T1_sim = 1/gamma_cap
-# plt.loglog(pem_sim**2, T1_sim*1e6,linewidth = '2', color = 'k', linestyle ='--')
-T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1])
-plt.loglog(2 * qpem_sim ** 2, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
+T1_sim = 1 / gamma_cap
+plt.loglog(pem_sim ** 2, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
+# T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1])
+# plt.loglog(2 * qpem_sim ** 2, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
 
 ##############################
-# fac = 6e3
+fac = 6e3
 plt.ylim([1e1, 8e3])
-# plt.xlim([1e1/fac,8e3/fac])
-fac = 5e4
 plt.xlim([1e1 / fac, 8e3 / fac])
+# fac = 5e4
+# plt.xlim([1e1 / fac, 8e3 / fac])
 plt.tick_params(labelsize=18)
 plt.show()

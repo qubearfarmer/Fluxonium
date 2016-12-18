@@ -8,7 +8,7 @@ from Fluxonium_hamiltonians.Squid_small_junctions import phase_matrix_element as
 from Fluxonium_hamiltonians.Squid_small_junctions import qp_matrix_element as qpem
 
 plt.figure(figsize=(10, 10))
-
+plt.rc('font', family='serif')
 # Define file directory
 directory = "C:\Data\Fluxonium #10 simulations"
 simulation = "Relaxation_wSquid"
@@ -35,8 +35,9 @@ T1_array = np.append(T1_array, T1)
 flux_array = np.append(flux_array, flux)
 freq_array = np.append(freq_array, freq)
 
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Automation code\corrected flux"
-simulation = "T1_auto_38p5to38p6mA_corrected flux.TXT"
+directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Automation code\corrected flux with Rabi A new"
+
+simulation = "T1_rabi_38p5to38p6mA_corrected flux.TXT"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path)
 flux = data[1:, 0]
@@ -46,8 +47,7 @@ T1_array = np.append(T1_array, T1)
 flux_array = np.append(flux_array, flux)
 freq_array = np.append(freq_array, freq)
 
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Automation code\corrected flux"
-simulation = "T1_auto_38p58to38p62mA_corrected flux.TXT"
+simulation = "T1_rabi_38p58to38p62mA_corrected flux.TXT"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path)
 flux = data[1:, 0]
@@ -57,8 +57,7 @@ T1_array = np.append(T1_array, T1)
 flux_array = np.append(flux_array, flux)
 freq_array = np.append(freq_array, freq)
 
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Automation code\corrected flux"
-simulation = "T1_auto_38p62to38p68mA_corrected flux.TXT"
+simulation = "T1_rabi_38p62to38p68mA_corrected flux.TXT"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path)
 flux = data[1:, 0]
@@ -173,4 +172,5 @@ plt.loglog(qpem_final, 1 / gam_final * 1e6, 'k--', linewidth='2')
 fac = 5e4
 plt.ylim([4, 2e3])
 plt.xlim([4 / fac, 2e3 / fac])
+plt.tick_params(labelsize=18)
 plt.show()

@@ -63,40 +63,86 @@ freq_array = np.append(freq_array, freq)
 rabiA_array = np.append(rabiA_array, rabiA)
 # plt.semilogy(rabiA, T1,  's', mfc='none', mew='2', mec='yellow')
 
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Automation code\corrected flux with Rabi A"
+directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Automation code\corrected flux with Rabi A new"
+simulation = "T1_rabi_35to36p1mA_corrected flux.TXT"
+path = directory + "\\" + simulation
+data = np.genfromtxt(path)
+flux = data[1:, 0]
+freq = data[1:, 1]
+T1 = data[1:, 2]
+rabiA = data[1:, 3]
+T1_array = np.append(T1_array, T1)
+flux_array = np.append(flux_array, flux)
+freq_array = np.append(freq_array, freq)
+rabiA_array = np.append(rabiA_array, rabiA)
+
+simulation = "T1_rabi_37p2to38p5mA_5usStep_corrected flux.TXT"
+path = directory + "\\" + simulation
+data = np.genfromtxt(path)
+flux = data[1:, 0]
+freq = data[1:, 1]
+T1 = data[1:, 2]
+rabiA = data[1:, 3]
+T1_array = np.append(T1_array, T1)
+flux_array = np.append(flux_array, flux)
+freq_array = np.append(freq_array, freq)
+rabiA_array = np.append(rabiA_array, rabiA)
+
 simulation = "T1_rabi_38p5to38p6mA_corrected flux.TXT"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path)
 flux = data[1:, 0]
 freq = data[1:, 1]
 T1 = data[1:, 2]
-rabiA = data[1:, 4]
+rabiA = data[1:, 3]
 T1_array = np.append(T1_array, T1)
 flux_array = np.append(flux_array, flux)
 freq_array = np.append(freq_array, freq)
 rabiA_array = np.append(rabiA_array, rabiA)
 
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Automation code\corrected flux with Rabi A"
 simulation = "T1_rabi_38p58to38p62mA_corrected flux.TXT"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path)
 flux = data[1:, 0]
 freq = data[1:, 1]
 T1 = data[1:, 2]
-rabiA = data[1:, 4]
+rabiA = data[1:, 3]
 T1_array = np.append(T1_array, T1)
 flux_array = np.append(flux_array, flux)
 freq_array = np.append(freq_array, freq)
 rabiA_array = np.append(rabiA_array, rabiA)
 
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Automation code\corrected flux with Rabi A"
 simulation = "T1_rabi_38p62to38p68mA_corrected flux.TXT"
 path = directory + "\\" + simulation
 data = np.genfromtxt(path)
 flux = data[1:, 0]
 freq = data[1:, 1]
 T1 = data[1:, 2]
-rabiA = data[1:, 4]
+rabiA = data[1:, 3]
+T1_array = np.append(T1_array, T1)
+flux_array = np.append(flux_array, flux)
+freq_array = np.append(freq_array, freq)
+rabiA_array = np.append(rabiA_array, rabiA)
+
+simulation = "T1_rabi_41p55to41p6mA_corrected flux.TXT"
+path = directory + "\\" + simulation
+data = np.genfromtxt(path)
+flux = data[1:, 0]
+freq = data[1:, 1]
+T1 = data[1:, 2]
+rabiA = data[1:, 3]
+T1_array = np.append(T1_array, T1)
+flux_array = np.append(flux_array, flux)
+freq_array = np.append(freq_array, freq)
+rabiA_array = np.append(rabiA_array, rabiA)
+
+simulation = "T1_rabi_41to41p05mA_corrected flux.TXT"
+path = directory + "\\" + simulation
+data = np.genfromtxt(path)
+flux = data[1:, 0]
+freq = data[1:, 1]
+T1 = data[1:, 2]
+rabiA = data[1:, 3]
 T1_array = np.append(T1_array, T1)
 flux_array = np.append(flux_array, flux)
 freq_array = np.append(freq_array, freq)
@@ -108,7 +154,7 @@ flux_final = []
 freq_final = []
 rabiA_final = []
 for idx in range(len(T1_array)):
-    if rabiA_array[idx] < 2:
+    if rabiA_array[idx] > 0:
         T1_final = np.append(T1_final, T1_array[idx])
         flux_final = np.append(flux_final, flux_array[idx])
         freq_final = np.append(freq_final, freq_array[idx])
@@ -153,7 +199,7 @@ for idx, curr in enumerate(current):
 ############################################################################################################
 # Plotting
 plt.semilogy(rabiA_final, T1_final, 's', mfc='none', mew='2', mec='blue')
-plt.xlim([0, 2])
+plt.xlim([0, 10])
 plt.ylim([0, 3000])
 plt.tick_params(labelsize=18)
 plt.show()
