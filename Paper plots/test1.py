@@ -3,7 +3,6 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 from Fluxonium_hamiltonians.Squid_small_junctions import bare_hamiltonian
-from Fluxonium_hamiltonians.Squid_small_junctions import charge_matrix_element as nem
 from Fluxonium_hamiltonians.Squid_small_junctions import phase_matrix_element as pem
 from Fluxonium_hamiltonians.Squid_small_junctions import qp_matrix_element as qpem
 
@@ -19,70 +18,63 @@ e = 1.602e-19  # Fundamental charge
 h = 6.62e-34  # Placnk's constant
 phi_o = h / (2 * e)  # Flux quantum
 
-# T1 data for 01 transition
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Corrected flux"
-T1_array = []
-flux_array = []
-freq_array = []
-simulation = "T1 avg_T2_qubit f(0to1) vs flux_38p5 to 38p76mA.csv"
+#########################################################################################
+################################### T1 data, manual######################################
+#########################################################################################
+directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Summary of corrected flux"
+simulation = "T1 avg_T2_qubit f(0to1) vs flux_all_new fit_012317_corrected flux.csv"
 path = directory + "\\" + simulation
-data = np.genfromtxt(path, delimiter=',')
-flux = data[1:, 0]
-freq = data[1:, 1]
-T1 = data[1:, 2]
-# rabiA = data[:,5]
-T1_array = np.append(T1_array, T1)
-flux_array = np.append(flux_array, flux)
-freq_array = np.append(freq_array, freq)
+data = np.genfromtxt(path, delimiter=',', dtype=float)
+flux = data[1::, 0]
+freq = data[1::, 1]
+T1 = data[1::, 2]
+T1_err = data[1::, 3]
+Rabi_A = data[1::, 6]
 
-directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Automation code\corrected flux with Rabi A new"
+###################################Slice through the arrays###################################
+# '''
+T1_final = []
+T1_err_final = []
+flux_final = []
+freq_final = []
+Rabi_A_final = []
+for idx in range(len(T1)):
+    if flux[idx] >= 38.523 and flux[idx] <= 38.75:
+        T1_final = np.append(T1_final, T1[idx])
+        T1_err_final = np.append(T1_err_final, T1_err[idx])
+        flux_final = np.append(flux_final, flux[idx])
+        freq_final = np.append(freq_final, freq[idx])
+        Rabi_A_final = np.append(Rabi_A_final, Rabi_A[idx])
+# '''
 
-simulation = "T1_rabi_38p5to38p6mA_corrected flux.TXT"
-path = directory + "\\" + simulation
-data = np.genfromtxt(path)
-flux = data[1:, 0]
-freq = data[1:, 1]
-T1 = data[1:, 2]
-T1_array = np.append(T1_array, T1)
-flux_array = np.append(flux_array, flux)
-freq_array = np.append(freq_array, freq)
+# plt.plot(flux_final, Rabi_A_final, 'ro')
 
-simulation = "T1_rabi_38p58to38p62mA_corrected flux.TXT"
-path = directory + "\\" + simulation
-data = np.genfromtxt(path)
-flux = data[1:, 0]
-freq = data[1:, 1]
-T1 = data[1:, 2]
-T1_array = np.append(T1_array, T1)
-flux_array = np.append(flux_array, flux)
-freq_array = np.append(freq_array, freq)
+ax = plt.gca()
+ax.set_yscale('linear')
+plt.errorbar(flux_final, T1_final, yerr=T1_err_final, fmt='s', mfc='none', mew='2', mec='blue')
+ax.get_xaxis().get_major_formatter().set_useOffset(False)
+plt.xlim([38.55, 38.75])
+# plt.ylim([4.2,5.1])
+plt.xticks([38.55, 38.6, 38.65, 38.7, 38.75])
+# plt.yticks([4.2, 4.6, 5.0])
+plt.tick_params(labelsize=18)
 
-simulation = "T1_rabi_38p62to38p68mA_corrected flux.TXT"
-path = directory + "\\" + simulation
-data = np.genfromtxt(path)
-flux = data[1:, 0]
-freq = data[1:, 1]
-T1 = data[1:, 2]
-T1_array = np.append(T1_array, T1)
-flux_array = np.append(flux_array, flux)
-freq_array = np.append(freq_array, freq)
-
-# Slice through the arrays
-
-
-# Get matrix elements
-current = flux_array * 1.0e-3
+#########################################################################################
+################################### T1 simulation ######################################
+#########################################################################################
+current = np.linspace(38.55, 38.75, 21) * 1e-3
 N = 50
-E_l = 0.746959655208
-E_c = 0.547943694372
-E_j_sum = 21.9627179709
-level_num = 10
+E_l = 0.722729827116
+E_c = 0.552669197076
+E_j_sum = 17.61374383
+A_j = 4.76321410213e-12
+A_c = 1.50075181762e-10
+d = 0.125005274368
+beta_squid = 0.129912406349
+beta_ext = 0.356925557542
+
 B_coeff = 60
-A_j = 3.80888914574e-12
-A_c = 1.49982268962e-10
-beta_squid = 0.00378012644185
-beta_ext = 0.341308382441
-d = 0.0996032153487
+level_num = 5
 energies = np.zeros((len(current), level_num))
 qp_element = np.zeros((len(current), 2))
 n_element = np.zeros(len(current))
@@ -97,20 +89,12 @@ for idx, curr in enumerate(current):
                          2 * np.pi * (flux_ext / phi_o - beta_ext))
     for idy in range(level_num):
         energies[idx, idy] = H.eigenenergies()[idy]
-    n_element[idx] = nem(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
-                         2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
+    # n_element[idx] = nem(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
+    #                      2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
     p_element[idx] = pem(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
                          2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
     qp_element[idx, :] = qpem(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
                               2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
-trans_energy = energies[:, fState] - energies[:, iState]
-w = trans_energy * 1e9 * 2 * np.pi
-
-# plt.loglog(p_element**2, T1_array*trans_energy**2, 's', mfc='none', mew='2', mec='blue')
-plt.loglog(qp_element[:, 0] ** 2 + qp_element[:, 1] ** 2, T1_array / np.sqrt(trans_energy), 's', mfc='none', mew='2',
-           mec='blue')
-
-############Simulation
 
 hbar = h / (2 * np.pi)
 kB = 1.38064852e-23
@@ -122,9 +106,10 @@ E_j1 = 0.5 * E_j_sum * (1 + d)
 E_j2 = 0.5 * E_j_sum * (1 - d)
 delta_alum = 5.447400321e-23  # J
 
-Q_cap = 0.3e6
+########################################Upper limit########################################
+Q_cap = 0.55e6
 Q_ind = 0.8e6
-Q_qp = 2e6
+Q_qp = 2.7e6
 
 cap = e ** 2 / (2.0 * E_c)
 ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
@@ -133,44 +118,56 @@ g1 = 8.0 * E_j1 * gk / delta_alum
 g2 = 8.0 * E_j2 * gk / delta_alum
 
 trans_energy = energies[:, fState] - energies[:, iState]
-w = trans_energy * 1e9 * 2 * np.pi
-# plt.plot(current*1e3+0.016, trans_energy,'b--')
-# plt.plot(current*1e3+0.016, energies[:,2]-energies[:,0],'b--')
+# w = trans_energy*1e9*2*np.pi
+w = 4e9 * 2 * np.pi
 Y_cap = w * cap / Q_cap
 Y_ind = 1.0 / (w * ind * Q_ind)
 Y_qp1 = (g1 / (2 * Q_qp)) * (2 * delta_alum / (hbar * w)) ** (1.5)
 Y_qp2 = (g2 / (2 * Q_qp)) * (2 * delta_alum / (hbar * w)) ** (1.5)
 
 gamma_cap = np.zeros(len(current))
-gamma_ind = np.zeros(len(current))
 gamma_qp = np.zeros((len(current), 2))
 
 for idx in range(len(current)):
-    gamma_cap[idx] = (phi_o * p_element[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w[idx] * Y_cap[idx] * (
-    1 + 1.0 / np.tanh(hbar * w[idx] / (2 * kB * T)))
-    gamma_ind[idx] = (phi_o * p_element[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w[idx] * Y_ind[idx] * (
-    1 + 1.0 / np.tanh(hbar * w[idx] / (2 * kB * T)))
-    gamma_qp[idx, 0] = (qp_element[idx, 0]) ** 2 * (w[idx] / np.pi / gk) * Y_qp1[idx]
-    gamma_qp[idx, 1] = (qp_element[idx, 1]) ** 2 * (w[idx] / np.pi / gk) * Y_qp2[idx]
+    gamma_cap[idx] = (phi_o * p_element[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w * Y_cap * (
+        1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
+    # gamma_ind[idx] = (phi_o * pem_sim[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w * Y_ind * (1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
+    gamma_qp[idx, 0] = (qp_element[idx, 0]) ** 2 * (w / np.pi / gk) * Y_qp1
+    gamma_qp[idx, 1] = (qp_element[idx, 1]) ** 2 * (w / np.pi / gk) * Y_qp2
+T1_sim = 1 / gamma_cap
+plt.plot(current * 1e3, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
+# T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1])
+# plt.loglog(2 * qpem_sim ** 2, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
 
-# gamma_cap = gamma_cap / (trans_energy)**2
-# pem_final = np.array([np.min(p_element),np.max(p_element)])
-# gam_final = np.array([np.min(gamma_cap),np.max(gamma_cap)])
-# plt.loglog(pem_final**2, 1/gam_final * 1e6, 'k--', linewidth = '2')
+########################################Lower limit########################################
+Q_cap = 0.047e6
+Q_ind = 0.8e6
+Q_qp = 0.177e6
 
+cap = e ** 2 / (2.0 * E_c)
+ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
+gk = e ** 2.0 / h
+g1 = 8.0 * E_j1 * gk / delta_alum
+g2 = 8.0 * E_j2 * gk / delta_alum
+trans_energy = energies[:, fState] - energies[:, iState]
+# w = trans_energy*1e9*2*np.pi
+w = 4e9 * 2 * np.pi
+Y_cap = w * cap / Q_cap
+Y_ind = 1.0 / (w * ind * Q_ind)
+Y_qp1 = (g1 / (2 * Q_qp)) * (2 * delta_alum / (hbar * w)) ** (1.5)
+Y_qp2 = (g2 / (2 * Q_qp)) * (2 * delta_alum / (hbar * w)) ** (1.5)
 
-gamma_qp = (gamma_qp[:, 0] + gamma_qp[:, 1]) * np.sqrt(trans_energy)
-qpem_final = np.array(
-    [np.min(qp_element[:, 0] ** 2 + qp_element[:, 1] ** 2), np.max(qp_element[:, 0] ** 2 + qp_element[:, 1] ** 2)])
-gam_final = np.array([np.min(gamma_qp), np.max(gamma_qp)])
-plt.loglog(qpem_final, 1 / gam_final * 1e6, 'k--', linewidth='2')
-#######################################Plotting stuff
-# fac = 1e6
-# plt.ylim([2e2,6e4])
-# plt.xlim([2e2/fac,6e4/fac])
+gamma_cap = np.zeros(len(current))
+gamma_qp = np.zeros((len(current), 2))
 
-fac = 5e4
-plt.ylim([4, 2e3])
-plt.xlim([4 / fac, 2e3 / fac])
-plt.tick_params(labelsize=18)
+for idx in range(len(current)):
+    gamma_cap[idx] = (phi_o * p_element[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w * Y_cap * (
+        1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
+    # gamma_ind[idx] = (phi_o * pem_sim[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w * Y_ind * (1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
+    gamma_qp[idx, 0] = (qp_element[idx, 0]) ** 2 * (w / np.pi / gk) * Y_qp1
+    gamma_qp[idx, 1] = (qp_element[idx, 1]) ** 2 * (w / np.pi / gk) * Y_qp2
+T1_sim = 1 / gamma_cap
+plt.plot(current * 1e3, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
+# T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1])
+# plt.loglog(2 * qpem_sim ** 2, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
 plt.show()

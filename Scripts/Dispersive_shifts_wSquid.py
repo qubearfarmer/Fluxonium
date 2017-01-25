@@ -12,22 +12,23 @@ phi_o = h/(2*e) #Flux quantum
 
 #Qubit and computation parameters
 N = 50
-E_l = 0.746959655208
-E_c = 0.547943694372
-E_j_sum = 21.9627179709
-level_num = 5
-B_coeff = 60
-A_j = 3.80888914574e-12
-A_c = 1.49982268962e-10
-beta_squid = 0.00378012644185
-beta_ext = 0.341308382441
-d=0.0996032153487
-current = np.linspace(0.038,0.040,201)
+E_l = 0.722729827116
+E_c = 0.552669197076
+E_j_sum = 17.61374383
+A_j = 4.76321410213e-12
+A_c = 1.50075181762e-10
+d = 0.125005274368
+beta_squid = 0.129912406349
+beta_ext = 0.356925557542
+
+current = np.linspace(0.038, 0.039, 1001)
 chi = np.zeros(len(current))
+level_num = 5
 energies = np.zeros((len(current),level_num))
 
 iState = 0
 fState = 1
+B_coeff = 60
 wr = 10.304
 g = 0.084
 path = path+"_"+str(iState)+str(fState)+"_"+str(current[0]*1e3)+"to"+str(current[-1]*1e3)+"mA"
@@ -50,10 +51,10 @@ for idx, curr in enumerate(current):
 
     chi[idx] = nChi(N, level_num, E_l, E_c, E_j_sum, d, 2*np.pi*(flux_squid/phi_o - beta_squid),
                          2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState, wr, g)
-np.savetxt(path+"_current.txt", current*1e3 + (41.6713-41.6413))
+np.savetxt(path+"_current.txt", current*1e3)
 np.savetxt(path+"_energies.txt", energies)
 np.savetxt(path+"_chi.txt", chi)
-# '''
+'''
 #######################################################################################################################
 #Plotting part
 path = directory + "\\" + simulation
@@ -62,16 +63,17 @@ energies = np.genfromtxt(path+"_energies.txt")
 chi = np.genfromtxt(path+"_chi.txt")
 
 fig, ax1 = plt.subplots()
-ax1.plot(current*1e3 + (41.6713-41.6413), energies[:,fState]-energies[:,iState], color = 'k')
+ax1.plot(current * 1e3, energies[:, fState] - energies[:, iState], color='k')
 ax1.set_ylabel('Transition energy')
 ax1.set_xlabel('Current (mA)')
 for tl in ax1.get_yticklabels():
     tl.set_color('k')
 
 ax2 = ax1.twinx()
-ax2.plot(current * 1e3 + (41.6713 - 41.6413), chi * 1e3, 'b.')
+ax2.plot(current * 1e3, chi * 1e3, 'b.')
 ax2.set_ylabel('Dispersive shift (MHz)')
-ax2.set_ylim([-2, 2])
+ax2.set_ylim([-0.5, 0])
+ax2.set_xlim([38.523, 38.75])
 for t2 in ax2.get_yticklabels():
     t2.set_color('b')
 

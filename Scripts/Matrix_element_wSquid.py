@@ -18,16 +18,17 @@ phi_o = h/(2*e) #Flux quantum
 
 #Qubit and computation parameters
 N = 50
-E_l = 0.746959655208
-E_c = 0.547943694372
-E_j_sum = 21.9627179709
-level_num = 10
+E_l = 0.722729827116
+E_c = 0.552669197076
+E_j_sum = 17.61374383
+A_j = 4.76321410213e-12
+A_c = 1.50075181762e-10
+d = 0.125005274368
+beta_squid = 0.129912406349
+beta_ext = 0.356925557542
+
 B_coeff = 60
-A_j = 3.80888914574e-12
-A_c = 1.49982268962e-10
-beta_squid = 0.00378012644185
-beta_ext = 0.341308382441
-d=0.0996032153487
+level_num = 5
 current = np.linspace(0.035, 0.046, 1001)
 energies = np.zeros((len(current),level_num))
 qp_element = np.zeros((len(current),2))

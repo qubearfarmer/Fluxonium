@@ -1,4 +1,4 @@
-# Analyze T1 data vs Rabi amplitude
+# Analyze T1 at fixed
 import numpy as np
 from matplotlib import pyplot as plt
 

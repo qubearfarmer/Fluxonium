@@ -10,22 +10,22 @@ phi_o = h/(2*e) #Flux quantum
 
 #Qubit and computation parameters
 N = 50
-E_l = 0.746959655208
-E_c = 0.547943694372
-E_j_sum = 21.9627179709
-level_num = 10
+E_l = 0.722729827116
+E_c = 0.552669197076
+E_j_sum = 17.61374383
+A_j = 4.76321410213e-12
+A_c = 1.50075181762e-10
+d = 0.125005274368
+beta_squid = 0.129912406349
+beta_ext = 0.356925557542
+
 B_coeff = 60
-A_j = 3.80888914574e-12
-A_c = 1.49982268962e-10
-beta_squid = 0.00378012644185
-beta_ext = 0.341308382441
-d=0.0996032153487
-current = np.linspace(0.03862, 0.03868, 61)
+level_num = 5
+current = np.linspace(0.038, 0.047, 901)
 energies = np.zeros((len(current),level_num))
-# current = current + (41.6813-41.6413)*1e-3
 sim_dat = np.zeros((len(current),3))
 iState = 0
-fState = 1
+fState = 2
 #Compute eigenenergies
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
@@ -97,11 +97,10 @@ simulation = "Trans_energy"
 path = directory + "\\" + simulation
 path = path + '_' + str(iState) + 'to' + str(fState) + '_from_' + str(current[0] * 1.0e3) + 'to' + str(
     current[-1] * 1.0e3) + 'mA'
-current = current * 1e3 + 0.016
+current = current * 1e3
 print current
 sim_dat[:, 0] = current
-sim_dat[:, 1] = (energies[:, 1] - energies[:, 0]) - 0.03
+sim_dat[:, 1] = (energies[:, fState] - energies[:, iState])
 sim_dat[:, 2] = 10.3045
-np.savetxt(path + '.csv', sim_dat, fmt='%.4f')
-
+np.savetxt(path + '.csv', sim_dat, delimiter=',', fmt='%.3f')
 plt.show()
