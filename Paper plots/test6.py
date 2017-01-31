@@ -1,4 +1,4 @@
-# Continuous T1 analysis
+# All Rabi amplitude
 import warnings
 
 import numpy as np

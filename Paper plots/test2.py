@@ -38,6 +38,7 @@ freq_array = np.append(freq_array, freq)
 #########################################################################################
 ################################### T1 data, automatic###################################
 #########################################################################################
+'''
 directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Summary of corrected flux"
 simulation = "AUTO_T1_qubit f(0to1)_rabi vs flux 38p5to45mA_012317_corrected flux.csv"
 path = directory + "\\" + simulation
@@ -50,7 +51,7 @@ T1_array = np.append(T1_array, T1)
 T1_err_array = np.append(T1_err_array, T1_err)
 flux_array = np.append(flux_array, flux)
 freq_array = np.append(freq_array, freq)
-
+'''
 ###################################Slice through the arrays###################################
 # '''
 T1_final = []
@@ -109,10 +110,13 @@ plt.errorbar(p_element ** 2, T1_final, yerr=T1_err_final, fmt='s', mfc='none', m
 ##########################################################################################
 ######################################Plots decoration###################################
 ##########################################################################################
-plt.ylim([1e1, 3e3])
-fac = 4e3
-# # fac = 2e4
-plt.xlim([1e1 / fac, 3e3 / fac])
+
+ysmall = 1e1
+ybig = 8e3
+plt.ylim([ysmall, ybig])
+fac = 6e3
+# fac = 4e4
+plt.xlim([ysmall / fac, ybig / fac])
 plt.tick_params(labelsize=18)
 
 ###############################################################################################
@@ -139,7 +143,7 @@ ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
 gk = e ** 2.0 / h
 g1 = 8.0 * E_j1 * gk / delta_alum
 g2 = 8.0 * E_j2 * gk / delta_alum
-pem_sim = np.array([1e-2, 1e0])
+pem_sim = np.array([1e-2, 2e0])
 qpem_sim = np.array([5e-5, 10])
 trans_energy = energies[:, fState] - energies[:, iState]
 # w = trans_energy*1e9*2*np.pi
@@ -173,7 +177,7 @@ ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
 gk = e ** 2.0 / h
 g1 = 8.0 * E_j1 * gk / delta_alum
 g2 = 8.0 * E_j2 * gk / delta_alum
-pem_sim = np.array([1e-2, 1e0])
+pem_sim = np.array([1e-2, 2e0])
 qpem_sim = np.array([5e-5, 10])
 trans_energy = energies[:, fState] - energies[:, iState]
 # w = trans_energy*1e9*2*np.pi

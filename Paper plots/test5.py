@@ -1,4 +1,4 @@
-# Analyze Rabi data at high T1 point, 38.71mA
+# Analyze Rabi data at high T1 point, 38.6mA
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import curve_fit
