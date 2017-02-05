@@ -5,25 +5,25 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 N = 50
-E_l = 0.5
+E_l = 0.525
 E_c = 2.5
-E_j = 10
+E_j = 8.9
 iState = 1
-fState = 1
+fState = 2
+
+# phi_ext = np.linspace(0,0.5,100)
+# element = np.zeros(len(phi_ext))
+# for idx, phi in enumerate(phi_ext):
+#     element[idx]=abs(nem(N, E_l, E_c, E_j, phi*2*np.pi, iState, fState))
+# fig1 = plt.figure(1)
+# plt.plot(phi_ext, element)
 
 phi_ext = np.linspace(0,0.5,100)
 element = np.zeros(len(phi_ext))
 for idx, phi in enumerate(phi_ext):
-    element[idx]=abs(nem(N, E_l, E_c, E_j, phi*2*np.pi, iState, fState))
+    element[idx]=abs(qpem(N, E_l, E_c, E_j, phi*2*np.pi, iState, fState))
 fig1 = plt.figure(1)
-plt.plot(phi_ext, element)
-
-phi_ext = np.linspace(0,0.5,100)
-element = np.zeros(len(phi_ext))
-for idx, phi in enumerate(phi_ext):
-    element[idx]=abs(pem(N, E_l, E_c, E_j, phi*2*np.pi, iState, fState))
-fig1 = plt.figure(1)
-plt.plot(phi_ext, element)
+plt.semilogy(phi_ext, element**2, linewidth = '2')
 
 
 plt.show()

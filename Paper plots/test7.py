@@ -529,9 +529,9 @@ E_j1 = 0.5 * E_j_sum * (1 + d)
 E_j2 = 0.5 * E_j_sum * (1 - d)
 delta_alum = 5.447400321e-23  # J
 
-Q_cap = 0.7e6
+Q_cap = 0.5e6
 Q_ind = 0.8e6
-Q_qp = 17e6
+Q_qp = 2e6
 # Q_cap = 0.6e5
 # Q_ind = 0.8e6
 # Q_qp = 0.8e6
@@ -627,10 +627,10 @@ for idx in range(len(current)):
     gamma_qp12[idx, 0] = (qp_element[idx, 0]) ** 2 * (w[idx] / np.pi / gk) * Y_qp1[idx]
     gamma_qp12[idx, 1] = (qp_element[idx, 1]) ** 2 * (w[idx] / np.pi / gk) * Y_qp2[idx]
 
-# T1_sim = 1 / (gamma_cap + gamma_cap12)
-# ax2.semilogy(current * 1e3, T1_sim * 1e6, linewidth='2', color='black', linestyle='--')
-T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1] + gamma_qp12[:, 0] + gamma_qp12[:, 1])
+T1_sim = 1 / (gamma_cap + gamma_cap12)
 ax2.semilogy(current * 1e3, T1_sim * 1e6, linewidth='2', color='black', linestyle='--')
+# T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1] + gamma_qp12[:, 0] + gamma_qp12[:, 1])
+# ax2.semilogy(current * 1e3, T1_sim * 1e6, linewidth='2', color='black', linestyle='--')
 
 # T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1])
 # ax2.semilogy(current * 1e3, T1_sim * 1e6, linewidth='2', color='black', linestyle='-.')
@@ -681,9 +681,9 @@ delta_alum = 5.447400321e-23  # J
 # Q_cap = 0.7e6
 # Q_ind = 0.8e6
 # Q_qp = 17e6
-Q_cap = 0.6e5
+Q_cap = 0.8e5
 Q_ind = 0.8e6
-Q_qp = 0.8e6
+Q_qp = 3.8e5
 
 cap = e ** 2 / (2.0 * E_c)
 ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
@@ -776,10 +776,10 @@ for idx in range(len(current)):
     gamma_qp12[idx, 0] = (qp_element[idx, 0]) ** 2 * (w[idx] / np.pi / gk) * Y_qp1[idx]
     gamma_qp12[idx, 1] = (qp_element[idx, 1]) ** 2 * (w[idx] / np.pi / gk) * Y_qp2[idx]
 
-# T1_sim = 1 / (gamma_cap + gamma_cap12)
-# ax2.semilogy(current * 1e3, T1_sim * 1e6, linewidth='2', color='black', linestyle='--')
-T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1] + gamma_qp12[:, 0] + gamma_qp12[:, 1])
+T1_sim = 1 / (gamma_cap + gamma_cap12)
 ax2.semilogy(current * 1e3, T1_sim * 1e6, linewidth='2', color='black', linestyle='--')
+# T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1] + gamma_qp12[:, 0] + gamma_qp12[:, 1])
+# ax2.semilogy(current * 1e3, T1_sim * 1e6, linewidth='2', color='black', linestyle='--')
 
 # T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1])
 # ax2.semilogy(current * 1e3, T1_sim * 1e6, linewidth='2', color='black', linestyle='-.')

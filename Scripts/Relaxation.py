@@ -2,6 +2,10 @@ from Fluxonium_hamiltonians.Single_small_junction import charge_matrix_element a
 from Fluxonium_hamiltonians.Single_small_junction import phase_matrix_element as pem
 from Fluxonium_hamiltonians.Single_small_junction import qp_matrix_element as qpem
 from Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian as H
+from Fluxonium_hamiltonians.Single_small_junction import relaxation_rate_qp as r_qp
+from Fluxonium_hamiltonians.Single_small_junction import relaxation_rate_cap as r_cap
+from Fluxonium_hamiltonians.Single_small_junction import relaxation_rate_ind as r_ind
+
 import numpy as np
 from matplotlib import pyplot as plt
 
@@ -14,29 +18,32 @@ path = directory + "\\" + simulation
 e = 1.602e-19    #Fundamental charge
 h = 6.62e-34    #Placnk's constant
 phi_o = h/(2*e) #Flux quantum
-
+plt.figure(figsize=[20,10])
 #######################################################################################
 N = 50
-E_l = 0.1
-E_c = 10
-E_j = 5
+E_l = 0.525
+E_c = 2.5
+E_j = 8.9
 level_num = 10
-iState = 0
-fState = 1
 
-phi_ext = np.linspace(-0.05,0.55,601)
+iState = 0
+fState = 2
+phi_ext = np.linspace(-0.03,0.03,61)
 p_element = np.zeros(len(phi_ext))
 n_element = np.zeros(len(phi_ext))
 qp_element = np.zeros(len(phi_ext))
+gamma_cap = np.zeros(len(phi_ext))
+gamma_ind = np.zeros(len(phi_ext))
+gamma_qp = np.zeros(len(phi_ext))
 energies = np.zeros((len(phi_ext),level_num))
 '''
 #######################################################################################
 for idx, phi in enumerate(phi_ext):
-    p_element[idx]=abs(pem(N, E_l, E_c, E_j, phi*2*np.pi, iState, fState))
-    n_element[idx]=abs(nem(N, E_l, E_c, E_j, phi*2*np.pi, iState, fState))
-    qp_element[idx] = abs(qpem(N, E_l, E_c, E_j, phi * 2 * np.pi, iState, fState))
+    p_element[idx]=abs(pem(N, E_l, E_c, E_j, phi*2.0*np.pi, iState, fState))
+    n_element[idx]=abs(nem(N, E_l, E_c, E_j, phi*2.0*np.pi, iState, fState))
+    qp_element[idx] = abs(qpem(N, E_l, E_c, E_j, phi * 2.0 * np.pi, iState, fState))
     for idy in range(level_num):
-        energies[idx,idy] = H(N, E_l, E_c, E_j, phi*2*np.pi).eigenenergies()[idy]
+        energies[idx,idy] = H(N, E_l, E_c, E_j, phi*2.0*np.pi).eigenenergies()[idy]
 
 np.savetxt(path + '_energies.txt', energies)
 np.savetxt(path + '_chargeElement.txt', n_element)
@@ -48,57 +55,67 @@ energies = np.genfromtxt(path+'_energies.txt')
 n_element = np.genfromtxt(path+'_chargeElement.txt')
 p_element = np.genfromtxt(path+'_fluxElement.txt')
 qp_element = np.genfromtxt(path+'_qpElement.txt')
+w = energies[:,fState]-energies[:,iState]
 
-trans_energy = energies[:,fState]-energies[:,iState]
+######################################################################################
+######################################################################################
+iState = 1
+fState = 2
+p_element12 = np.zeros(len(phi_ext))
+n_element12 = np.zeros(len(phi_ext))
+qp_element12 = np.zeros(len(phi_ext))
+gamma_cap12 = np.zeros(len(phi_ext))
+gamma_ind12 = np.zeros(len(phi_ext))
+gamma_qp12 = np.zeros(len(phi_ext))
+'''
+#######################################################################################
+for idx, phi in enumerate(phi_ext):
+    p_element12[idx]=abs(pem(N, E_l, E_c, E_j, phi*2.0*np.pi, iState, fState))
+    n_element12[idx]=abs(nem(N, E_l, E_c, E_j, phi*2.0*np.pi, iState, fState))
+    qp_element12[idx] = abs(qpem(N, E_l, E_c, E_j, phi * 2.0 * np.pi, iState, fState))
 
-gamma_cap = np.zeros(len(phi_ext))
-gamma_ind = np.zeros(len(phi_ext))
-gamma_qp = np.zeros(len(phi_ext))
-Q_cap = 1
-Q_ind = 1
-Q_qp = 1
-w = trans_energy*1e9*2*np.pi
-hbar = h/(2*np.pi)
-kB=1.38064852e-23
-T=1e-2
-E_c = E_c / 1.509190311677e+24 #convert GHz to J
-E_l = E_l / 1.509190311677e+24 #convert to J
-E_j = E_j / 1.509190311677e+24 #convert to J
-delta_alum = 5.447400321e-23 #J
+np.savetxt(path + '_chargeElement12.txt', n_element12)
+np.savetxt(path + '_fluxElement12.txt', p_element12)
+np.savetxt(path + '_qpElement12.txt', qp_element12)
+######################################################################################
+'''
+n_element12 = np.genfromtxt(path+'_chargeElement12.txt')
+p_element12 = np.genfromtxt(path+'_fluxElement12.txt')
+qp_element12 = np.genfromtxt(path+'_qpElement12.txt')
+w12 = energies[:,fState]-energies[:,iState]
 
-cap = e**2/(2.0*E_c)
-ind = hbar**2/(4.0*e**2*E_l)
-gk = e**2.0/h
-g = 8.0*E_j*gk/delta_alum
-Y_cap = w*cap/Q_cap
-Y_ind = 1.0/(w*ind*Q_ind)
-Y_qp = (g/(2*Q_qp))*(2*delta_alum/(hbar*w))**(1.5)
-print ("Step 2")
-for idx in range(len(phi_ext)):
-    gamma_cap[idx] = (phi_o*p_element[idx]/hbar/(2*np.pi))**2*hbar*w[idx]*Y_cap[idx]*(1+1.0/np.tanh(hbar*w[idx]/(2*kB*T)))
-    gamma_ind[idx] = (phi_o*p_element[idx]/hbar/(2*np.pi))**2*hbar*w[idx]*Y_ind[idx]*(1+1.0/np.tanh(hbar*w[idx]/(2*kB*T)))
-    gamma_qp[idx] = (qp_element[idx]) ** 2 *(w[idx]/np.pi/gk)*Y_qp[idx]
+for Q_cap in [9e6]:
+    for idx in range(len(phi_ext)):
+        gamma_cap[idx] = r_cap(E_l, E_c, E_j, 6e6, w[idx], p_element[idx])
+        gamma_cap12[idx] = r_cap(E_l, E_c, E_j, Q_cap, w12[idx], p_element12[idx])
+    plt.semilogy(phi_ext, 1.0/(gamma_cap+gamma_cap12)*1e6, linewidth ='2')
+    plt.semilogy(phi_ext, 1.0 / (gamma_cap) * 1e6, linewidth='2', linestyle ='--')
+    plt.semilogy(phi_ext, 1.0 / (gamma_cap12) * 1e6, linewidth='2', linestyle='--')
 
-plt.semilogy(phi_ext,1/gamma_cap*1e6,phi_ext,1/gamma_ind*1e6)
-# plt.plot(phi_ext,p_element)
-for idx in range(len(phi_ext)):
-    if gamma_qp[idx] == 0:
-        gamma_qp_alt=np.delete(gamma_qp, idx)
-        phi_ext_alt = np.delete(phi_ext, idx)
-plt.semilogy(phi_ext_alt,1/gamma_qp_alt*1e6)
-plt.xlabel(r'$\varphi_{ext}/2\pi$')
-plt.ylabel('T1/Q')
-###########################################################
+# for Q_capx in [3e6]:
+#     Q_cap = np.zeros(len(phi_ext))
+#     Q_cap12 = np.zeros(len(phi_ext))
+#     for idx in range(len(phi_ext)):
+#         Q_cap[idx] = Q_capx*(5/w[idx])**(0.7)
+#         Q_cap12[idx] = Q_capx * (5 / w12[idx]) ** (0.7)
+#         gamma_cap[idx] = r_cap(E_l, E_c, E_j, Q_cap[idx], w[idx], p_element[idx])
+#         gamma_cap12[idx] = r_cap(E_l, E_c, E_j, Q_cap12[idx], w12[idx], p_element12[idx])
+#     plt.semilogy(phi_ext, 1.0/(gamma_cap+gamma_cap12)*1e6, linewidth ='2')
 
-phi_ext = np.linspace(-0.05,0.55,601)
-R_cap = 1.0/(w*cap*Q_cap)
-R_ind = (w*ind/Q_ind)
-for idx in range(len(phi_ext)):
-    gamma_cap[idx] = (2*e*n_element[idx]/hbar)**2*hbar*w[idx]*R_cap[idx]*(1+1.0/np.tanh(hbar*w[idx]/(2*kB*T)))
-    gamma_ind[idx] = (2*e*n_element[idx]/hbar)**2*hbar*w[idx]*R_ind[idx]*(1+1.0/np.tanh(hbar*w[idx]/(2*kB*T)))
-# plt.semilogy(phi_ext,1/gamma_cap*1e6, 'b--', phi_ext,1/gamma_ind*1e6, 'g--')
-ratio = (n_element / p_element)**2
-rev = 1/w**2
-# plt.semilogy(phi_ext, ratio, phi_ext, w**2 * ratio[0]/w[0]**2, phi_ext, rev*ratio[0]/rev[0])
-plt.grid()
+# for Q_ind in [1e5, 1e6, 1e7, 1e8, 5e8]:
+#     for idx in range(len(phi_ext)):
+#         gamma_ind[idx] = r_ind(E_l, E_c, E_j, Q_ind, w[idx], p_element[idx])
+#     plt.semilogy(phi_ext, 1.0/gamma_ind*1e6, linewidth ='2')
+
+for Q_qp in [10e6]:
+    for idx in range(len(phi_ext)):
+        gamma_qp[idx] = r_qp(E_l, E_c, E_j, Q_qp, w[idx], qp_element[idx])
+        gamma_qp12[idx] = r_qp(E_l, E_c, E_j, 1200e6, w12[idx], qp_element12[idx])
+    plt.semilogy(phi_ext, 1.0/(gamma_qp)*1e6, linewidth ='2',linestyle='-.')
+    plt.semilogy(phi_ext, 1.0 / (gamma_qp12) * 1e6, linewidth='2',linestyle='-.')
+
+
+plt.ylim([4e2,6e3])
+plt.yticks([5e2,1e3,2e3,5e3])
+plt.tick_params(labelsize=18)
 plt.show()

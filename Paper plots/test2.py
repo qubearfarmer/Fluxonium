@@ -134,9 +134,14 @@ E_j2 = 0.5 * E_j_sum * (1 - d)
 delta_alum = 5.447400321e-23  # J
 current = flux_final * 1e-3
 ####################Upper limit####################
-Q_cap = 0.55e6
+#Hard limits
+# Q_cap = 0.55e6
 Q_ind = 0.8e6
-Q_qp = 2.7e6
+# Q_qp = 2.7e6
+
+#universal limits
+Q_cap = 8e5
+Q_qp = 7e6
 
 cap = e ** 2 / (2.0 * E_c)
 ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
@@ -168,9 +173,14 @@ plt.loglog(pem_sim ** 2, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
 # plt.loglog(2 * qpem_sim ** 2, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
 
 ####################Lower limit####################
-Q_cap = 0.047e6
+#hard limits
+# Q_cap = 0.047e6
 Q_ind = 0.8e6
-Q_qp = 0.177e6
+# Q_qp = 0.177e6
+
+#universal limits
+Q_cap = 4e4
+Q_qp = 1e5
 
 cap = e ** 2 / (2.0 * E_c)
 ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
@@ -196,8 +206,8 @@ for idx in range(len(qpem_sim)):
     # gamma_ind[idx] = (phi_o * pem_sim[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w * Y_ind * (1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
     gamma_qp[idx, 0] = (qpem_sim[idx]) ** 2 * (w / np.pi / gk) * Y_qp1
     gamma_qp[idx, 1] = (qpem_sim[idx]) ** 2 * (w / np.pi / gk) * Y_qp2
-T1_sim = 1 / gamma_cap
-plt.loglog(pem_sim ** 2, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
+# T1_sim = 1 / gamma_cap
+# plt.loglog(pem_sim ** 2, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
 # T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1])
 # plt.loglog(2 * qpem_sim ** 2, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
 # '''

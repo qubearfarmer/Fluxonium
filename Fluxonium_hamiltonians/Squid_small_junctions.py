@@ -148,3 +148,78 @@ def flux_dispersive_shift(N, level_num, E_l, E_c, E_j_sum, d, phi_squid, phi_ext
         element = phi.matrix_element(eVectors[fState], eVectors[idx])
         shift_fState = shift_fState + abs(element) ** 2 * 2.0 * trans_energy / (trans_energy ** 2 - wr ** 2)
     return g ** 2 * (shift_iState - shift_fState)
+
+def relaxation_rate_cap(E_l, E_c, E_j_sum, Q_cap, w, pem):
+    #Convert to appropriate parameters
+    w=w*2*np.pi*1e9
+    hbar = h / (2 * np.pi)
+    kB = 1.38064852e-23
+    T = 1e-2
+    E_c = E_c / 1.509190311677e+24  # convert GHz to J
+    E_l = E_l / 1.509190311677e+24  # convert to J
+    E_j_sum = E_j_sum / 1.509190311677e+24  # convert to J
+    E_j1 = 0.5 * E_j_sum * (1 + d)
+    E_j2 = 0.5 * E_j_sum * (1 - d)
+    delta_alum = 5.447400321e-23  # J
+
+    cap = e ** 2 / (2.0 * E_c)
+    ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
+    gk = e ** 2.0 / h
+    g1 = 8.0 * E_j1 * gk / delta_alum
+    g2 = 8.0 * E_j2 * gk / delta_alum
+
+    Y_cap = w * cap / Q_cap
+    gamma_cap = (phi_o * pem / hbar / (2 * np.pi)) ** 2 * hbar * w * Y_cap * (
+    1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
+    return gamma_cap
+
+def relaxation_rate_ind(E_l, E_c, E_j, Q_ind, w, pem):
+    # Convert to appropriate parameters
+    w = w * 2 * np.pi * 1e9
+    hbar = h / (2 * np.pi)
+    kB = 1.38064852e-23
+    T = 1e-2
+    E_c = E_c / 1.509190311677e+24  # convert GHz to J
+    E_l = E_l / 1.509190311677e+24  # convert to J
+    E_j_sum = E_j_sum / 1.509190311677e+24  # convert to J
+    E_j1 = 0.5 * E_j_sum * (1 + d)
+    E_j2 = 0.5 * E_j_sum * (1 - d)
+    delta_alum = 5.447400321e-23  # J
+
+    cap = e ** 2 / (2.0 * E_c)
+    ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
+    gk = e ** 2.0 / h
+    g1 = 8.0 * E_j1 * gk / delta_alum
+    g2 = 8.0 * E_j2 * gk / delta_alum
+
+    Y_ind = 1.0 / (w * ind * Q_ind)
+    gamma_ind = (phi_o * pem / hbar / (2 * np.pi)) ** 2 * hbar * w * Y_ind * (
+    1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
+    return gamma_ind
+
+
+def relaxation_rate_qp(E_l, E_c, E_j, Q_qp, w, qpem):
+    # Convert to appropriate parameters
+    w = w * 2.0 * np.pi * 1e9
+    hbar = h / (2 * np.pi)
+    kB = 1.38064852e-23
+    T = 1.0e-2
+    E_c = E_c / 1.509190311677e+24  # convert GHz to J
+    E_l = E_l / 1.509190311677e+24  # convert to J
+    E_j_sum = E_j_sum / 1.509190311677e+24  # convert to J
+    E_j1 = 0.5 * E_j_sum * (1 + d)
+    E_j2 = 0.5 * E_j_sum * (1 - d)
+    delta_alum = 5.447400321e-23  # J
+
+    cap = e ** 2.0 / (2.0 * E_c)
+    ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
+    gk = e ** 2.0 / h
+    g1 = 8.0 * E_j1 * gk / delta_alum
+    g2 = 8.0 * E_j2 * gk / delta_alum
+
+    Y_qp = (g / (2.0 * Q_qp)) * (2.0 * delta_alum / (hbar * w)) ** (1.5)
+    gamma_qp1 = (qpem[0]) ** 2.0 * (w / np.pi / gk) * Y_qp
+    gamma_qp2 = (qpem[1]) ** 2.0 * (w / np.pi / gk) * Y_qp
+    return gamma_qp1, gamma_qp2
+
+
