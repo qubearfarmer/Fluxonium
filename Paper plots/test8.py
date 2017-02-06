@@ -1,7 +1,8 @@
 # Analyzing Rabi amplitude around 38p6mA for 0-2 transition
 import numpy as np
 from matplotlib import pyplot as plt
-
+plt.figure(figsize=[10,4.5])
+plt.rc('font', family='serif')
 '''
 plt.rc('font', family='serif')
 # Define file directory

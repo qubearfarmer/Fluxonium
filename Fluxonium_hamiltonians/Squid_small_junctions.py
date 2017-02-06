@@ -149,7 +149,7 @@ def flux_dispersive_shift(N, level_num, E_l, E_c, E_j_sum, d, phi_squid, phi_ext
         shift_fState = shift_fState + abs(element) ** 2 * 2.0 * trans_energy / (trans_energy ** 2 - wr ** 2)
     return g ** 2 * (shift_iState - shift_fState)
 
-def relaxation_rate_cap(E_l, E_c, E_j_sum, Q_cap, w, pem):
+def relaxation_rate_cap(E_l, E_c, E_j_sum, d, Q_cap, w, pem):
     #Convert to appropriate parameters
     w=w*2*np.pi*1e9
     hbar = h / (2 * np.pi)
@@ -173,7 +173,7 @@ def relaxation_rate_cap(E_l, E_c, E_j_sum, Q_cap, w, pem):
     1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
     return gamma_cap
 
-def relaxation_rate_ind(E_l, E_c, E_j, Q_ind, w, pem):
+def relaxation_rate_ind(E_l, E_c, E_j_sum, d, Q_ind, w, pem):
     # Convert to appropriate parameters
     w = w * 2 * np.pi * 1e9
     hbar = h / (2 * np.pi)
@@ -198,7 +198,7 @@ def relaxation_rate_ind(E_l, E_c, E_j, Q_ind, w, pem):
     return gamma_ind
 
 
-def relaxation_rate_qp(E_l, E_c, E_j, Q_qp, w, qpem):
+def relaxation_rate_qp(E_l, E_c, E_j_sum, d, Q_qp, w, qpem):
     # Convert to appropriate parameters
     w = w * 2.0 * np.pi * 1e9
     hbar = h / (2 * np.pi)
@@ -217,9 +217,10 @@ def relaxation_rate_qp(E_l, E_c, E_j, Q_qp, w, qpem):
     g1 = 8.0 * E_j1 * gk / delta_alum
     g2 = 8.0 * E_j2 * gk / delta_alum
 
-    Y_qp = (g / (2.0 * Q_qp)) * (2.0 * delta_alum / (hbar * w)) ** (1.5)
-    gamma_qp1 = (qpem[0]) ** 2.0 * (w / np.pi / gk) * Y_qp
-    gamma_qp2 = (qpem[1]) ** 2.0 * (w / np.pi / gk) * Y_qp
+    Y_qp1 = (g1 / (2.0 * Q_qp)) * (2.0 * delta_alum / (hbar * w)) ** (1.5)
+    Y_qp2 = (g2 / (2.0 * Q_qp)) * (2.0 * delta_alum / (hbar * w)) ** (1.5)
+    gamma_qp1 = (qpem[0]) ** 2.0 * (w / np.pi / gk) * Y_qp1
+    gamma_qp2 = (qpem[1]) ** 2.0 * (w / np.pi / gk) * Y_qp2
     return gamma_qp1, gamma_qp2
 
 

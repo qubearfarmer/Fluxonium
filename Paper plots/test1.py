@@ -2,8 +2,11 @@
 from matplotlib import pyplot as plt
 
 from Fluxonium_hamiltonians.Squid_small_junctions import bare_hamiltonian
+from Fluxonium_hamiltonians.Squid_small_junctions import charge_matrix_element as nem
 from Fluxonium_hamiltonians.Squid_small_junctions import phase_matrix_element as pem
 from Fluxonium_hamiltonians.Squid_small_junctions import qp_matrix_element as qpem
+from Fluxonium_hamiltonians.Squid_small_junctions import relaxation_rate_qp as r_qp
+from Fluxonium_hamiltonians.Squid_small_junctions import relaxation_rate_cap as r_cap
 
 plt.rc('font', family='serif')
 
@@ -410,7 +413,7 @@ level_num = 5
 
 iState = 0
 spectrum = trans_energies(N, E_l, E_c, E_j_sum, d, A_j, A_c, B_coeff, beta_squid, beta_ext, level_num, current, iState)
-ax1.plot(current * 1e3, spectrum[1, :], linewidth=1, color='black', linestyle='-', alpha=0.2)
+ax1.plot(current * 1e3, spectrum[1, :], linewidth=1, color='black', linestyle='-', alpha=1)
 
 #########################################################################################
 ################################### T1 data, manual######################################
@@ -456,25 +459,13 @@ ax2.tick_params(labelsize=18)
 #########################################################################################
 ################################### T1 simulation ######################################
 #########################################################################################
-# '''
-current = np.linspace(38.4, 38.75, 35) * 1e-3
-N = 50
-E_l = 0.722729827116
-E_c = 0.552669197076
-E_j_sum = 17.61374383
-A_j = 4.76321410213e-12
-A_c = 1.50075181762e-10
-d = 0.125005274368
-beta_squid = 0.129912406349
-beta_ext = 0.356925557542
-
-B_coeff = 60
-level_num = 5
-energies = np.zeros((len(current), level_num))
+current = np.linspace(0.038,0.039,101)
 qp_element = np.zeros((len(current), 2))
 n_element = np.zeros(len(current))
 p_element = np.zeros(len(current))
-
+gamma_cap = np.zeros(len(current))
+gamma_qp = np.zeros((len(current), 2))
+energies = np.zeros((len(current), level_num))
 iState = 0
 fState = 1
 for idx, curr in enumerate(current):
@@ -484,87 +475,22 @@ for idx, curr in enumerate(current):
                          2 * np.pi * (flux_ext / phi_o - beta_ext))
     for idy in range(level_num):
         energies[idx, idy] = H.eigenenergies()[idy]
-    # n_element[idx] = nem(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
-    #                      2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
     p_element[idx] = pem(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
                          2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
     qp_element[idx, :] = qpem(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
                               2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
+w = energies[:, 1] - energies[:, 0]
 
-hbar = h / (2 * np.pi)
-kB = 1.38064852e-23
-T = 1e-2
-E_c = E_c / 1.509190311677e+24  # convert GHz to J
-E_l = E_l / 1.509190311677e+24  # convert to J
-E_j_sum = E_j_sum / 1.509190311677e+24  # convert to J
-E_j1 = 0.5 * E_j_sum * (1 + d)
-E_j2 = 0.5 * E_j_sum * (1 - d)
-delta_alum = 5.447400321e-23  # J
+#Dielectric loss
+for Q_cap in [5e4, 5e5]:
+    for idx in range(len(current)):
+        gamma_cap[idx] = r_cap(E_l, E_c, E_j_sum, d, Q_cap, w[idx], p_element[idx])
+    plt.semilogy(current*1e3, 1.0 / (gamma_cap) * 1e6, linewidth='2', linestyle ='--', color = 'k')
 
-########################################Upper limit########################################
-# Q_cap = 0.5e6
-# Q_ind = 0.8e6
-# Q_qp = 2e6
-
-cap = e ** 2 / (2.0 * E_c)
-ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
-gk = e ** 2.0 / h
-g1 = 8.0 * E_j1 * gk / delta_alum
-g2 = 8.0 * E_j2 * gk / delta_alum
-
-trans_energy = energies[:, fState] - energies[:, iState]
-w = trans_energy * 1e9 * 2 * np.pi
-# w = 4e9 * 2 * np.pi
-Y_cap = w * cap / Q_cap
-# Y_ind = 1.0 / (w * ind * Q_ind)
-Y_qp1 = (g1 / (2 * Q_qp)) * (2 * delta_alum / (hbar * w)) ** (1.5)
-Y_qp2 = (g2 / (2 * Q_qp)) * (2 * delta_alum / (hbar * w)) ** (1.5)
-
-gamma_cap = np.zeros(len(current))
-gamma_qp = np.zeros((len(current), 2))
-
-for idx in range(len(current)):
-    gamma_cap[idx] = (phi_o * p_element[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w[idx] * Y_cap[idx] * (
-        1 + 1.0 / np.tanh(hbar * w[idx] / (2 * kB * T)))
-    # gamma_ind[idx] = (phi_o * pem_sim[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w * Y_ind * (1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
-    gamma_qp[idx, 0] = (qp_element[idx, 0]) ** 2 * (w[idx] / np.pi / gk) * Y_qp1[idx]
-    gamma_qp[idx, 1] = (qp_element[idx, 1]) ** 2 * (w[idx] / np.pi / gk) * Y_qp2[idx]
-# T1_sim = 1 / gamma_cap
-# ax2.semilogy(current * 1e3, T1_sim * 1e6, linewidth='2', color='black', linestyle='--')
-T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1])
-ax2.semilogy(current * 1e3, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
-########################################lower limit########################################
-Q_cap = 0.8e5
-# Q_ind = 0.8e6
-Q_qp = 3.8e5
-
-cap = e ** 2 / (2.0 * E_c)
-ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
-gk = e ** 2.0 / h
-g1 = 8.0 * E_j1 * gk / delta_alum
-g2 = 8.0 * E_j2 * gk / delta_alum
-
-trans_energy = energies[:, fState] - energies[:, iState]
-w = trans_energy * 1e9 * 2 * np.pi
-# w = 4e9 * 2 * np.pi
-Y_cap = w * cap / Q_cap
-# Y_ind = 1.0 / (w * ind * Q_ind)
-Y_qp1 = (g1 / (2 * Q_qp)) * (2 * delta_alum / (hbar * w)) ** (1.5)
-Y_qp2 = (g2 / (2 * Q_qp)) * (2 * delta_alum / (hbar * w)) ** (1.5)
-
-gamma_cap = np.zeros(len(current))
-gamma_qp = np.zeros((len(current), 2))
-
-for idx in range(len(current)):
-    gamma_cap[idx] = (phi_o * p_element[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w[idx] * Y_cap[idx] * (
-        1 + 1.0 / np.tanh(hbar * w[idx] / (2 * kB * T)))
-    # gamma_ind[idx] = (phi_o * pem_sim[idx] / hbar / (2 * np.pi)) ** 2 * hbar * w * Y_ind * (1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
-    gamma_qp[idx, 0] = (qp_element[idx, 0]) ** 2 * (w[idx] / np.pi / gk) * Y_qp1[idx]
-    gamma_qp[idx, 1] = (qp_element[idx, 1]) ** 2 * (w[idx] / np.pi / gk) * Y_qp2[idx]
-# T1_sim = 1 / gamma_cap
-# ax2.semilogy(current * 1e3, T1_sim * 1e6, linewidth='2', color='black', linestyle='--')
-T1_sim = 1 / (gamma_qp[:, 0] + gamma_qp[:, 1])
-ax2.semilogy(current * 1e3, T1_sim * 1e6, linewidth='2', color='k', linestyle='--')
-
+#QP loss
+for Q_qp in [2e5, 2e6]:
+    for idx in range(len(current)):
+        gamma_qp[idx,:] = r_qp(E_l, E_c, E_j_sum, d, Q_qp, w[idx], qp_element[idx,:])
+    plt.loglog(current*1e3, 1.0 / (gamma_qp[:,0]+gamma_qp[:,1]) * 1e6, linewidth='2', linestyle ='-.', color = 'k')
 #########################################################################################
 plt.show()
