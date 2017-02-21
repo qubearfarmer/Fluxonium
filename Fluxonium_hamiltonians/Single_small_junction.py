@@ -13,7 +13,7 @@ def bare_hamiltonian(N, E_l, E_c, E_j, phi_ext):
     a = tensor(destroy(N))
     phi = (a+a.dag())*(8.0*E_c/E_l)**(0.25)/np.sqrt(2.0)
     na = 1.0j*(a.dag()-a)*(E_l/(8*E_c))**(0.25)/np.sqrt(2.0)
-    ope = 1.0j*(phi + phi_ext)
+    ope = 1.0j*(phi - phi_ext)
     H = 4.0*E_c*na**2.0 + 0.5*E_l*phi**2.0 - 0.5*E_j*(ope.expm() + (-ope).expm())
     return H
 
@@ -181,5 +181,5 @@ def relaxation_rate_qp(E_l, E_c, E_j, Q_qp, w, qpem):
     g = 8.0 * E_j * gk / delta_alum
 
     Y_qp = (g / (2.0 * Q_qp)) * (2.0 * delta_alum / (hbar * w)) ** (1.5)
-    gamma_qp = (qpem) ** 2.0 * (w / np.pi / gk) * Y_qp
+    gamma_qp = (qpem) ** 2.0 * w * Y_qp/(np.pi*gk)
     return gamma_qp

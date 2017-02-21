@@ -10,8 +10,8 @@ path = directory + "\\" + simulation
 #Qubit and computation parameters
 N = 50
 E_l = 0.5
-E_c = 2.5
-E_j = 10
+E_c = 0.5
+E_j = 5
 
 phi_ext = np.linspace(0,0.5,501)
 phi = np.linspace(-10,10,201)
@@ -20,7 +20,7 @@ energies = np.zeros((level_num, len(phi_ext)))
 potential = np.zeros((len(phi), len(phi_ext)))
 ####################################################################################################
 #Simulation part
-# '''
+'''
 for idx in range(len(phi_ext)):
     H = bare_hamiltonian(N, E_l, E_c, E_j, phi_ext[idx]*2*np.pi)
     for idy in range(level_num):
@@ -30,7 +30,7 @@ for idx in range(len(phi_ext)):
 
 np.savetxt(path+'_energy.txt', energies)
 np.savetxt(path+'_potential.txt', potential)
-# '''
+'''
 #####################################################################################################
 #Plotting from file
 energies_f = np.genfromtxt(path+'_energy.txt')
