@@ -22,8 +22,8 @@ plt.figure(figsize=[20,10])
 #######################################################################################
 N = 50
 E_l = 0.46
-E_c = 3.6
-E_j = 10.2
+E_c = 0.5
+E_j = 2
 level_num = 10
 
 iState = 0
@@ -36,7 +36,7 @@ gamma_cap = np.zeros(len(phi_ext))
 gamma_ind = np.zeros(len(phi_ext))
 gamma_qp = np.zeros(len(phi_ext))
 energies = np.zeros((len(phi_ext),level_num))
-'''
+# '''
 #######################################################################################
 for idx, phi in enumerate(phi_ext):
     p_element[idx]=abs(pem(N, E_l, E_c, E_j, phi*2.0*np.pi, iState, fState))
@@ -50,7 +50,7 @@ np.savetxt(path + '_chargeElement.txt', n_element)
 np.savetxt(path + '_fluxElement.txt', p_element)
 np.savetxt(path + '_qpElement.txt', qp_element)
 ######################################################################################
-'''
+# '''
 energies = np.genfromtxt(path+'_energies.txt')
 n_element = np.genfromtxt(path+'_chargeElement.txt')
 p_element = np.genfromtxt(path+'_fluxElement.txt')
@@ -84,12 +84,12 @@ np.savetxt(path + '_qpElement12.txt', qp_element12)
 # qp_element12 = np.genfromtxt(path+'_qpElement12.txt')
 # w12 = energies[:,fState]-energies[:,iState]
 
-# for Q_cap in [9e6]:
-#     for idx in range(len(phi_ext)):
-#         gamma_cap[idx] = r_cap(E_l, E_c, E_j, 6e6, w[idx], p_element[idx])
+for Q_cap in [9e6]:
+    for idx in range(len(phi_ext)):
+        gamma_cap[idx] = r_cap(E_l, E_c, E_j, 6e6, w[idx], p_element[idx])
 #         gamma_cap12[idx] = r_cap(E_l, E_c, E_j, Q_cap, w12[idx], p_element12[idx])
 #     plt.semilogy(phi_ext, 1.0/(gamma_cap+gamma_cap12)*1e6, linewidth ='2')
-#     plt.semilogy(phi_ext, 1.0 / (gamma_cap) * 1e6, linewidth='2', linestyle ='--')
+    plt.semilogy(phi_ext, 1.0 / (gamma_cap) * 1e6, linewidth='2', linestyle ='--')
 #     plt.semilogy(phi_ext, 1.0 / (gamma_cap12) * 1e6, linewidth='2', linestyle='--')
 
 # for Q_capx in [3e6]:
@@ -107,12 +107,12 @@ np.savetxt(path + '_qpElement12.txt', qp_element12)
 #         gamma_ind[idx] = r_ind(E_l, E_c, E_j, Q_ind, w[idx], p_element[idx])
 #     plt.semilogy(phi_ext, 1.0/gamma_ind*1e6, linewidth ='2')
 
-for x_qp in [1e-7, 2e-7,4e-7,6e-7,10e-7, 25e-7]:
-    Q_qp = 1.0/x_qp
-    for idx in range(len(phi_ext)):
-        gamma_qp[idx] = r_qp(E_l, E_c, E_j, Q_qp, w[idx], qp_element[idx])
-        # gamma_qp12[idx] = r_qp(E_l, E_c, E_j, 1200e6, w12[idx], qp_element12[idx])
-    plt.semilogy(phi_ext, 1.0/(gamma_qp)*1e6, linewidth ='2',linestyle='-')
+# for x_qp in [1e-7, 2e-7,4e-7,6e-7,10e-7, 25e-7]:
+#     Q_qp = 1.0/x_qp
+#     for idx in range(len(phi_ext)):
+#         gamma_qp[idx] = r_qp(E_l, E_c, E_j, Q_qp, w[idx], qp_element[idx])
+#         # gamma_qp12[idx] = r_qp(E_l, E_c, E_j, 1200e6, w12[idx], qp_element12[idx])
+#     plt.semilogy(phi_ext, 1.0/(gamma_qp)*1e6, linewidth ='2',linestyle='-')
     # plt.semilogy(phi_ext, 1.0 / (gamma_qp12) * 1e6, linewidth='2',linestyle='-.')
 
 

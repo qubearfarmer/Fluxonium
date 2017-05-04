@@ -9,7 +9,7 @@ from Fluxonium_hamiltonians.Squid_small_junctions import qp_matrix_element as qp
 from Fluxonium_hamiltonians.Squid_small_junctions import relaxation_rate_qp as r_qp
 from Fluxonium_hamiltonians.Squid_small_junctions import relaxation_rate_cap as r_cap
 
-plt.figure(figsize=(10, 10))
+plt.figure(figsize=(4, 4))
 plt.rc('font', family='serif')
 
 # Define constants
@@ -60,13 +60,13 @@ T1_err_final2 = []
 flux_final2 = []
 freq_final2 = []
 for idx in range(len(T1)):
-    if (energies2[idx, 2] - energies2[idx, 1]) > 0 and (energies2[idx, 2] - energies2[idx, 1]) < 1.5 \
+    if (energies2[idx, 2] - energies2[idx, 1]) > 0.65 and (energies2[idx, 2] - energies2[idx, 1]) < 1.5 \
             and (energies2[idx, 2] - energies2[idx, 0]) > 4.7:
         T1_final2 = np.append(T1_final2, T1[idx])
         T1_err_final2 = np.append(T1_err_final2, T1_err[idx])
         flux_final2 = np.append(flux_final2, flux[idx])
         freq_final2 = np.append(freq_final2, freq[idx])
-    if (energies2[idx, 2] - energies2[idx, 1]) > 0 and (energies2[idx, 2] - energies2[idx, 1]) < 1.5 \
+    if (energies2[idx, 2] - energies2[idx, 1]) > 0.65 and (energies2[idx, 2] - energies2[idx, 1]) < 1.5 \
             and (energies2[idx, 2] - energies2[idx, 0]) > 4.1 and flux[idx] > 41 and flux[idx] < 42:
         T1_final2 = np.append(T1_final2, T1[idx])
         T1_err_final2 = np.append(T1_err_final2, T1_err[idx])
@@ -96,20 +96,20 @@ gamma_qp = np.zeros((len(qpem),2))
 w = 1
 
 #Dielectric loss
-# plt.errorbar(p_element21 ** 2, T1_final2, yerr=T1_err_final2, fmt='d', mfc='none', mew=2.0, mec='red',ecolor = 'r')
-# for Q_cap in [5e4, 5e5]:
-#     for idx in range(len(pem)):
-#         gamma_cap[idx] = r_cap(E_l, E_c, E_j_sum, d, Q_cap, w, pem[idx])
-#     plt.loglog(pem**2, 1.0 / (gamma_cap) * 1e6, linewidth=2.0, linestyle ='--', color = 'k')
-# fac = 7e3
+plt.errorbar(p_element21 ** 2, T1_final2, yerr=T1_err_final2, fmt='d', mfc='none', mew=2.0, mec='red',ecolor = 'r')
+for Q_cap in [5e4, 5e5]:
+    for idx in range(len(pem)):
+        gamma_cap[idx] = r_cap(E_l, E_c, E_j_sum, d, Q_cap, w, pem[idx])
+    plt.loglog(pem**2, 1.0 / (gamma_cap) * 1e6, linewidth=2.0, linestyle ='--', color = 'k')
+fac = 7e3
 
 #QP loss
-plt.errorbar(qp_element21[:, 0] ** 2 + qp_element21[:, 1] ** 2, T1_final2, yerr=T1_err_final2, fmt='d', mfc='none', mew=2.0, mec='red',ecolor = 'r')
-for Q_qp in [25e5, 25e6]:
-    for idx in range(len(qpem)):
-        gamma_qp[idx,:] = r_qp(E_l, E_c, E_j_sum, d, Q_qp, w, [qpem[idx],qpem[idx]])
-    plt.loglog((qpem)**2*2, 1.0 / (gamma_qp[:,0]+gamma_qp[:,1]) * 1e6, linewidth=2.0, linestyle ='--', color = 'k')
-fac = 4e4
+# plt.errorbar(qp_element21[:, 0] ** 2 + qp_element21[:, 1] ** 2, T1_final2, yerr=T1_err_final2, fmt='d', mfc='none', mew=2.0, mec='red',ecolor = 'r')
+# for Q_qp in [25e5, 25e6]:
+#     for idx in range(len(qpem)):
+#         gamma_qp[idx,:] = r_qp(E_l, E_c, E_j_sum, d, Q_qp, w, [qpem[idx],qpem[idx]])
+#     plt.loglog((qpem)**2*2, 1.0 / (gamma_qp[:,0]+gamma_qp[:,1]) * 1e6, linewidth=2.0, linestyle ='--', color = 'k')
+# fac = 4e4
 
 ##########################################################################################
 ######################################Plots decoration###################################
@@ -122,9 +122,9 @@ plt.tick_params(labelsize=18)
 plt.xscale("log", nonposx='clip')
 plt.yscale("log", nonposy='clip')
 
-directory = 'C:\\Users\\nguyen89\\Box Sync\Research\Paper Images'
-fname = 'T1_0.5to1.5GHz_qpem.eps'
-path = directory + '\\' + fname
-plt.savefig(path, format='eps', dpi=1000)
+# directory = 'C:\\Users\\nguyen89\\Box Sync\Research\Paper Images'
+# fname = 'T1_0.5to1.5GHz_qpem.eps'
+# path = directory + '\\' + fname
+# plt.savefig(path, format='eps', dpi=1000)
 
 plt.show()

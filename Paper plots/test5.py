@@ -9,7 +9,7 @@ from Fluxonium_hamiltonians.Squid_small_junctions import qp_matrix_element as qp
 from Fluxonium_hamiltonians.Squid_small_junctions import relaxation_rate_qp as r_qp
 from Fluxonium_hamiltonians.Squid_small_junctions import relaxation_rate_cap as r_cap
 
-plt.figure(figsize=(10, 10))
+plt.figure(figsize=(4, 4))
 plt.rc('font', family='serif')
 
 # Define constants

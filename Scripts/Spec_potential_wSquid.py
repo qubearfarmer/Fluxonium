@@ -31,7 +31,7 @@ phi = np.linspace(-10,10,201)
 energies = np.zeros(level_num)
 potential = np.zeros(len(phi))
 
-current = 0.038565
+current = 0.04555
 flux_squid = current * B_coeff * A_j * 1e-4
 flux_ext = current * B_coeff * A_c * 1e-4
 H = bare_hamiltonian(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),

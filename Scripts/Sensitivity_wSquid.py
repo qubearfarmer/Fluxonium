@@ -13,29 +13,29 @@ phi_o = h/(2*e) #Flux quantum
 
 #Qubit and computation parameters
 N = 50
-E_l = 0.746959655208
-E_c = 0.547943694372
-E_j_sum = 21.9627179709
-level_num = 5
+E_l = 0.722729827116
+E_c = 0.552669197076
+E_j_sum = 17.61374383
+A_j = 4.76321410213e-12
+A_c = 1.50075181762e-10
+d = 0.125005274368
+beta_squid = 0.129912406349
+beta_ext = 0.356925557542
+current = np.linspace(0.114,0.122,801)
 B_coeff = 60
-A_j = 3.80888914574e-12
-A_c = 1.49982268962e-10
-beta_squid = 0.00378012644185
-beta_ext = 0.341308382441
-d=0.0996032153487
-current = np.linspace(0.04,0.05,501)
+level_num = 5
 energies = np.zeros((len(current),level_num))
 energies_pExt = np.zeros((len(current),level_num))
 energies_pSquid = np.zeros((len(current),level_num))
 
 iState = 0
-fState = 2
+fState = 1
 dPhi1 = 1.0e-3
 dPhi2 = 1.0e-3
 
 #######################################################################################################################
 #Simulation part
-# '''
+'''
 #Compute spectrum
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
@@ -64,8 +64,8 @@ for idx, curr in enumerate(current):
 np.savetxt(path+"_"+str(iState)+str(fState)+"_energies.txt", energies)
 np.savetxt(path+"_"+str(iState)+str(fState)+"_energies_pSquid.txt", energies_pSquid)
 np.savetxt(path+"_"+str(iState)+str(fState)+"_energies_pExt.txt", energies_pExt)
-# '''
-#######################################################################################################################
+'''
+######'#################################################################################################################
 #Plotting part
 energies = np.genfromtxt(path+"_"+str(iState)+str(fState)+"_energies.txt")
 energies_pSquid = np.genfromtxt(path+"_"+str(iState)+str(fState)+"_energies_pSquid.txt")

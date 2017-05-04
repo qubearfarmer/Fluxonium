@@ -4,11 +4,11 @@ from matplotlib import pyplot as plt
 
 #Qubit and computation parameters
 N = 50
-E_l = 0.525
-E_c = 2.5
-E_j = 8.9
+E_l = 0.5
+E_c = 0.5
+E_j = 2
 
-phi_ext = np.linspace(-0.05,0.55,601)
+phi_ext = np.linspace(-0.05,0.55,101)
 level_num = 10
 energies = np.zeros((len(phi_ext),level_num))
 

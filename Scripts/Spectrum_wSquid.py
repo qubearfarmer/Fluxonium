@@ -1,13 +1,15 @@
 import numpy as np
 from matplotlib import pyplot as plt
-
+from matplotlib import rc
+plt.rc('font', family='serif')
+rc('text', usetex=False)
 from Fluxonium_hamiltonians.Squid_small_junctions import bare_hamiltonian
 
 #Define constants
 e = 1.602e-19    #Fundamental charge
 h = 6.62e-34    #Placnk's constant
 phi_o = h/(2*e) #Flux quantum
-
+# plt.figure(figsize=[20,5])
 #Qubit and computation parameters
 N = 50
 E_l = 0.722729827116
@@ -21,11 +23,11 @@ beta_ext = 0.356925557542
 
 B_coeff = 60
 level_num = 5
-current = np.linspace(0.038, 0.047, 901)
+current = np.linspace(0.045, 0.046, 101)
 energies = np.zeros((len(current),level_num))
 sim_dat = np.zeros((len(current),3))
-iState = 0
-fState = 2
+iState = 1
+fState = 4
 #Compute eigenenergies
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
@@ -36,9 +38,10 @@ for idx, curr in enumerate(current):
         energies[idx,idy] = H.eigenenergies()[idy]
 
 #Plot transition energies
-for idx in range(1, level_num):
-    plt.plot(current*1e3, energies[:,idx]-energies[:,0])
-
+# for idx in range(1, level_num):
+#     plt.plot(current*1e3, energies[:,idx]-energies[:,0])
+plt.plot(current*1e3, energies[:,1]-energies[:,0], color = 'b')
+plt.plot(current*1e3, energies[:,4]-energies[:,1], color = 'r')
 #Alternate Hamiltonian
 # for idx, curr in enumerate(current):
 #     flux_squid = curr*B_coeff*A_j*1e-4
@@ -92,15 +95,19 @@ for idx in range(1, level_num):
 # plt.plot(data[1::,0], data[1::,1], 'ro')
 ##############################################################################################
 #Saving data
-directory = "G:\Projects\Fluxonium\Data\Fluxonium #10 simulations\Input_for_auto_meas"
-simulation = "Trans_energy"
-path = directory + "\\" + simulation
-path = path + '_' + str(iState) + 'to' + str(fState) + '_from_' + str(current[0] * 1.0e3) + 'to' + str(
-    current[-1] * 1.0e3) + 'mA'
-current = current * 1e3
-print current
-sim_dat[:, 0] = current
-sim_dat[:, 1] = (energies[:, fState] - energies[:, iState])
-sim_dat[:, 2] = 10.3045
-np.savetxt(path + '.csv', sim_dat, delimiter=',', fmt='%.3f')
+# directory = "G:\Projects\Fluxonium\Data\Fluxonium #10 simulations\Input_for_auto_meas"
+# simulation = "Trans_energy"
+# path = directory + "\\" + simulation
+# path = path + '_' + str(iState) + 'to' + str(fState) + '_from_' + str(current[0] * 1.0e3) + 'to' + str(
+#     current[-1] * 1.0e3) + 'mA'
+# current = current * 1e3
+# print current
+# sim_dat[:, 0] = current
+# sim_dat[:, 1] = (energies[:, fState] - energies[:, iState])
+# sim_dat[:, 2] = 10.3045
+# np.savetxt(path + '.csv', sim_dat, delimiter=',', fmt='%.3f')
+# plt.xlim([38.1,46.5])
+# plt.ylim([0,5])
+plt.tick_params(labelsize=24)
+
 plt.show()

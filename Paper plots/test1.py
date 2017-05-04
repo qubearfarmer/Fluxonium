@@ -15,7 +15,7 @@ e = 1.602e-19  # Fundamental charge
 h = 6.62e-34  # Placnk's constant
 phi_o = h / (2 * e)  # Flux quantum
 
-fig, ax1 = plt.subplots(figsize=(20, 10))
+fig, ax1 = plt.subplots(figsize=(10, 7))
 
 #########################################################################################
 ################################### T1 data, manual######################################
@@ -90,7 +90,7 @@ ax1.set_ylim([y1min, y1max])
 ax1.set_xlim([xmin, xmax])
 ax = plt.gca()
 ax.set_yscale('log')
-plt.tick_params(labelsize = 18)
+plt.tick_params(labelsize = 24)
 #########################################################################################
 ################################### Simulation spectrum #################################
 #########################################################################################
@@ -123,16 +123,17 @@ ax2.plot(current*1e3, energies[:,2]-energies[:,0], linewidth = 1.0, color = 'red
 ###############################################################################################
 xmin = 38.1
 xmax = 45.5
-y2min = 2
-y2max =8
+y2min = 0
+y2max = 5
 ax2.set_ylim([y2min, y2max])
 ax2.set_xlim([xmin, xmax])
+ax2.set_xticks([39, 41, 43, 45])
 ax = plt.gca()
-plt.tick_params(labelsize = 18)
+plt.tick_params(labelsize = 24)
 
-directory = 'C:\\Users\\nguyen89\\Box Sync\Research\Paper Images'
-fname = 'T1_all.eps'
-path = directory + '\\' + fname
-fig.savefig(path, format='eps', dpi=1000)
+# directory = 'C:\\Users\\nguyen89\\Box Sync\Research\Paper Images'
+# fname = 'T1_all.eps'
+# path = directory + '\\' + fname
+# fig.savefig(path, format='eps', dpi=1000)
 
 plt.show()

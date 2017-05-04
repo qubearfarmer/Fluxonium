@@ -1,5 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from Fluxonium_hamiltonians.Squid_small_junctions import bare_hamiltonian
+from Fluxonium_hamiltonians.Squid_small_junctions import charge_dispersive_shift as nChi
 
 #Define file directory
 directory = "C:\Data\Fluxonium #10 simulations"
@@ -21,20 +23,20 @@ d = 0.125005274368
 beta_squid = 0.129912406349
 beta_ext = 0.356925557542
 
-current = np.linspace(0.038, 0.039, 1001)
+current = np.linspace(0.0451, 0.046, 91)
 chi = np.zeros(len(current))
-level_num = 5
+level_num = 20
 energies = np.zeros((len(current),level_num))
 
-iState = 0
-fState = 1
+iState = 1
+fState = 4
 B_coeff = 60
-wr = 10.304
+wr = 7.365
 g = 0.084
 path = path+"_"+str(iState)+str(fState)+"_"+str(current[0]*1e3)+"to"+str(current[-1]*1e3)+"mA"
 #######################################################################################################################
 #Simulation part
-'''
+# '''
 #Compute spectrum
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
@@ -54,7 +56,7 @@ for idx, curr in enumerate(current):
 np.savetxt(path+"_current.txt", current*1e3)
 np.savetxt(path+"_energies.txt", energies)
 np.savetxt(path+"_chi.txt", chi)
-'''
+# '''
 #######################################################################################################################
 #Plotting part
 path = directory + "\\" + simulation
@@ -70,10 +72,10 @@ for tl in ax1.get_yticklabels():
     tl.set_color('k')
 
 ax2 = ax1.twinx()
-ax2.plot(current * 1e3, chi * 1e3, 'b.')
+ax2.plot(current * 1e3, chi * 1e3, 'g--')
 ax2.set_ylabel('Dispersive shift (MHz)')
-ax2.set_ylim([-0.5, 0])
-ax2.set_xlim([38.523, 38.75])
+ax2.set_ylim([-0.5, 0.5])
+# ax2.set_xlim([38.523, 38.75])
 for t2 in ax2.get_yticklabels():
     t2.set_color('b')
 

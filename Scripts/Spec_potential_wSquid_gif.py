@@ -32,7 +32,7 @@ B_coeff = 60
 level_num = 20
 E_j1 = 0.5 * E_j_sum * (1 + d)
 E_j2 = 0.5 * E_j_sum * (1 - d)
-current = np.linspace(0,0.0456,229)
+current = np.linspace(0.01,0.04,16)
 phi = np.linspace(-10,10,200)
 energies = np.zeros((level_num,len(current)))
 potential = np.zeros((len(phi),len(current)))
@@ -58,54 +58,60 @@ energies_f = np.genfromtxt(path+'_energy.txt')
 potential_f = np.genfromtxt(path+'_potential.txt')
 ####################################################################################################################################
 #Save all the lots for gif
-# file_names = []
-# for idx in range(len(current)):
-#     fig, ax = plt.subplots()
-#     ax.set_ylim([-20, 40])
-#     ax.set_xlim([phi[0], phi[-1]])
-#     plt.subplots_adjust(left=0.25, bottom=0.25)
-#     plt.tick_params(labelsize=18)
-#     ax.plot(phi, potential_f[:, idx], color='k', linewidth='2')
-#     energy = np.zeros(len(phi))
-#     for idy in range(level_num):
-#         energy[:] = energies_f[idy, idx]
-#         ax.plot(phi,energy)
-#     ax.set_title('Current='+str(current[idx]*1e3)+'mA', fontsize=18)
-#     fn = 'C:\Data\Fluxonium #10 simulations' + '\\gif\\'+ 'img'+str(idx)+'.png'
-#     file_names = np.append(file_names, fn)
-#     fig.savefig(fn)
-#     plt.close("all")
+file_names = []
+for idx in range(len(current)):
+    flux_squid = current[idx] * B_coeff * A_j * 1e-4
+    flux_ext = current[idx] * B_coeff * A_c * 1e-4
+    fig=plt.figure(figsize=[10,10])
+    plt.ylim([-20, 40])
+    plt.yticks([-15,0,15,30,45])
+    plt.xlim([phi[0], phi[-1]])
+    # plt.subplots_adjust(left=0.25, bottom=0.25)
+    plt.tick_params(labelsize=20)
+    plt.xticks([])
+    plt.yticks([])
+    plt.plot(phi, potential_f[:, idx], color='k', linewidth='5')
+    energy = np.zeros(len(phi))
+    for idy in range(level_num):
+        energy[:] = energies_f[idy, idx]
+        plt.plot(phi,energy)
+    # ax.set_title('Current='+str(current[idx]*1e3)+'mA', fontsize=26)
+    plt.title(r'$\phi_1 + \phi_2=$' + str(np.round((flux_squid+flux_ext)/phi_o,3)), fontsize=32, y=1.05)
+    fn = 'C:\Data\Fluxonium #10 simulations' + '\\gif\\'+ 'img'+str(idx)+'.png'
+    file_names = np.append(file_names, fn)
+    fig.savefig(fn)
+    plt.close("all")
 ######################################################################################################
 #Widgets
-fig, ax = plt.subplots(figsize=[12,12])
-plt.ylim([-20,40])
-plt.subplots_adjust(left=0.1, bottom=0.1)
-#potential
-l, = plt.plot(phi,potential_f[:,0], color = 'k', linewidth = '4')
-# plt.ylim([-5,10])
-#energy
-energy = np.zeros(len(phi))
-d = {}
-for idx in range(5):
-    energy[:] = energies_f[idx,0]
-    d["m{0}".format(idx)], = plt.plot(phi, energy)
-
-ax.set_xlabel(r'$\varphi$')
-ax.set_ylabel('Energy')
-
-#Slider defined here
-axcolor = 'lightgoldenrodyellow'
-axFlux = plt.axes([0.25, 0.1, 0.65, 0.03], axisbg=axcolor)
-sFlux = Slider(axFlux, 'Current index', 0 , len(current)-1, valinit = 0)#, valfmt='%0.00f')
-energy = np.zeros((len(phi),level_num))
-def update(flux_index):
-    flux_index = sFlux.val
-    l.set_ydata(potential_f[:,flux_index])
-    plt.title("Current" +str(sFlux.val)+"="+str(current[flux_index]*1e3)+"mA")
-    for idx in range(level_num):
-        energy[:,idx] = energies_f[idx, flux_index]
-        d["m{0}".format(idx)].set_ydata(energy[:,idx])
-
-sFlux.on_changed(update)
-plt.show()
+# fig, ax = plt.subplots(figsize=[12,12])
+# plt.ylim([-20,40])
+# plt.subplots_adjust(left=0.1, bottom=0.1)
+# #potential
+# l, = plt.plot(phi,potential_f[:,0], color = 'k', linewidth = '4')
+# # plt.ylim([-5,10])
+# #energy
+# energy = np.zeros(len(phi))
+# d = {}
+# for idx in range(5):
+#     energy[:] = energies_f[idx,0]
+#     d["m{0}".format(idx)], = plt.plot(phi, energy)
+#
+# ax.set_xlabel(r'$\varphi$')
+# ax.set_ylabel('Energy')
+#
+# #Slider defined here
+# axcolor = 'lightgoldenrodyellow'
+# axFlux = plt.axes([0.25, 0.1, 0.65, 0.03], axisbg=axcolor)
+# sFlux = Slider(axFlux, 'Current index', 0 , len(current)-1, valinit = 0)#, valfmt='%0.00f')
+# energy = np.zeros((len(phi),level_num))
+# def update(flux_index):
+#     flux_index = sFlux.val
+#     l.set_ydata(potential_f[:,flux_index])
+#     plt.title("Current" +str(sFlux.val)+"="+str(current[flux_index]*1e3)+"mA")
+#     for idx in range(level_num):
+#         energy[:,idx] = energies_f[idx, flux_index]
+#         d["m{0}".format(idx)].set_ydata(energy[:,idx])
+#
+# sFlux.on_changed(update)
+# plt.show()
 

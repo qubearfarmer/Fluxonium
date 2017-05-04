@@ -39,22 +39,38 @@ T1_err = data[1::, 3]
 Rabi_A = data[1::, 5]
 
 ###################################Slice through the arrays###################################
+current = flux * 1e-3
+energies = np.zeros((len(current), level_num))
+for idx, curr in enumerate(current):
+    flux_squid = curr * B_coeff * A_j * 1e-4
+    flux_ext = curr * B_coeff * A_c * 1e-4
+    H = bare_hamiltonian(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
+                         2 * np.pi * (flux_ext / phi_o - beta_ext))
+    for idy in range(level_num):
+        energies[idx, idy] = H.eigenenergies()[idy]
 
 T1_final = []
 T1_err_final = []
 flux_final = []
 freq_final = []
 for idx in range(len(T1)):
-    if Rabi_A[idx] > 0 and flux[idx] > 38.2 and flux[idx] < 38.8:
+    if (energies[idx, 2] - energies[idx, 1]) > 0.5 \
+            and (energies[idx, 2] - energies[idx, 0]) > 4.7:
         T1_final = np.append(T1_final, T1[idx])
         T1_err_final = np.append(T1_err_final, T1_err[idx])
         flux_final = np.append(flux_final, flux[idx])
         freq_final = np.append(freq_final, freq[idx])
-
+    if (energies[idx, 2] - energies[idx, 1]) > 0.5 \
+            and (energies[idx, 2] - energies[idx, 0]) > 4.1 and flux[idx] > 41 and flux[idx] < 42:
+        T1_final = np.append(T1_final, T1[idx])
+        T1_err_final = np.append(T1_err_final, T1_err[idx])
+        flux_final = np.append(flux_final, flux[idx])
+        freq_final = np.append(freq_final, freq[idx])
 #########################################################################################
 ################################### T1 simulation ######################################
 #########################################################################################
-current = np.linspace(0.0382,0.0388,101)
+current = np.linspace(0.0382,0.0388,201)
+# current = np.linspace(0.038,0.046,801)
 energies = np.zeros((len(current), level_num))
 
 qp_element = np.zeros((len(current), 2))
@@ -95,10 +111,10 @@ for idx in range(len(current)):
 Q_cap = 5e5
 for idx in range(len(current)):
     gamma_cap_up[idx] = r_cap(E_l, E_c, E_j_sum, d, Q_cap, w[idx], p_element[idx])
-Q_qp = 2e5
+Q_qp = 5e5
 for idx in range(len(current)):
     gamma_qp_low[idx,:] = r_qp(E_l, E_c, E_j_sum, d, Q_qp, w[idx], qp_element[idx,:])
-Q_qp = 2e6
+Q_qp = 5e6
 for idx in range(len(current)):
     gamma_qp_up[idx,:] = r_qp(E_l, E_c, E_j_sum, d, Q_qp, w[idx], qp_element[idx,:])
 
@@ -123,19 +139,23 @@ for idx in range(len(current)):
 Q_qp = 5e5
 for idx in range(len(current)):
     gamma_qp_low21[idx,:] = r_qp(E_l, E_c, E_j_sum, d, Q_qp, w21[idx], qp_element21[idx,:])
-Q_qp = 25e6
+Q_qp = 10e6
 for idx in range(len(current)):
     gamma_qp_up21[idx,:] = r_qp(E_l, E_c, E_j_sum, d, Q_qp, w21[idx], qp_element21[idx,:])
 
 ######################################################################################################
-fig, ax1 = plt.subplots(figsize=(10, 4.5))
+fig, ax1 = plt.subplots(figsize=(7, 4))
 ax = plt.gca()
 ax.set_yscale('log')
 ax1.errorbar(flux_final, T1_final, yerr=T1_err_final, fmt='d', mfc='none', mew=2.0, mec='red', ecolor='red')
-ax1.plot(current*1e3, 1.0 / (gamma_cap_up21 + gamma_cap_up) * 1e6, linewidth=2.0, linestyle ='--', color = 'k')
-ax1.plot(current*1e3, 1.0 / (gamma_cap_low21 + gamma_cap_low) * 1e6, linewidth=2.0, linestyle ='--', color = 'k')
-ax1.plot(current*1e3, 1.0 / (gamma_qp_up21[:,0] + gamma_qp_up21[:,1]+gamma_qp_up[:,0] + gamma_qp_up[:,1]) * 1e6, linewidth=2.0, linestyle ='-.', color = 'k')
-ax1.plot(current*1e3, 1.0 / (gamma_qp_low21[:,0] + gamma_qp_low21[:,1]+gamma_qp_low[:,0] + gamma_qp_low[:,1]) * 1e6, linewidth=2.0, linestyle ='-.', color = 'k')
+# ax1.plot(current*1e3, 1.0 / (gamma_cap_up21) * 1e6, linewidth=2.0, linestyle ='--', color = 'k')
+# ax1.plot(current*1e3, 1.0 / (gamma_cap_up) * 1e6, linewidth=2.0, linestyle ='-.', color = 'k')
+ax1.plot(current*1e3, 1.0 / (gamma_cap_up21+gamma_cap_up) * 1e6, linewidth=2.0, linestyle ='--',dashes=(10, 10), color = 'k')
+# ax1.plot(current*1e3, 1.0 / (gamma_cap_low21) * 1e6, linewidth=2.0, linestyle ='--', color = 'k')
+# ax1.plot(current*1e3, 1.0 / (gamma_qp_up21[:,0] + gamma_qp_up21[:,1]) * 1e6, linewidth=2.0, linestyle ='--', color = 'g')
+# ax1.plot(current*1e3, 1.0 / (gamma_qp_up[:,0] + gamma_qp_up[:,1]) * 1e6, linewidth=2.0, linestyle ='-.', color = 'g')
+# ax1.plot(current*1e3, 1.0 / (gamma_qp_up21[:,0] + gamma_qp_up21[:,1]+gamma_qp_up[:,0] + gamma_qp_up[:,1]) * 1e6, linewidth=2.0, linestyle ='-.', color = 'k')
+ax1.plot(current*1e3, 1.0 / (gamma_qp_low21[:,0] + gamma_qp_low21[:,1]+gamma_qp_low[:,0] + gamma_qp_low[:,1]) * 1e6, linewidth=2.0, linestyle ='--', dashes=(2, 5), color = 'k')
 ax2 = ax1.twinx()
 ax2.plot(current*1e3, w21, linewidth = 2.0, color = 'red')
 ##########################################################################################
@@ -145,8 +165,8 @@ ymin2 = 0
 ymax2 = 3.7
 xmin = 38.2
 xmax = 38.56
-ymin1 = 5
-ymax1 = 1000
+ymin1 = 6
+ymax1 = 3500
 ax1.set_ylim([ymin1, ymax1])
 ax1.set_xlim([xmin, xmax])
 ax1.set_xticks([38.2, 38.3, 38.4, 38.5])

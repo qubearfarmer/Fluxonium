@@ -1,6 +1,9 @@
 # Analyze T1 Rabi amplitude at 38.6mA
 import numpy as np
 from matplotlib import pyplot as plt
+from Fluxonium_hamiltonians.Squid_small_junctions import bare_hamiltonian
+from Fluxonium_hamiltonians.Squid_small_junctions import charge_matrix_element as nem
+from Fluxonium_hamiltonians.Squid_small_junctions import charge_dispersive_shift as nChi
 
 plt.rc('font', family='serif')
 # Define file directory
@@ -25,6 +28,8 @@ beta_ext = 0.356925557542
 
 current = np.linspace(0.038, 0.039, 1001)
 chi = np.zeros(len(current))
+chi_2lvl = np.zeros(len(current))
+n_element = np.zeros(len(current))
 level_num = 5
 energies = np.zeros((len(current),level_num))
 
@@ -35,7 +40,8 @@ wr = 10.304
 g = 0.084
 path = path + "_" + str(iState) + str(fState) + "_" + str(current[0] * 1e3) + "to" + str(current[-1] * 1e3) + "mA"
 #######################################################################################################################
-# Simulation part
+############################################## Simulation part#########################################################
+#######################################################################################################################
 '''
 #Compute spectrum
 for idx, curr in enumerate(current):
@@ -53,9 +59,21 @@ for idx, curr in enumerate(current):
 
     chi[idx] = nChi(N, level_num, E_l, E_c, E_j_sum, d, 2*np.pi*(flux_squid/phi_o - beta_squid),
                          2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState, wr, g)
+
+#Dispersive shifts for 2-lvl system
+for idx, curr in enumerate(current):
+    flux_squid = curr*B_coeff*A_j*1e-4
+    flux_ext = curr*B_coeff*A_c*1e-4
+    n_element[idx] = nem(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
+                         2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
+    w = energies[idx,1] - energies[idx,0]
+    chi_2lvl[idx] = 4* g**2 * n_element[idx]**2 * w / (w**2 - wr**2)
+
 np.savetxt(path+"_current.txt", current*1e3)
 np.savetxt(path+"_energies.txt", energies)
 np.savetxt(path+"_chi.txt", chi)
+np.savetxt(path+"_chi_2lvl.txt", chi_2lvl)
+np.savetxt(path+"_nem.txt", n_element)
 '''
 #######################################################################################################################
 # Plotting part
@@ -63,14 +81,18 @@ path = directory + "\\" + simulation
 path = path + "_" + str(iState) + str(fState) + "_" + str(current[0] * 1e3) + "to" + str(current[-1] * 1e3) + "mA"
 energies = np.genfromtxt(path + "_energies.txt")
 chi = np.genfromtxt(path + "_chi.txt")
+chi_2lvl = np.genfromtxt(path + "_chi_2lvl.txt")
 
-fig, ax1 = plt.subplots(figsize=(10, 4.5))
+fig, ax1 = plt.subplots(figsize=(7, 4))
+ax = plt.gca()
+ax.set_yscale('log')
 ax2 = ax1.twinx()
-ax2.tick_params(labelsize=18)
-ax2.plot(current * 1.0e3, abs(chi) * 1.0e3, linestyle='--', color='k', linewidth=2.0)
-ax2.set_xlim([38.5, 38.75])
-ax2.set_ylim([0.09, 0.32])
-# ax2.set_ylim([0.0, 0.32])
+ax2.tick_params(labelsize=18.0)
+ax = plt.gca()
+ax.set_yscale('log')
+ax2.plot(current * 1.0e3, abs(chi) * 1.0e3, linestyle='-', color='k', linewidth=2.0)
+ax2.plot(current * 1.0e3, abs(chi_2lvl) * 1.0e3, linestyle='--',dashes = (10,10), color='k', linewidth=2.0)
+ax2.set_xlim([38.5, 38.7])
 ################################################################################################################
 ##########################################Rabi data####################################################
 ################################################################################################################
@@ -101,12 +123,16 @@ for idx in range(len(T1)):
         freq_final = np.append(freq_final, freq[idx])
         Rabi_A_final = np.append(Rabi_A_final, Rabi_A[idx])
 
-
 ax1.errorbar(flux_final, Rabi_A_final, fmt='s', mfc='none', mew=2.0, mec='b', ecolor='blue')
-ax1.set_xlim([38.5, 38.75])
-ax1.set_ylim([0.0, 8.0])
+ax1.set_xlim([38.5, 38.7])
+y2lim = np.array([0.001, 1])
+y1lim = y2lim*20
+ax1.set_ylim(y1lim)
+ax2.set_ylim(y2lim)
+# ax1.set_yticks(np.linspace(0,8,5))
 ax1.tick_params(labelsize=18.0)
-ax2.set_xticks([38.55, 38.6, 38.6, 38.65, 38.7])
+ax2.set_xticks([38.55, 38.6, 38.65])
+# ax2.set_yticks([0,0.1,0.2,0.3])
 
 # directory = 'C:\\Users\\nguyen89\\Box Sync\Research\Paper Images'
 # fname = 'RabiA_38p6mA.eps'

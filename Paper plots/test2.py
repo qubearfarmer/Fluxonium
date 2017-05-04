@@ -7,6 +7,7 @@ from Fluxonium_hamiltonians.Squid_small_junctions import phase_matrix_element as
 from Fluxonium_hamiltonians.Squid_small_junctions import qp_matrix_element as qpem
 from Fluxonium_hamiltonians.Squid_small_junctions import relaxation_rate_qp as r_qp
 from Fluxonium_hamiltonians.Squid_small_junctions import relaxation_rate_cap as r_cap
+from scipy.optimize import curve_fit
 
 plt.rc('font', family='serif')
 
@@ -68,7 +69,8 @@ for idx, curr in enumerate(current1):
                          2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
     qp_element1[idx, :] = qpem(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
                               2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
-
+SPD_p1 = (T1_final1*1e-3*p_element1**2)**-1
+SPD_qp1 = (T1_final1*1e-3*(qp_element1[:,0]**2+qp_element1[:,1]**2))**-1
 #########################################################################################
 ################################### T1 data 0 to 2 ######################################
 #########################################################################################
@@ -86,6 +88,7 @@ T1_err_final2 = []
 flux_final2 = []
 freq_final2 = []
 Rabi_A_final2 = []
+#Only taking in points that are fluxons, hence having 2-1 decays dominating relaxation processes
 for idx in range(len(T1)):
     if flux[idx] >= 38 and flux[idx] <= 47 and freq[idx] > 4.7:
         T1_final2 = np.append(T1_final2, T1[idx])
@@ -118,20 +121,60 @@ for idx, curr in enumerate(current2):
                          2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
     qp_element2[idx, :] = qpem(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
                               2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
+
+SPD_p2 = (T1_final2*1e-3*p_element2**2)**-1
+SPD_qp2 = (T1_final2*1e-3*(qp_element2[:,0]**2+qp_element2[:,1]**2))**-1
+#########################################################################################
+####################################### Fitting ########################################
+#########################################################################################
+SPD_p = np.concatenate((SPD_p1, SPD_p2), axis=0)
+SPD_qp = np.concatenate((SPD_qp1, SPD_qp2), axis=0)
+freq = np.concatenate((freq_final1, energy2), axis=0)
+freq_sim = np.linspace(0,50,501)
+
+def SPD_func(freq, amp, x):
+    return amp*freq**x
+
+guess = ([SPD_p2[0], 1])
+popt, pcov = curve_fit(SPD_func, freq, SPD_p)
+SPD_pfit = SPD_func(freq_sim, popt[0], popt[1])
+SPD_plim1 = SPD_func(freq_sim, popt[0], 0.9)
+SPD_plim2 = SPD_func(freq_sim, popt[0], 2.5)
+print popt[1]
+
+guess = ([SPD_qp2[0], 1])
+qpopt, qpcov = curve_fit(SPD_func, freq*1e9, SPD_qp)
+SPD_qpfit = SPD_func(freq_sim, qpopt[0], qpopt[1])
+SPD_qplim1 = SPD_func(freq_sim, qpopt[0], 0.5)
+SPD_qplim2 = SPD_func(freq_sim, qpopt[0], 2.5)
+print qpopt[1]
 #######################################################################################################################
-plt.figure(figsize=[5,5])
-plt.tick_params(labelsize = 18)
-# plt.errorbar(freq_final1, (T1_final1*1e-3*p_element1**2)**-1, fmt='s', mfc='none', mew=2.0, mec='b', ecolor ='b')
-# plt.errorbar(energy2, (T1_final2*1e-3*p_element2**2)**-1, fmt='d', mfc='none', mew=2.0, mec='r', ecolor ='r')
-plt.errorbar(freq_final1, (T1_final1*1e-3*(qp_element1[:,0]**2+qp_element1[:,1]**2))**-1, fmt='s', mfc='none', mew=2.0, mec='b', ecolor ='b')
-plt.errorbar(energy2, (T1_final2*1e-3*(qp_element2[:,0]**2+qp_element2[:,1]**2))**-1, fmt='d', mfc='none', mew=2.0, mec='r', ecolor ='r')
+###########################################Plotting and decoration#####################################################
+#######################################################################################################################
+plt.figure(figsize=[10,10])
+
+# plt.errorbar(freq_final1, SPD_p1 , fmt='s', mfc='none', mew=2.0, mec='b', ecolor ='b')
+# plt.errorbar(energy2, SPD_p2, fmt='d', mfc='none', mew=2.0, mec='r', ecolor ='r')
+# plt.plot(freq_sim, SPD_plim1, linewidth =2.0, color = 'black', linestyle ='--')
+# plt.plot(freq_sim, SPD_plim2, linewidth =2.0, color = 'black', linestyle ='--')
+# plt.plot(freq_sim, SPD_pfit, linewidth =2.0, color = 'black', linestyle ='--')
+
+plt.errorbar(freq_final1, SPD_qp1, fmt='s', mfc='none', mew=2.0, mec='b', ecolor ='b')
+plt.errorbar(energy2, SPD_qp2, fmt='d', mfc='none', mew=2.0, mec='r', ecolor ='r')
+plt.plot(freq_sim, SPD_qplim1, linewidth =2.0, color = 'black', linestyle ='--')
+plt.plot(freq_sim, SPD_qplim2, linewidth =2.0, color = 'black', linestyle ='--')
+# # plt.plot(freq_sim, SPD_qpfit, linewidth =2.0, color = 'black', linestyle ='--')
+
+
 plt.yscale("log")
 plt.xscale("log")
 xmin = 0.04
-xmax = 10
+# xmax = 10
+xmax = 3
 fac = 3e2
 plt.xlim([xmin,xmax])
 plt.ylim((xmin*fac,xmax*fac))
+plt.tick_params(labelsize = 24)
 
 # directory = 'C:\\Users\\nguyen89\\Box Sync\Research\Paper Images'
 # fname = 'SPD_pem.eps'

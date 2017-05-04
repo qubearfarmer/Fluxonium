@@ -29,7 +29,7 @@ A_c = 1.50075181762e-10
 d = 0.125005274368
 beta_squid = 0.129912406349
 beta_ext = 0.356925557542
-current = np.linspace(0.035, 0.046, 1101)
+current = np.linspace(0.114, 0.122, 801)
 level_num = 5
 B_coeff = 60
 
@@ -66,12 +66,12 @@ w = energies[:,fState] - energies[:,iState]
 
 gamma_cap = np.zeros(len(current))
 gamma_qp = np.zeros((len(current),2))
-for Q_cap in [9e6]:
+for Q_cap in [5e5]:
     for idx in range(len(current)):
         gamma_cap[idx] = r_cap(E_l, E_c, E_j_sum, d, Q_cap, w[idx], p_element[idx])
     plt.semilogy(current, 1.0 / (gamma_cap) * 1e6, linewidth='2', linestyle ='-')
 
-for Q_qp in [50e6]:
+for Q_qp in [5e6]:
     for idx in range(len(current)):
         gamma_qp[idx,:] = r_qp(E_l, E_c, E_j_sum, d, Q_qp, w[idx], qp_element[idx,:])
     plt.semilogy(current, 1.0 / (gamma_qp[:,0] + gamma_qp[:,1]) * 1e6, linewidth='2', linestyle ='-')
