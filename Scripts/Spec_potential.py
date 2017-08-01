@@ -9,9 +9,9 @@ simulation = "Spectrum_potential_small_junction"
 path = directory + "\\" + simulation
 #Qubit and computation parameters
 N = 50
-E_l = 0.1
-E_c = 12
-E_j = 10
+E_l = 0.5
+E_c = 0.8
+E_j = 3.5
 
 phi_ext = np.linspace(0,0.5,501)
 phi = np.linspace(-10,10,201)

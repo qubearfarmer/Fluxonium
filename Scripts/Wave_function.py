@@ -13,11 +13,11 @@ path = directory + "\\" + simulation
 #Qubit and computation parameters
 N = 100
 E_l = 0.5
-E_c = 0.5
-E_j = 5
+E_c = 0.8
+E_j = 1.574
 level_num = 10
 ####################################################################################################
-phi_ext = 0.39
+phi_ext = 0.5
 
 H = bare_hamiltonian(N,E_l,E_c,E_j, phi_ext*2*np.pi)
 evalues, evectors = H.eigenstates()

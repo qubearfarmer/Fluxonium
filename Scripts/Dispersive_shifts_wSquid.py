@@ -23,20 +23,21 @@ d = 0.125005274368
 beta_squid = 0.129912406349
 beta_ext = 0.356925557542
 
-current = np.linspace(0.0451, 0.046, 91)
+current = np.linspace(0.035, 0.04, 501)
 chi = np.zeros(len(current))
-level_num = 20
+level_num = 30
 energies = np.zeros((len(current),level_num))
 
-iState = 1
-fState = 4
+iState = 0
+fState = 1
 B_coeff = 60
-wr = 7.365
-g = 0.084
+wr = 7.35
+g = 0.092
+kappa = 50
 path = path+"_"+str(iState)+str(fState)+"_"+str(current[0]*1e3)+"to"+str(current[-1]*1e3)+"mA"
 #######################################################################################################################
 #Simulation part
-# '''
+'''
 #Compute spectrum
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
@@ -56,13 +57,14 @@ for idx, curr in enumerate(current):
 np.savetxt(path+"_current.txt", current*1e3)
 np.savetxt(path+"_energies.txt", energies)
 np.savetxt(path+"_chi.txt", chi)
-# '''
+'''
 #######################################################################################################################
 #Plotting part
 path = directory + "\\" + simulation
 path = path+"_"+str(iState)+str(fState)+"_"+str(current[0]*1e3)+"to"+str(current[-1]*1e3)+"mA"
 energies = np.genfromtxt(path+"_energies.txt")
 chi = np.genfromtxt(path+"_chi.txt")
+chi_angle = chi*1e3/(kappa/2) *180/np.pi
 
 fig, ax1 = plt.subplots()
 ax1.plot(current * 1e3, energies[:, fState] - energies[:, iState], color='k')
@@ -72,9 +74,9 @@ for tl in ax1.get_yticklabels():
     tl.set_color('k')
 
 ax2 = ax1.twinx()
-ax2.plot(current * 1e3, chi * 1e3, 'g--')
+ax2.plot(current * 1e3, chi_angle, 'g.')
 ax2.set_ylabel('Dispersive shift (MHz)')
-ax2.set_ylim([-0.5, 0.5])
+ax2.set_ylim([-5, 5])
 # ax2.set_xlim([38.523, 38.75])
 for t2 in ax2.get_yticklabels():
     t2.set_color('b')

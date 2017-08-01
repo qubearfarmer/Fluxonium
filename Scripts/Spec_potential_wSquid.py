@@ -12,7 +12,7 @@ path = directory + "\\" + simulation
 e = 1.602e-19    #Fundamental charge
 h = 6.62e-34    #Placnk's constant
 phi_o = h/(2*e) #Flux quantum
-plt.figure(figsize=[10,10])
+plt.figure(figsize=[6,10])
 #Qubit and computation parameters
 N = 50
 E_l = 0.722729827116
@@ -25,13 +25,12 @@ beta_squid = 0.129912406349
 beta_ext = 0.356925557542
 B_coeff = 60
 level_num = 20
-E_j1 = 0.5 * E_j_sum * (1 + d)
-E_j2 = 0.5 * E_j_sum * (1 - d)
+
 phi = np.linspace(-10,10,201)
 energies = np.zeros(level_num)
 potential = np.zeros(len(phi))
 
-current = 0.04555
+current = 0.039777
 flux_squid = current * B_coeff * A_j * 1e-4
 flux_ext = current * B_coeff * A_c * 1e-4
 H = bare_hamiltonian(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
@@ -39,6 +38,8 @@ H = bare_hamiltonian(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - 
 for idx in range(level_num):
     energies[idx] = H.eigenenergies()[idx]
 for idx in range(len(phi)):
+    E_j1 = 0.5 * E_j_sum * (1 + d)
+    E_j2 = 0.5 * E_j_sum * (1 - d)
     potential[idx] = 0.5 * E_l * phi[idx] ** 2 - E_j1 * np.cos(2 * np.pi * (flux_ext / phi_o - beta_ext) - phi[idx]) \
                                                 - E_j2 * np.cos(phi[idx] + 2 * np.pi * (flux_squid / phi_o - beta_squid) - 2 * np.pi * (flux_ext / phi_o - beta_ext))
 

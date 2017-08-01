@@ -37,7 +37,7 @@ iState = 0
 fState = 1
 B_coeff = 60
 wr = 10.304
-g = 0.084
+g = 0.092
 path = path + "_" + str(iState) + str(fState) + "_" + str(current[0] * 1e3) + "to" + str(current[-1] * 1e3) + "mA"
 #######################################################################################################################
 ############################################## Simulation part#########################################################
@@ -83,16 +83,15 @@ energies = np.genfromtxt(path + "_energies.txt")
 chi = np.genfromtxt(path + "_chi.txt")
 chi_2lvl = np.genfromtxt(path + "_chi_2lvl.txt")
 
-fig, ax1 = plt.subplots(figsize=(7, 4))
+fig, ax1 = plt.subplots(figsize=(8, 3.5))
 ax = plt.gca()
 ax.set_yscale('log')
-ax2 = ax1.twinx()
-ax2.tick_params(labelsize=18.0)
+# ax2 = ax1.twinx()
 ax = plt.gca()
 ax.set_yscale('log')
-ax2.plot(current * 1.0e3, abs(chi) * 1.0e3, linestyle='-', color='k', linewidth=2.0)
-ax2.plot(current * 1.0e3, abs(chi_2lvl) * 1.0e3, linestyle='--',dashes = (10,10), color='k', linewidth=2.0)
-ax2.set_xlim([38.5, 38.7])
+ax1.plot(current * 1.0e3, abs(chi) * 1.0e3, linestyle='-', color='k', linewidth=2.0)
+ax1.plot(current * 1.0e3, abs(chi_2lvl) * 1.0e3, linestyle='--',dashes = (10,10), color='k', linewidth=2.0)
+ax1.set_xlim([38.5, 38.7])
 ################################################################################################################
 ##########################################Rabi data####################################################
 ################################################################################################################
@@ -122,16 +121,17 @@ for idx in range(len(T1)):
         flux_final = np.append(flux_final, flux[idx])
         freq_final = np.append(freq_final, freq[idx])
         Rabi_A_final = np.append(Rabi_A_final, Rabi_A[idx])
-
-ax1.errorbar(flux_final, Rabi_A_final, fmt='s', mfc='none', mew=2.0, mec='b', ecolor='blue')
+kappa = 5
+ax1.errorbar(flux_final, np.tan(Rabi_A_final*np.pi/180)*kappa/2, fmt='s', mfc='none', mew=2.0, markersize = 7.0, mec='b', ecolor='blue')
 ax1.set_xlim([38.5, 38.7])
 y2lim = np.array([0.001, 1])
 y1lim = y2lim*20
-ax1.set_ylim(y1lim)
-ax2.set_ylim(y2lim)
+ax1.set_ylim(y2lim)
+ax1.set_ylim(y2lim)
 # ax1.set_yticks(np.linspace(0,8,5))
 ax1.tick_params(labelsize=18.0)
-ax2.set_xticks([38.55, 38.6, 38.65])
+ax1.tick_params(labelsize=18.0)
+ax1.set_xticks([38.55, 38.6, 38.65])
 # ax2.set_yticks([0,0.1,0.2,0.3])
 
 # directory = 'C:\\Users\\nguyen89\\Box Sync\Research\Paper Images'

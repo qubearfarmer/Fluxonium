@@ -31,8 +31,8 @@ def coupled_hamiltonian(Na, E_l, E_c, E_j, phi_ext, Nr, wr, g):
 
 def charge_matrix_element(N, E_l, E_c, E_j, phi_ext, iState, fState):
     a = tensor(destroy(N))
-    phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / sqrt(2.0)
-    na = 1.0j * (a.dag() - a) * (E_l / (8 * E_c)) ** (0.25) / sqrt(2.0)
+    phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / np.sqrt(2.0)
+    na = 1.0j * (a.dag() - a) * (E_l / (8 * E_c)) ** (0.25) / np.sqrt(2.0)
     ope = 1.0j * (phi + phi_ext)
     H = 4.0 * E_c * na ** 2.0 + 0.5 * E_l * phi ** 2.0 - 0.5 * E_j * (ope.expm() + (-ope).expm())
 
@@ -42,8 +42,8 @@ def charge_matrix_element(N, E_l, E_c, E_j, phi_ext, iState, fState):
 
 def phase_matrix_element(N, E_l, E_c, E_j, phi_ext, iState, fState):
     a = tensor(destroy(N))
-    phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / sqrt(2.0)
-    na = 1.0j * (a.dag() - a) * (E_l / (8 * E_c)) ** (0.25) / sqrt(2.0)
+    phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / np.sqrt(2.0)
+    na = 1.0j * (a.dag() - a) * (E_l / (8 * E_c)) ** (0.25) / np.sqrt(2.0)
     ope = 1.0j * (phi + phi_ext)
     H = 4.0 * E_c * na ** 2.0 + 0.5 * E_l * phi ** 2.0 - 0.5 * E_j * (ope.expm() + (-ope).expm())
 
@@ -53,8 +53,8 @@ def phase_matrix_element(N, E_l, E_c, E_j, phi_ext, iState, fState):
 
 def qp_matrix_element(N, E_l, E_c, E_j, phi_ext, iState, fState):
     a = tensor(destroy(N))
-    phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / sqrt(2.0)
-    na = 1.0j * (a.dag() - a) * (E_l / (8.0 * E_c)) ** (0.25) / sqrt(2.0)
+    phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / np.sqrt(2.0)
+    na = 1.0j * (a.dag() - a) * (E_l / (8.0 * E_c)) ** (0.25) / np.sqrt(2.0)
     ope = 1.0j * (phi + phi_ext)
     H = 4.0 * E_c * na ** 2.0 + 0.5 * E_l * phi ** 2.0 - 0.5 * E_j * (ope.expm() + (-ope).expm())
 
@@ -139,6 +139,29 @@ def relaxation_rate_cap(E_l, E_c, E_j, Q_cap, w, pem):
 
     Y_cap = w * cap / Q_cap
     gamma_cap = (phi_o * pem / hbar / (2 * np.pi)) ** 2 * hbar * w * Y_cap * (
+    1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
+    return gamma_cap
+
+def relaxation_rate_cap_Z(E_l, E_c, E_j, Q_cap, w, nem):
+    #Convert to appropriate parameters
+    w=w*2*np.pi*1e9
+    hbar = h / (2 * np.pi)
+    kB = 1.38064852e-23
+    T = 1e-2
+    E_c = E_c / 1.509190311677e+24  # convert GHz to J
+    E_l = E_l / 1.509190311677e+24  # convert to J
+    E_j = E_j / 1.509190311677e+24  # convert to J
+    delta_alum = 5.447400321e-23  # J
+
+    cap = e ** 2 / (2.0 * E_c)
+    ind = hbar ** 2 / (4.0 * e ** 2 * E_l)
+    gk = e ** 2.0 / h
+    g = 8.0 * E_j * gk / delta_alum
+
+    # Z_cap = Q_cap / (w * cap )
+    # Z_cap = Q_cap/(w*cap*(Q_cap**2+1))
+    Z_cap = (Q_cap*w*cap)**-1.0
+    gamma_cap = (2*nem*e/ hbar) ** 2 * hbar * w * Z_cap * (
     1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
     return gamma_cap
 

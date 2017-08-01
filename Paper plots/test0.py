@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import curve_fit
 
-plt.figure(figsize=(4.5, 4.5))
+plt.figure(figsize=(5, 4))
 plt.rc('font', family='serif')
 
 def func(x, a, b, c, d, g):
@@ -52,7 +52,7 @@ phase_all = phase_all + phase
 # plt.plot(time/1e3, phase, 'm-', mfc='green', mew='2', mec='red')
 
 ##################################################################
-#Rabi
+# Rabi
 phase = phase_all / count
 phase = - phase
 phase = phase - np.mean(phase)
@@ -61,17 +61,17 @@ guessA = np.max(phase) - np.min(phase)
 guess = [guessA, 0, 1e6, 0, 0]
 popt, pcov = curve_fit(func, time * 1e-9, phase, guess)
 a, b, c, d, g = popt
-print 'Rabi freq ='+str(c/1e6) +'MHz'
-print 'Pi pulse ='+str(1/c*1e9/2) + 'ns'
+print ('Rabi freq ='+str(c/1e6) +'MHz')
+print ('Pi pulse ='+str(1/c*1e9/2) + 'ns')
 time_nice = np.linspace(0, np.max(time), 1000)
 plt.plot(time_nice / 1e3, func(time_nice * 1e-9, a, b, c, d, g), linewidth=2.0, color='k')
 
-##T2
+#T2
 def T2_echo_func(x,a,b,c,d):
     return a*np.exp(-(x-c)/b) + d
 measurement = 't2_echo_pulse_3.4887e9_930'
 path = directory + '\\' + measurement
-time = np.genfromtxt(path + '_time.csv', delimiter=',')
+time = np.genfromtxt(path + '_time.csv', delimiter=',')*2
 phase = np.genfromtxt(path + '_phase.csv', delimiter=',')
 phase = phase * 180 / np.pi
 phase = - phase
@@ -95,18 +95,18 @@ guessA = np.max(phase)-np.min(phase)
 guess = [guessA, 1e-3, 0, 0]
 popt,pcov = curve_fit(T2_echo_func, time*1e-9, phase, guess)
 a,b,c,d = popt
-print a
+print (a)
 time_nice = np.linspace(0, np.max(time), 1000)
 t2_fit = T2_echo_func(time_nice * 1e-9, a, b, c, d)
 offset = t2_fit[-1]
 plt.plot(time/1e3,phase - offset, 'p', mfc='none', mew=2.0, mec='g')
 plt.plot(time_nice / 1e3, t2_fit - offset, linewidth=2.0, color='k')
-print 'T2_echo='+str(b*1e6)+'us'
+print ('T2_echo='+str(b*1e6)+'us')
 plt.tick_params(labelsize=18)
-plt.xlim([0,5])
+plt.xlim([0,10])
 plt.ylim([-0.8,0.8])
 plt.yticks(np.linspace(-0.8,0.8,5))
-plt.xticks(np.linspace(0,5,3))
+plt.xticks(np.linspace(0,10,5))
 
 ####################################################################################################################################
 ##T1
@@ -144,11 +144,11 @@ plt.xticks(np.linspace(0,5,3))
 # plt.plot(time / 1e3, phase - guessA / 2, 's', mfc='none', mew=2.0, mec='b')
 # plt.plot(time_nice / 1e3, T1_func(time_nice * 1e-9, a, b, c, d) - guessA / 2, linewidth=2.0, color='k')
 # print 'T1=' + str(b * 1e6) + 'us'
-# plt.tick_params(labelsize=18)
+# plt.tick_params(labelsize=20)
 # plt.xlim([0, 5000])
 # plt.xticks(np.linspace(0,5000,3))
 # plt.ylim([-0.8, 0.8])
-# plt.yticks(np.linspace(-0.8,0.8,5))
+# plt.yticks([])
 
 
 ####################################################################################################################################

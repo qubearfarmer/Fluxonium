@@ -20,7 +20,8 @@ path = directory + '\\' + fname
 
 err_array = []
 T1_array = []
-plt.figure(figsize=[7,7])
+plt.figure(figsize=[4,3])
+
 time = np.genfromtxt(path + '_time0.csv')
 for idx in range(10):
     phase = np.genfromtxt(path + '_phase'+str(idx)+'.csv')
@@ -55,7 +56,9 @@ for idx in range(10):
 # plt.xticks([0,2,4,6,8])
 
 meas_indx = np.linspace(1,len(T1_array),len(T1_array))
-plt.errorbar(meas_indx, T1_array, yerr=err_array, linewidth=2.0)
+plt.errorbar(meas_indx, T1_array, yerr=err_array, fmt='d', mfc='none', mew= 2.0, markersize = 10.0, mec='b', ecolor='b')
 plt.xlim([0.5,10.5])
+plt.xticks([0,5,10])
+plt.yticks([2, 4, 6])
 plt.tick_params(labelsize = 18.0)
 plt.show()

@@ -147,33 +147,34 @@ for idx in range(len(current)):
 fig, ax1 = plt.subplots(figsize=(7, 4))
 ax = plt.gca()
 ax.set_yscale('log')
-ax1.errorbar(flux_final, T1_final, yerr=T1_err_final, fmt='d', mfc='none', mew=2.0, mec='red', ecolor='red')
+ax1.errorbar(flux_final, T1_final, yerr=T1_err_final, fmt='d', mfc='none', mew=2.0, markersize = 7.0, mec='red', ecolor='red')
 # ax1.plot(current*1e3, 1.0 / (gamma_cap_up21) * 1e6, linewidth=2.0, linestyle ='--', color = 'k')
 # ax1.plot(current*1e3, 1.0 / (gamma_cap_up) * 1e6, linewidth=2.0, linestyle ='-.', color = 'k')
-ax1.plot(current*1e3, 1.0 / (gamma_cap_up21+gamma_cap_up) * 1e6, linewidth=2.0, linestyle ='--',dashes=(10, 10), color = 'k')
-# ax1.plot(current*1e3, 1.0 / (gamma_cap_low21) * 1e6, linewidth=2.0, linestyle ='--', color = 'k')
+ax1.plot(current*1e3, 1.0 / (gamma_cap_up21+gamma_cap_up) * 1e6, linewidth=2.0, linestyle ='--',dashes=(2, 5), color = 'k')
+ax1.plot(current*1e3, 1.0 / (gamma_cap_low21+gamma_cap_low) * 1e6, linewidth=2.0, linestyle ='--',dashes=(2, 5), color = 'k')
 # ax1.plot(current*1e3, 1.0 / (gamma_qp_up21[:,0] + gamma_qp_up21[:,1]) * 1e6, linewidth=2.0, linestyle ='--', color = 'g')
 # ax1.plot(current*1e3, 1.0 / (gamma_qp_up[:,0] + gamma_qp_up[:,1]) * 1e6, linewidth=2.0, linestyle ='-.', color = 'g')
 # ax1.plot(current*1e3, 1.0 / (gamma_qp_up21[:,0] + gamma_qp_up21[:,1]+gamma_qp_up[:,0] + gamma_qp_up[:,1]) * 1e6, linewidth=2.0, linestyle ='-.', color = 'k')
-ax1.plot(current*1e3, 1.0 / (gamma_qp_low21[:,0] + gamma_qp_low21[:,1]+gamma_qp_low[:,0] + gamma_qp_low[:,1]) * 1e6, linewidth=2.0, linestyle ='--', dashes=(2, 5), color = 'k')
+# ax1.plot(current*1e3, 1.0 / (gamma_qp_low21[:,0] + gamma_qp_low21[:,1]+gamma_qp_low[:,0] + gamma_qp_low[:,1]) * 1e6, linewidth=2.0, linestyle ='--', dashes=(2, 5), color = 'k')
 ax2 = ax1.twinx()
 ax2.plot(current*1e3, w21, linewidth = 2.0, color = 'red')
+ax2.plot(current*1e3, w, linewidth = 2.0, color = 'red')
 ##########################################################################################
 ######################################Plots decoration###################################
 ##########################################################################################
 ymin2 = 0
 ymax2 = 3.7
 xmin = 38.2
-xmax = 38.56
+xmax = 38.52
 ymin1 = 6
 ymax1 = 3500
 ax1.set_ylim([ymin1, ymax1])
 ax1.set_xlim([xmin, xmax])
 ax1.set_xticks([38.2, 38.3, 38.4, 38.5])
-ax2.set_yticks([0, 1, 2, 3])
+ax2.set_yticks([1, 5, 9])
 ax.get_xaxis().get_major_formatter().set_useOffset(False)
 ax2.set_xlim([xmin, xmax])
-ax2.set_ylim([ymin2, ymax2])
+# ax2.set_ylim([ymin2, ymax2])
 ax1.tick_params(labelsize=18)
 ax2.tick_params(labelsize=18)
 

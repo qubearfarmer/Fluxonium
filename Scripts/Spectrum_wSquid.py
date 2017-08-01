@@ -20,14 +20,13 @@ A_c = 1.50075181762e-10
 d = 0.125005274368
 beta_squid = 0.129912406349
 beta_ext = 0.356925557542
-
-B_coeff = 60
+B_coeff = 95.75
 level_num = 5
-current = np.linspace(0.045, 0.046, 101)
+current = np.linspace(0.0, 0.005, 101)
 energies = np.zeros((len(current),level_num))
 sim_dat = np.zeros((len(current),3))
-iState = 1
-fState = 4
+iState = 0
+fState = 1
 #Compute eigenenergies
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
@@ -38,10 +37,11 @@ for idx, curr in enumerate(current):
         energies[idx,idy] = H.eigenenergies()[idy]
 
 #Plot transition energies
-# for idx in range(1, level_num):
-#     plt.plot(current*1e3, energies[:,idx]-energies[:,0])
-plt.plot(current*1e3, energies[:,1]-energies[:,0], color = 'b')
-plt.plot(current*1e3, energies[:,4]-energies[:,1], color = 'r')
+for idx in range(1, level_num):
+    plt.plot(current*1e3, energies[:,idx]-energies[:,0], 'k-')
+# for idx in range(2, level_num):
+#     plt.plot(current*1e3, energies[:,idx]-energies[:,1], 'r-')
+
 #Alternate Hamiltonian
 # for idx, curr in enumerate(current):
 #     flux_squid = curr*B_coeff*A_j*1e-4

@@ -82,22 +82,22 @@ for idx, curr in enumerate(current):
                               2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
 w = energies[:, 1] - energies[:, 0]
 
-fig, ax1 = plt.subplots(figsize=(10, 7))
+fig, ax1 = plt.subplots(figsize=(8, 3.5))
 ax = plt.gca()
 ax.set_yscale('log')
-ax1.errorbar(flux_final, T1_final, yerr=T1_err_final, fmt='s', mfc='none', mew=2.0, mec='blue')
+ax1.errorbar(flux_final, T1_final, yerr=T1_err_final, fmt='s', mfc='none', mew=2.0, markersize = 7.0, mec='blue')
 
 #Dielectric loss
-for Q_cap in [5e5]:
+for Q_cap in [5e4,5e5]:
     for idx in range(len(current)):
         gamma_cap[idx] = r_cap(E_l, E_c, E_j_sum, d, Q_cap, w[idx], p_element[idx])
-    ax1.plot(current*1e3, 1.0 / (gamma_cap) * 1e6, linewidth=2.0, linestyle ='--',dashes=(10, 10), color = 'k')
+    ax1.plot(current*1e3, 1.0 / (gamma_cap) * 1e6, linewidth=2.0, linestyle ='--', dashes=(2, 5), color = 'k')
 
 #QP loss
-for Q_qp in [5e5]:
-    for idx in range(len(current)):
-        gamma_qp[idx,:] = r_qp(E_l, E_c, E_j_sum, d, Q_qp, w[idx], qp_element[idx,:])
-    ax1.plot(current*1e3, 1.0 / (gamma_qp[:,0]+gamma_qp[:,1]) * 1e6, linewidth=2.0, linestyle ='--', dashes=(2, 5), color = 'k')
+# for Q_qp in [5e5]:
+#     for idx in range(len(current)):
+#         gamma_qp[idx,:] = r_qp(E_l, E_c, E_j_sum, d, Q_qp, w[idx], qp_element[idx,:])
+#     ax1.plot(current*1e3, 1.0 / (gamma_qp[:,0]+gamma_qp[:,1]) * 1e6, linewidth=2.0, linestyle ='--', dashes=(2, 5), color = 'k')
 
 ax2 = ax1.twinx()
 # ax.set_yscale('linear')
@@ -117,7 +117,8 @@ ax1.set_ylim([y1min, y1max])
 ax1.set_xlim([xmin, xmax])
 ax2.set_xlim([xmin, xmax])
 ax2.set_ylim([y2min, y2max])
-ax1.set_xticks([38.55, 38.6, 38.65])
+# ax1.set_xticks([38.55, 38.6, 38.65])
+ax1.set_xticks([])
 ax2.set_yticks(np.linspace(3.3,4.7, 3))
 ax.get_xaxis().get_major_formatter().set_useOffset(False)
 
