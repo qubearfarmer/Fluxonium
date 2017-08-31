@@ -41,7 +41,7 @@ energies = np.zeros((len(current),level_num))
 iState = 0
 fState = 1
 path = path+'_'+str(iState)+'to'+str(fState)+'_from_' + str(current[0]*1e3) +'to'+ str(current[-1]*1e3) +'mA'
-'''
+# '''
 #######################################################################################
 for idx, curr in enumerate(current):
     flux_squid = curr * B_coeff * A_j * 1e-4
@@ -57,7 +57,7 @@ np.savetxt(path+'_chargeElement.txt', n_element)
 np.savetxt(path+'_fluxElement.txt', p_element)
 np.savetxt(path+'_qpElement.txt', qp_element)
 #######################################################################################
-'''
+# '''
 energies = np.genfromtxt(path+'_energies.txt')
 n_element = np.genfromtxt(path+'_chargeElement.txt')
 p_element = np.genfromtxt(path+'_fluxElement.txt')
@@ -66,12 +66,12 @@ w = energies[:,fState] - energies[:,iState]
 
 gamma_cap = np.zeros(len(current))
 gamma_qp = np.zeros((len(current),2))
-for Q_cap in [1e5, 5e5, 1e6, 2e6]:
+for Q_cap in [1e5, 5e5, 7e5, 1e6, 2e6]:
     for idx in range(len(current)):
         gamma_cap[idx] = r_cap(E_l, E_c, E_j_sum, d, Q_cap, w[idx], p_element[idx])
     plt.semilogy(current, 1.0 / (gamma_cap) * 1e6, linewidth='2', linestyle ='-')
 
-#for Q_qp in [5e6]:
+# for Q_qp in [5e6, 1e7, 5e7, 10e7, 1e9]:
 #    for idx in range(len(current)):
 #        gamma_qp[idx,:] = r_qp(E_l, E_c, E_j_sum, d, Q_qp, w[idx], qp_element[idx,:])
 #    plt.semilogy(current, 1.0 / (gamma_qp[:,0] + gamma_qp[:,1]) * 1e6, linewidth='2', linestyle ='-')

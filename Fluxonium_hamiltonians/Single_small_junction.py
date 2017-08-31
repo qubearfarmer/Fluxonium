@@ -206,3 +206,21 @@ def relaxation_rate_qp(E_l, E_c, E_j, Q_qp, w, qpem):
     Y_qp = (g / (2.0 * Q_qp)) * (2.0 * delta_alum / (hbar * w)) ** (1.5)
     gamma_qp = (qpem) ** 2.0 * w * Y_qp/(np.pi*gk)
     return gamma_qp
+
+def relaxation_rate_qp_array(E_l, E_c, E_j, Q_qp, w, pem):
+    # Convert to appropriate parameters
+    w = w * 2.0 * np.pi * 1e9
+    hbar = h / (2 * np.pi)
+    T = 1e-2
+    E_c = E_c / 1.509190311677e+24  # convert GHz to J
+    E_l = E_l / 1.509190311677e+24  # convert to J
+    E_j = E_j / 1.509190311677e+24  # convert to J
+    delta_alum = 5.447400321e-23  # J
+
+    gk = e ** 2.0 / h
+    g = 8.0 * E_l * gk / delta_alum
+
+    Y_qp = (g / (2.0 * Q_qp)) * (2.0 * delta_alum / (hbar * w)) ** (1.5)
+    gamma_qp_array = (pem/2.0) ** 2.0 * w * Y_qp / (np.pi * gk)
+
+    return gamma_qp_array

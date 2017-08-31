@@ -22,7 +22,7 @@ beta_squid = 0.129912406349
 beta_ext = 0.356925557542
 B_coeff = 95.75
 level_num = 5
-current = np.linspace(0.0, 0.005, 101)
+current = np.linspace(0.0277, 0.029, 501)
 energies = np.zeros((len(current),level_num))
 sim_dat = np.zeros((len(current),3))
 iState = 0
@@ -36,9 +36,14 @@ for idx, curr in enumerate(current):
     for idy in range(level_num):
         energies[idx,idy] = H.eigenenergies()[idy]
 
+plt.plot(current * 1e3, energies[:, 1] - energies[:, 0], 'k-')
+plt.plot(current*1e3, energies[:,2]-energies[:,0], 'k-')
+plt.plot(current*1e3, energies[:,3]-energies[:,0], 'k-')
+plt.plot(current*1e3, energies[:,2]-energies[:,1], 'b--')
+
 #Plot transition energies
-for idx in range(1, level_num):
-    plt.plot(current*1e3, energies[:,idx]-energies[:,0], 'k-')
+# for idx in range(1, level_num):
+#     plt.plot(current*1e3, energies[:,idx]-energies[:,0], 'k-')
 # for idx in range(2, level_num):
 #     plt.plot(current*1e3, energies[:,idx]-energies[:,1], 'r-')
 
@@ -108,6 +113,6 @@ for idx in range(1, level_num):
 # np.savetxt(path + '.csv', sim_dat, delimiter=',', fmt='%.3f')
 # plt.xlim([38.1,46.5])
 # plt.ylim([0,5])
-plt.tick_params(labelsize=24)
+plt.tick_params(labelsize=18)
 
 plt.show()
