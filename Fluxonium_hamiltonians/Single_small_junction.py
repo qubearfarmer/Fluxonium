@@ -20,8 +20,8 @@ def bare_hamiltonian(N, E_l, E_c, E_j, phi_ext):
 def coupled_hamiltonian(Na, E_l, E_c, E_j, phi_ext, Nr, wr, g):
     a = tensor(destroy(Na),qeye(Nr))
     b = tensor(qeye(Na), destroy(Nr))
-    phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / sqrt(2.0)
-    na = 1.0j * (a.dag() - a) * (E_l / (8 * E_c)) ** (0.25) / sqrt(2.0)
+    phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / np.sqrt(2.0)
+    na = 1.0j * (a.dag() - a) * (E_l / (8 * E_c)) ** (0.25) / np.sqrt(2.0)
     ope = 1.0j * (phi + phi_ext)
     H_f = 4.0 * E_c * na ** 2.0 + 0.5 * E_l * phi ** 2.0 - 0.5 * E_j * (ope.expm() + (-ope).expm())
     H_r = wr*(b.dag()*b + 1.0/2)
@@ -35,6 +35,21 @@ def charge_matrix_element(N, E_l, E_c, E_j, phi_ext, iState, fState):
     na = 1.0j * (a.dag() - a) * (E_l / (8 * E_c)) ** (0.25) / np.sqrt(2.0)
     ope = 1.0j * (phi + phi_ext)
     H = 4.0 * E_c * na ** 2.0 + 0.5 * E_l * phi ** 2.0 - 0.5 * E_j * (ope.expm() + (-ope).expm())
+
+    eigen_energies, eigen_states = H.eigenstates()
+    element = na.matrix_element(eigen_states[iState],eigen_states[fState])
+    return abs(element)
+
+def coupled_charge_matrix_element(N, E_l, E_c, E_j, phi_ext, iState, fState, Nr, wr, g,  iRState, fRState):
+    a = tensor(destroy(Na), qeye(Nr))
+    b = tensor(qeye(Na), destroy(Nr))
+    phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / sqrt(2.0)
+    na = 1.0j * (a.dag() - a) * (E_l / (8 * E_c)) ** (0.25) / sqrt(2.0)
+    ope = 1.0j * (phi + phi_ext)
+    H_f = 4.0 * E_c * na ** 2.0 + 0.5 * E_l * phi ** 2.0 - 0.5 * E_j * (ope.expm() + (-ope).expm())
+    H_r = wr * (b.dag() * b + 1.0 / 2)
+    H_c = -g * na * (b.dag + b)
+    H = H_f + H_r + H_c
 
     eigen_energies, eigen_states = H.eigenstates()
     element = na.matrix_element(eigen_states[iState],eigen_states[fState])
@@ -90,7 +105,7 @@ def charge_dispersive_shift(N, level_num, E_l, E_c, E_j, phi_ext, iState, fState
         element = na.matrix_element(eVectors[fState], eVectors[idx])
         shift_fState = shift_fState + abs(element) ** 2 * 2.0 * trans_energy / (trans_energy ** 2 - wr ** 2)
 
-    return g ** 2 * (shift_iState - shift_fState)
+    return g ** 2 * (shift_iState )
 
 def flux_dispersive_shift(N, level_num, E_l, E_c, E_j, phi_ext, iState, fState, wr, g):
     a = tensor(destroy(N))

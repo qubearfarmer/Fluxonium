@@ -5,28 +5,51 @@ from matplotlib import pyplot as plt
 
 N = 50
 E_l = 0.5
-E_c = 0.8
-E_j = 1.577
-level_num = 20
-g = 0.1
+E_c = 0.835632
+E_j = 1.5
+
+level_num = 30
+g = 0.08
 
 iState = 0
-fState = 2
+fState = 1
 
 #plot dispersive shift as a function of flux
-phi_ext = np.linspace(0,0.5,501)
-w = 7.358
+phi_ext = np.linspace(-0.05,0.55,601)
+w = 8.345
 chi = np.zeros(len(phi_ext))
 chi1 = np.zeros(len(phi_ext))
 chi2 = np.zeros(len(phi_ext))
-kappa = 50 #MHz
+chi3 = np.zeros(len(phi_ext))
+kappa = 5 #MHz
 for idx, phi in enumerate(phi_ext):
     chi[idx]= nChi(N, level_num, E_l, E_c, E_j, phi*2*np.pi, iState, fState, w, g)
-    chi1[idx] = nChi(N, level_num, E_l, E_c, E_j, phi*2*np.pi, 0, 2, w, g)
-    chi2[idx] = nChi(N, level_num, E_l, E_c, E_j, phi * 2 * np.pi, 1, 2, w, g)
+    # chi1[idx] = nChi(N, level_num, E_l, E_c, E_j, phi*2*np.pi, 1, 0, w, g)
+    # chi2[idx] = nChi(N, level_num, E_l, E_c, E_j, phi * 2 * np.pi, 2, 0, w, g)
+    # chi3[idx] = nChi(N, level_num, E_l, E_c, E_j, phi * 2 * np.pi, 3, 0, w, g)
+#chi is in GHz
+#chi_angle is in degree
+chi_angle = chi*1e3/(kappa/2) *180/np.pi
+# chi1_angle = chi1*1e3/(kappa/2) *180/np.pi
+# chi2_angle = chi2*1e3/(kappa/2) *180/np.pi
+# chi3_angle = chi3*1e3/(kappa/2) *180/np.pi
 
-# chi_angle = chi*1e3/(kappa/2) *180/np.pi
-plt.plot(phi_ext, chi*1e3 , 'b.')
+plt.figure(1)
+plt.plot(phi_ext, chi*1e3 , 'k-')
+# plt.plot(phi_ext, chi1*1e3 , 'b-')
+# plt.plot(phi_ext, chi2*1e3 , 'r-')
+# plt.plot(phi_ext, chi3*1e3 , 'g-')
+plt.grid()
+plt.ylim([-2,2])
+# plt.tick_params(labelsize = 18.0)
+
+# plt.figure(2)
+# plt.plot(phi_ext, chi_angle , 'k-')
+# plt.plot(phi_ext, chi1_angle , 'b-')
+# plt.plot(phi_ext, chi2_angle , 'r-')
+# plt.plot(phi_ext, chi3_angle , 'g-')
+# plt.ylim([-20,20])
+# plt.tick_params(labelsize = 18.0)
 # chi_angle = chi1*1e3/(kappa/2) *180/np.pi
 # plt.plot(phi_ext, chi_angle , 'r.')
 # chi_angle = chi2*1e3/(kappa/2) *180/np.pi

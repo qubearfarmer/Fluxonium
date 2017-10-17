@@ -5,13 +5,13 @@ from matplotlib import pyplot as plt
 #Qubit and computation parameters
 Na = 50
 Nr = 10
-E_l = 0.5
-E_c = 2.5
-E_j = 10
-wr = 10
-g = 0.1
+E_l = 1
+E_c = 0.8
+E_j = 3
+wr = 7.36
+g = 0.7
 
-phi_ext = np.linspace(-1,1,100)
+phi_ext = np.linspace(-0.05,0.55,101)
 level_num = 10
 energies = np.zeros((len(phi_ext),level_num))
 
@@ -30,11 +30,11 @@ plt.ylabel(r'Energy (GHz)')
 plt.ylim(top=30)
 
 #Plot transition energies
-fig2 = plt.figure(2)
-for idx in range(1,level_num):
-    plt.plot(phi_ext, energies[:,idx]-energies[:,0], linewidth = '2')
-plt.xlabel(r'$\varphi_\mathrm{ext}/2\pi$')
-plt.ylabel(r'$\mathrm{E_i} - \mathrm{E_0}$')
-plt.ylim([0,30])
+# fig2 = plt.figure(2)
+# for idx in range(1,level_num):
+#     plt.plot(phi_ext, energies[:,idx]-energies[:,0], linewidth = '2')
+# plt.xlabel(r'$\varphi_\mathrm{ext}/2\pi$')
+# plt.ylabel(r'$\mathrm{E_i} - \mathrm{E_0}$')
+# plt.ylim([0,30])
 
 plt.show()

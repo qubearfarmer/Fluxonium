@@ -86,12 +86,12 @@ noise_A = 1e-6*phi_o
 # T2_squid = (sensitivity_pSquid*1e9*noise_A)**-1.0
 # T2_ext = (sensitivity_pExt*1e9*noise_A)**-1.0
 
-T2_squid = (sensitivity_pSquid*1e9*noise_A*(np.log(100))**0.5)**-1.0
-T2_ext = (sensitivity_pExt*1e9*noise_A*(np.log(100))**0.5)**-1.0
+# T2_squid = (sensitivity_pSquid)**-1.0
+# T2_ext = (sensitivity_pExt)**-1.0
 
 ax2 = ax1.twinx()
-# ax2.plot(current*1e3, sensitivity_pExt, 'b--',current*1e3, sensitivity_pSquid, 'r--')
-ax2.plot(current*1e3, T2_squid*1e6, 'b--',current*1e3, T2_ext*1e6, 'r--')
+ax2.plot(current*1e3, sensitivity_pExt, 'b--',current*1e3, sensitivity_pSquid, 'r--')
+# ax2.plot(current*1e3, T2_squid*1e6, 'b--',current*1e3, T2_ext*1e6, 'r--')
 
 # ax2.set_ylabel('Sensitivity')
 # ax2.set_ylim([-0.5,0.5])
@@ -99,6 +99,6 @@ for t2 in ax2.get_yticklabels():
     t2.set_color('b')
 ax1.tick_params(labelsize=18)
 ax2.tick_params(labelsize=18)
-ax2.set_ylim([0,100])
+# ax2.set_ylim([0,1e-7])
 plt.grid()
 plt.show()
