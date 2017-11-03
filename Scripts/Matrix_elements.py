@@ -6,8 +6,8 @@ from matplotlib import pyplot as plt
 
 N = 50
 E_l = 0.5
-E_c = 0.86
-E_j = 1.577
+E_c = 2.5
+E_j = 10
 iState = 0
 fState = 1
 

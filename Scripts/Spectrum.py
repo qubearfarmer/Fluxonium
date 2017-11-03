@@ -4,12 +4,12 @@ from matplotlib import pyplot as plt
 
 #Qubit and computation parameters
 N = 50
-E_l = 1.0168105
-E_c = 0.835632
-E_j = 2.9964865
+E_l = 0.16
+E_c = 10
+E_j = 10
 
-phi_ext = np.linspace(0.45,0.55,101)
-level_num = 10
+phi_ext = np.linspace(0,0.6,101)
+level_num = 20
 energies = np.zeros((len(phi_ext),level_num))
 
 #Compute eigensnergies
@@ -29,18 +29,20 @@ for idx, phi in enumerate(phi_ext):
 
 #Plot transition energies
 fig2 = plt.figure(2)
+
 # for idx in range(1,level_num):
-#     plt.plot(phi_ext, energies[:,idx]-energies[:,0], linewidth = '2')
-# plt.plot(phi_ext, energies[:,1]-energies[:,0], linewidth = 2.0 , linestyle = '-', color = 'k')
-# plt.plot(phi_ext, energies[:,2]-energies[:,0], linewidth = 2.0 , linestyle = '-', color = 'k')
-# plt.plot(phi_ext, energies[:,3]-energies[:,0], linewidth = 2.0 , linestyle = '-', color = 'k')
+#     plt.plot(phi_ext, energies[:,idx]-energies[:,0], linewidth = '2', color = 'k')
+plt.plot(phi_ext, energies[:,1]-energies[:,0], linewidth = 2.0 , linestyle = '-', color = 'k')
+plt.plot(phi_ext, energies[:,2]-energies[:,0], linewidth = 2.0 , linestyle = '-', color = 'k')
+plt.plot(phi_ext, energies[:,3]-energies[:,0], linewidth = 2.0 , linestyle = '-', color = 'k')
+# plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 2.0 , linestyle = '--', color = 'b')
 # plt.plot(phi_ext, energies[:,3]-energies[:,1], linewidth = 2.0 , linestyle = '--', color = 'b')
-plt.plot(phi_ext, energies[:,4]-energies[:,1], linewidth = 2.0 , linestyle = '--', color = 'b')
+# plt.plot(phi_ext, energies[:,4]-energies[:,1], linewidth = 2.0 , linestyle = '--', color = 'b')
 # plt.plot(phi_ext, (energies[:,3]-energies[:,0])/2.0, linewidth = 2.0 , linestyle = '-.', color = 'm')
 # plt.plot(phi_ext, (energies[:,4]-energies[:,0])/2.0, linewidth = 2.0 , linestyle = '-.', color = 'm')
 # plt.xlabel(r'$\varphi_\mathrm{ext}/2\pi$')
 # plt.ylabel(r'$\mathrm{E_i} - \mathrm{E_0}$')
-plt.ylim([0,7])
+plt.ylim([0,10])
 plt.tick_params(labelsize = 18.0)
 # plt.grid()
 

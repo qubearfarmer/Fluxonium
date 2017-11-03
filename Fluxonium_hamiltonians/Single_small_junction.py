@@ -40,7 +40,7 @@ def charge_matrix_element(N, E_l, E_c, E_j, phi_ext, iState, fState):
     element = na.matrix_element(eigen_states[iState],eigen_states[fState])
     return abs(element)
 
-def coupled_charge_matrix_element(N, E_l, E_c, E_j, phi_ext, iState, fState, Nr, wr, g,  iRState, fRState):
+def coupled_charge_matrix_element(N, E_l, E_c, E_j, phi_ext, iState, fState, Nr, wr, g):
     a = tensor(destroy(Na), qeye(Nr))
     b = tensor(qeye(Na), destroy(Nr))
     phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / sqrt(2.0)
