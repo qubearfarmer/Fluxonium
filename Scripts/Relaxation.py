@@ -32,8 +32,8 @@ E_j = 2.996
 level_num = 15
 
 iState = 0
-fState = 2
-phi_ext = np.linspace(0.45,0.55,101)
+fState = 3
+phi_ext = np.linspace(-0.05,0.55,601)
 p_element = np.zeros(len(phi_ext))
 n_element = np.zeros(len(phi_ext))
 qp_element = np.zeros(len(phi_ext))
@@ -69,18 +69,18 @@ for Q_cap in [0.5e6]:
         gamma_cap[idx] = r_cap(E_l, E_c, E_j, Q_cap, w[idx], p_element[idx])
     plt.semilogy(phi_ext, 1.0/gamma_cap *1e6, linewidth= 2.0, linestyle ='-')
 
-# for x_qp in [4e-8]:
-#     Q_qp = 1.0 / x_qp
-#     for idx in range(len(phi_ext)):
-#         gamma_qp_array[idx] = r_qp_array(E_l, E_c, E_j, Q_qp, w[idx], p_element[idx])
-#     plt.semilogy(phi_ext, 1.0 / (gamma_qp_array) * 1e6, linewidth=2.0, linestyle='--')
-#
+for x_qp in [4e-8]:
+    Q_qp = 1.0 / x_qp
+    for idx in range(len(phi_ext)):
+        gamma_qp_array[idx] = r_qp_array(E_l, E_c, E_j, Q_qp, w[idx], p_element[idx])
+    plt.semilogy(phi_ext, 1.0 / (gamma_qp_array) * 1e6, linewidth=2.0, linestyle='--')
+# #
 for x_qp in [5e-7]:
     Q_qp = 1.0/x_qp
     for idx in range(len(phi_ext)):
         gamma_qp[idx] = r_qp(E_l, E_c, E_j, Q_qp, w[idx], qp_element[idx])
     plt.semilogy(phi_ext, 1.0 / (gamma_qp) * 1e6, linewidth=2.5, linestyle='--')
-#     plt.semilogy(phi_ext, 1.0/(gamma_qp+gamma_cap)*1e6, linewidth = 2.5, linestyle='-.')
+    plt.semilogy(phi_ext, 1.0/(gamma_qp)*1e6, linewidth = 2.5, linestyle='-.')
 
 
 # plt.ylim([1e1,1e4])

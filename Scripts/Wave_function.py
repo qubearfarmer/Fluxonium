@@ -13,8 +13,8 @@ path = directory + "\\" + simulation
 #Qubit and computation parameters
 N = 100
 E_l = 0.5
-E_c = 0.8
-E_j = 1.574
+E_c = 0.84
+E_j = 3
 level_num = 10
 ####################################################################################################
 phi_ext = 0.5
@@ -39,20 +39,20 @@ ax1.tick_params(labelsize=18)
 for state_idx in range(4):
     wFunc = np.zeros(len(phi))
     for lvl_idx in range(N):
-        coeff = real(evectors[state_idx].full()[lvl_idx, 0])
+        coeff = np.real(evectors[state_idx].full()[lvl_idx, 0])
         wFunc = wFunc + coeff*ho_wf(phi, lvl_idx, E_c, E_l)
-    ax1.plot(phi, (wFunc), linewidth = 2.0)
+    # ax1.plot(phi, (wFunc), linewidth = 2.0)
 #
 potential = 0.5*E_l*phi**2 - E_j*np.cos(phi-phi_ext*2*np.pi)
 ax2 = ax1.twinx()
 ax2.plot(phi, potential, linewidth = 3.0, color = 'black')
-for idx in range(4):
+for idx in range(10):
     ax2.plot(phi, np.ones(len(phi))*evalues[idx], linewidth = 1.0)
 ax2.tick_params(labelsize=18)
-ax2.set_ylim([-5,8])
-ax1.set_ylim([-5,5])
-ax1.set_xlim([-10,10])
-ax1.set_xticks([])
-ax1.set_yticks([])
-ax2.set_yticks([])
+# ax2.set_ylim([-5,8])
+# ax1.set_ylim([-5,5])
+# ax1.set_xlim([-10,10])
+# ax1.set_xticks([])
+# ax1.set_yticks([])
+# ax2.set_yticks([])
 plt.show()
