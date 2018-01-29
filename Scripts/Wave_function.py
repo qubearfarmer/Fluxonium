@@ -12,9 +12,9 @@ simulation = "Spectrum_potential_small_junction"
 path = directory + "\\" + simulation
 #Qubit and computation parameters
 N = 100
-E_l = 0.5
-E_c = 0.84
-E_j = 3
+E_l = 0.1
+E_c = 5
+E_j = 10
 level_num = 10
 ####################################################################################################
 phi_ext = 0.5
@@ -31,7 +31,7 @@ def ho_wf(phi,l,Ec,El):
     coeff = (2.0**l*np.math.factorial(l)*np.sqrt(np.pi)*ratio)**(-0.5)
     return coeff * np.exp(-0.5*(phi/ratio)**2) * hpoly(l,phi/ratio)
 
-phi = np.linspace(-10,10,201)
+phi = np.linspace(-100,100,201)
 
 fig, ax1 = plt.subplots(figsize=(10, 10))
 ax1.tick_params(labelsize=18)
