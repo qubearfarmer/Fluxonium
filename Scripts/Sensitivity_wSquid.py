@@ -30,12 +30,12 @@ energies_pSquid = np.zeros((len(current),level_num))
 
 iState = 0
 fState = 1
-dPhi1 = 1.0e-20
-dPhi2 = 1.0e-20
+dPhi1 = 0.001
+dPhi2 = 0.001
 
 #######################################################################################################################
 #Simulation part
-'''
+# '''
 #Compute spectrum
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
@@ -48,7 +48,7 @@ for idx, curr in enumerate(current):
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
     flux_ext = curr*B_coeff*A_c*1e-4
-    H = bare_hamiltonian(N, E_l, E_c, E_j_sum, d, 2*np.pi*((flux_squid+dPhi1)/phi_o - beta_squid),
+    H = bare_hamiltonian(N, E_l, E_c, E_j_sum, d, 2*np.pi*((flux_squid)/phi_o - beta_squid+dPhi1),
                          2 * np.pi * (flux_ext / phi_o - beta_ext))
     for idy in range(level_num):
         energies_pSquid[idx,idy] = H.eigenenergies()[idy]
@@ -57,14 +57,14 @@ for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
     flux_ext = curr*B_coeff*A_c*1e-4
     H = bare_hamiltonian(N, E_l, E_c, E_j_sum, d, 2*np.pi*(flux_squid/phi_o - beta_squid),
-                         2 * np.pi * ((flux_ext+dPhi2) / phi_o - beta_ext))
+                         2 * np.pi * ((flux_ext) / phi_o - beta_ext+dPhi2))
     for idy in range(level_num):
         energies_pExt[idx,idy] = H.eigenenergies()[idy]
 
 np.savetxt(path+"_"+str(iState)+str(fState)+"_energies.txt", energies)
 np.savetxt(path+"_"+str(iState)+str(fState)+"_energies_pSquid.txt", energies_pSquid)
 np.savetxt(path+"_"+str(iState)+str(fState)+"_energies_pExt.txt", energies_pExt)
-'''
+# '''
 ######'#################################################################################################################
 #Plotting part
 energies = np.genfromtxt(path+"_"+str(iState)+str(fState)+"_energies.txt")

@@ -11,16 +11,18 @@ path = directory + "\\" + simulation
 N = 50
 E_l = 0.5
 E_c = 0.8
-E_j = 3.5
-
+E_j = 2.7
+plt.figure(figsize=[10,10])
+'''
 phi_ext = np.linspace(0,0.5,501)
 phi = np.linspace(-10,10,201)
 level_num = 10
 energies = np.zeros((level_num, len(phi_ext)))
 potential = np.zeros((len(phi), len(phi_ext)))
+
 ####################################################################################################
 #Simulation part
-# '''
+
 for idx in range(len(phi_ext)):
     H = bare_hamiltonian(N, E_l, E_c, E_j, phi_ext[idx]*2*np.pi)
     for idy in range(level_num):
@@ -30,7 +32,7 @@ for idx in range(len(phi_ext)):
 
 np.savetxt(path+'_energy.txt', energies)
 np.savetxt(path+'_potential.txt', potential)
-# '''
+
 #####################################################################################################
 #Plotting from file
 energies_f = np.genfromtxt(path+'_energy.txt')
@@ -65,5 +67,20 @@ def update(flux_index):
 
 
 sFlux.on_changed(update)
-
+'''
+phi_ext = 0.5
+phi = np.linspace(-10,10,201)
+level_num = 10
+energies = np.zeros((level_num))
+potential = np.zeros((len(phi)))
+energy = np.zeros(len(phi))
+H = bare_hamiltonian(N, E_l, E_c, E_j, phi_ext * 2 * np.pi)
+for idy in range(level_num):
+    energy[:] = H.eigenenergies()[idy]
+    plt.plot(phi, energy, linewidth = 2.0)
+for idy in range(len(phi)):
+    potential[idy] = 0.5 * E_l * phi[idy] ** 2 - E_j * np.cos(phi[idy] - phi_ext * 2 * np.pi)
+plt.plot(phi,potential, color = 'k', linewidth = 7.0)
+plt.xticks([])
+plt.yticks([])
 plt.show()

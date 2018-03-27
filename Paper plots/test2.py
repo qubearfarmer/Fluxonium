@@ -140,14 +140,14 @@ popt, pcov = curve_fit(SPD_func, freq, SPD_p)
 SPD_pfit = SPD_func(freq_sim, popt[0], popt[1])
 SPD_plim1 = SPD_func(freq_sim, popt[0], 0.9)
 SPD_plim2 = SPD_func(freq_sim, popt[0], 2.5)
-print popt[1]
+print (popt[1])
 
 guess = ([SPD_qp2[0], 1])
 qpopt, qpcov = curve_fit(SPD_func, freq*1e9, SPD_qp)
 SPD_qpfit = SPD_func(freq_sim, qpopt[0], qpopt[1])
 SPD_qplim1 = SPD_func(freq_sim, qpopt[0], 0.5)
 SPD_qplim2 = SPD_func(freq_sim, qpopt[0], 2.5)
-print qpopt[1]
+print (qpopt[1])
 #######################################################################################################################
 ###########################################Plotting and decoration#####################################################
 #######################################################################################################################

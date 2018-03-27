@@ -42,7 +42,7 @@ path = path + "_" + str(iState) + str(fState) + "_" + str(current[0] * 1e3) + "t
 #######################################################################################################################
 ############################################## Simulation part#########################################################
 #######################################################################################################################
-'''
+# '''
 #Compute spectrum
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
@@ -74,7 +74,7 @@ np.savetxt(path+"_energies.txt", energies)
 np.savetxt(path+"_chi.txt", chi)
 np.savetxt(path+"_chi_2lvl.txt", chi_2lvl)
 np.savetxt(path+"_nem.txt", n_element)
-'''
+# '''
 #######################################################################################################################
 # Plotting part
 path = directory + "\\" + simulation

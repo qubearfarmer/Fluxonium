@@ -7,11 +7,11 @@ from matplotlib import pyplot as plt
 
 #Qubit and computation parameters
 N = 50
-E_l = 0.8
-E_c = 0.83
-E_j = 3.5
+E_l = 0.35
+E_c = 0.85
+E_j = 2.8
 
-phi_ext = np.linspace(-0.05,0.55,601)
+phi_ext = np.linspace(0.0,0.55,501)
 level_num = 20
 energies = np.zeros((len(phi_ext),level_num))
 
@@ -38,8 +38,8 @@ fig2 = plt.figure(2)
 plt.plot(phi_ext, energies[:,1]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
 plt.plot(phi_ext, energies[:,2]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
 plt.plot(phi_ext, energies[:,3]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
-plt.plot(phi_ext, energies[:,4]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
-# plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 1.0 , linestyle = '--', color = 'b')
+# plt.plot(phi_ext, energies[:,4]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
+plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 1.0 , linestyle = '--', color = 'b')
 # plt.plot(phi_ext, energies[:,3]-energies[:,1], linewidth = 1.0 , linestyle = '--', color = 'b')
 # plt.plot(phi_ext, energies[:,4]-energies[:,1], linewidth = 1.0 , linestyle = '--', color = 'b')
 # plt.plot(phi_ext, energies[:,5]-energies[:,1], linewidth = 1.0 , linestyle = '--', color = 'r')

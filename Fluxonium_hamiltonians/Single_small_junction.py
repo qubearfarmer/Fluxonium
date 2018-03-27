@@ -156,6 +156,21 @@ def relaxation_rate_cap(E_l, E_c, E_j, Q_cap, w, pem):
     gamma_cap = (phi_o * pem / hbar / (2 * np.pi)) ** 2 * hbar * w * Y_cap * (
     1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
     return gamma_cap
+def relaxation_rate_fluxNoise(E_l, E_c, E_j, A, w, pem):
+    #Convert to appropriate parameters
+    w=w*2*np.pi*1e9
+    hbar = h / (2 * np.pi)
+    kB = 1.38064852e-23
+    T = 1e-2
+    E_c = E_c / 1.509190311677e+24  # convert GHz to J
+    E_l = E_l / 1.509190311677e+24  # convert to J
+    E_j = E_j / 1.509190311677e+24  # convert to J
+    delta_alum = 5.447400321e-23  # J
+
+    L = hbar**2/(4*e**2*E_l)
+    S = A**2/w
+    gamma_flux = (phi_o * pem / (2 * np.pi)) ** 2 / L**2 * S
+    return gamma_flux
 
 def relaxation_rate_cap_Z(E_l, E_c, E_j, Q_cap, w, nem):
     #Convert to appropriate parameters

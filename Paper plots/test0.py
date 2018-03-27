@@ -1,4 +1,4 @@
-# Analyze Rabi data at high T1 point, 38.6mA
+# Analyze Rabi and T2 data at high T1 point, 38.6mA
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import curve_fit
@@ -66,9 +66,15 @@ print ('Pi pulse ='+str(1/c*1e9/2) + 'ns')
 time_nice = np.linspace(0, np.max(time), 1000)
 plt.plot(time_nice / 1e3, func(time_nice * 1e-9, a, b, c, d, g), linewidth=2.0, color='k')
 
-#T2
+#T2 exp
 def T2_echo_func(x,a,b,c,d):
     return a*np.exp(-(x-c)/b) + d
+#T2 gaussian
+# def T2_echo_func(x,a,b,c,d):
+#     return a*np.exp(-(x-c)**2.0/b**2.0) + d
+#T2 combo
+# def T2_echo_func(x,a,b,c,d,e,f):
+#     return (a*np.exp(-(x-c)**2.0/b**2.0))*(np.exp(-(x-d)/e))+f
 measurement = 't2_echo_pulse_3.4887e9_930'
 path = directory + '\\' + measurement
 time = np.genfromtxt(path + '_time.csv', delimiter=',')*2
@@ -92,16 +98,15 @@ for idx in range(0,6):
 phase = phase_all / count
 phase = phase - np.min(phase)
 guessA = np.max(phase)-np.min(phase)
-guess = [guessA, 1e-3, 0, 0]
+guess = [guessA, 4e-6, 0, 0]
+
 popt,pcov = curve_fit(T2_echo_func, time*1e-9, phase, guess)
-a,b,c,d = popt
-print (a)
 time_nice = np.linspace(0, np.max(time), 1000)
-t2_fit = T2_echo_func(time_nice * 1e-9, a, b, c, d)
+t2_fit = T2_echo_func(time_nice * 1e-9, *popt)
 offset = t2_fit[-1]
 plt.plot(time/1e3,phase - offset, 'p', mfc='none', mew=2.0, mec='g')
 plt.plot(time_nice / 1e3, t2_fit - offset, linewidth=2.0, color='k')
-print ('T2_echo='+str(b*1e6)+'us')
+print ('T2_echo='+str(popt[1]*1e6)+'us')
 plt.tick_params(labelsize=18)
 plt.xlim([0,10])
 plt.ylim([-0.8,0.8])

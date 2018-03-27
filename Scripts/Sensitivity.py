@@ -12,11 +12,11 @@ N = 50
 # E_c = 0.835
 # E_j = 2.996
 
-E_l = 1
-E_c = 0.8
-E_j = 3
+E_l = 0.42
+E_c = 0.86
+E_j = 2.5
 
-phi_ext = np.linspace(-0.05,0.55,601)
+phi_ext = np.linspace(.45,0.55,601)
 sensitivity=np.zeros(len(phi_ext))
 energy=np.zeros(len(phi_ext))
 iState = 0
@@ -24,21 +24,21 @@ fState = 1
 
 dPhi = 0.001
 dE = 0.001
-# for idx,phi in enumerate(phi_ext):
-#     trans_energy1 = H(N, E_l, E_c, E_j, phi*2*np.pi).eigenenergies()[fState]- \
-#                     H(N, E_l, E_c, E_j, phi*2*np.pi).eigenenergies()[iState]
-#     trans_energy2 =H(N, E_l, E_c, E_j , (phi+dPhi) * 2 * np.pi).eigenenergies()[fState] - \
-#                    H(N, E_l, E_c, E_j , (phi+dPhi) * 2 * np.pi).eigenenergies()[iState]
-#     sensitivity[idx] = (trans_energy1-trans_energy2)/dPhi
-#     energy[idx] = trans_energy1
-
 for idx,phi in enumerate(phi_ext):
     trans_energy1 = H(N, E_l, E_c, E_j, phi*2*np.pi).eigenenergies()[fState]- \
                     H(N, E_l, E_c, E_j, phi*2*np.pi).eigenenergies()[iState]
-    trans_energy2 =H(N, E_l, E_c, E_j+dE , (phi) * 2 * np.pi).eigenenergies()[fState] - \
-                   H(N, E_l, E_c, E_j+dE , (phi) * 2 * np.pi).eigenenergies()[iState]
-    sensitivity[idx] = (trans_energy1-trans_energy2)/dE
+    trans_energy2 =H(N, E_l, E_c, E_j , (phi+dPhi) * 2 * np.pi).eigenenergies()[fState] - \
+                   H(N, E_l, E_c, E_j , (phi+dPhi) * 2 * np.pi).eigenenergies()[iState]
+    sensitivity[idx] = (trans_energy2-trans_energy1)/dPhi
     energy[idx] = trans_energy1
+
+# for idx,phi in enumerate(phi_ext):
+#     trans_energy1 = H(N, E_l, E_c, E_j, phi*2*np.pi).eigenenergies()[fState]- \
+#                     H(N, E_l, E_c, E_j, phi*2*np.pi).eigenenergies()[iState]
+#     trans_energy2 =H(N, E_l, E_c, E_j+dE , (phi) * 2 * np.pi).eigenenergies()[fState] - \
+#                    H(N, E_l, E_c, E_j+dE , (phi) * 2 * np.pi).eigenenergies()[iState]
+#     sensitivity[idx] = (trans_energy2-trans_energy1)/dE
+#     energy[idx] = trans_energy1
 # plt.plot(phi_ext, sensitivity)
 #Sensitivity unit is GHz/ (flux/flux_q)
 fig, ax1 = plt.subplots(figsize=(10, 7))

@@ -11,9 +11,10 @@ from Fluxonium_hamiltonians.Single_small_junction import relaxation_rate_ind as 
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import rc
-plt.rc('text', usetex=True)
+# plt.rc('text', usetex=True)
 plt.rc('font', family='sans-serif')
-plt.figure(figsize=[10,7])
+
+
 #Define file directory
 directory = "C:\Data\Fluxonium #10 simulations"
 simulation = "Relaxation"
@@ -26,14 +27,14 @@ phi_o = h/(2*e) #Flux quantum
 # plt.figure(figsize=[20,10])
 #######################################################################################
 N = 50
-E_l = 1.128
-E_c = 0.847
-E_j = 4.79
+E_l = 0.7
+E_c = 0.8
+E_j = 2.7
 level_num = 15
 
 iState = 0
 fState = 1
-phi_ext = np.linspace(0.45,0.55,101)
+phi_ext = np.linspace(0,0.5,501)
 p_element = np.zeros(len(phi_ext))
 n_element = np.zeros(len(phi_ext))
 qp_element = np.zeros(len(phi_ext))
@@ -62,27 +63,33 @@ n_element = np.genfromtxt(path+'_chargeElement.txt')
 p_element = np.genfromtxt(path+'_fluxElement.txt')
 qp_element = np.genfromtxt(path+'_qpElement.txt')
 w = energies[:,fState]-energies[:,iState]
-# plt.plot(phi_ext, w)
+fig, ax1 = plt.subplots(figsize=[10,7])
+ax2 = ax1.twinx()
+ax2.plot(phi_ext, w, color = 'black', linewidth = 2.0)
 
-for Q_cap in [0.5e6]:
+
+for Q_cap in [1e6]:
     for idx in range(len(phi_ext)):
         gamma_cap[idx] = r_cap(E_l, E_c, E_j, Q_cap, w[idx], p_element[idx])
-    plt.semilogy(phi_ext, 1.0/gamma_cap *1e6, linewidth= 2.0, linestyle ='-')
+    ax1.semilogy(phi_ext, 1.0/gamma_cap *1e6, linewidth= 2.0, linestyle ='--', color = 'orange')
 
-for x_qp in [20e-7]:
+for x_qp in [1e-6]:
     Q_qp = 1.0/x_qp
     for idx in range(len(phi_ext)):
         gamma_qp[idx] = r_qp(E_l, E_c, E_j, Q_qp, w[idx], qp_element[idx])
-    plt.semilogy(phi_ext, 1.0/(gamma_qp)*1e6, linewidth = 2.5, linestyle='-.')
+    ax1.semilogy(phi_ext, 1.0/(gamma_qp)*1e6, linewidth = 2.0, linestyle='--', color = 'magenta')
 
-for x_qp in [1e-8]:
-    Q_qp = 1.0 / x_qp
-    for idx in range(len(phi_ext)):
-        gamma_qp_array[idx] = r_qp_array(E_l, E_c, E_j, Q_qp, w[idx], p_element[idx])
-    plt.semilogy(phi_ext, 1.0 / (gamma_qp_array) * 1e6, linewidth=2.0, linestyle='--')
-    plt.semilogy(phi_ext, 1.0/(gamma_qp+gamma_cap+gamma_qp_array)*1e6, linewidth = 2.5, linestyle='-', color ='black')
-#
+# for x_qp in [1e-8]:
+#     Q_qp = 1.0 / x_qp
+#     for idx in range(len(phi_ext)):
+#         gamma_qp_array[idx] = r_qp_array(E_l, E_c, E_j, Q_qp, w[idx], p_element[idx])
+#     plt.semilogy(phi_ext, 1.0 / (gamma_qp_array) * 1e6, linewidth=2.0, linestyle='--')
+#     plt.semilogy(phi_ext, 1.0/(gamma_qp+gamma_cap+gamma_qp_array)*1e6, linewidth = 2.5, linestyle='-', color ='black')
 
-plt.grid()
-plt.tick_params(labelsize=18)
+ax2.tick_params(labelsize = 20.0)
+ax2.set_yticks([0,1,2,3,4])
+ax1.tick_params(labelsize = 20.0)
+ax2.set_xticks([0,0.5])
+ax2.set_xlim([0,0.5])
+ax1.set_ylim([1e1,1e3])
 plt.show()
