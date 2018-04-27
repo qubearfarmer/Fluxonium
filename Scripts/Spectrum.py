@@ -7,9 +7,9 @@ from matplotlib import pyplot as plt
 
 #Qubit and computation parameters
 N = 50
-E_l = 0.35
-E_c = 0.85
-E_j = 2.8
+E_l = 1.128
+E_c = 0.847
+E_j = 4.79
 
 phi_ext = np.linspace(0.0,0.55,501)
 level_num = 20
@@ -39,7 +39,7 @@ plt.plot(phi_ext, energies[:,1]-energies[:,0], linewidth = 2 , linestyle = '-', 
 plt.plot(phi_ext, energies[:,2]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
 plt.plot(phi_ext, energies[:,3]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
 # plt.plot(phi_ext, energies[:,4]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
-plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 1.0 , linestyle = '--', color = 'b')
+# plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 1.0 , linestyle = '--', color = 'b')
 # plt.plot(phi_ext, energies[:,3]-energies[:,1], linewidth = 1.0 , linestyle = '--', color = 'b')
 # plt.plot(phi_ext, energies[:,4]-energies[:,1], linewidth = 1.0 , linestyle = '--', color = 'b')
 # plt.plot(phi_ext, energies[:,5]-energies[:,1], linewidth = 1.0 , linestyle = '--', color = 'r')

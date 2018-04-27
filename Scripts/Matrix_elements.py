@@ -5,16 +5,16 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 N = 50
-E_l = 1
-E_c = 1.2
-E_j = 5.5
+E_l = 1.128
+E_c = 0.847
+E_j = 4.79
 iState = 0
 fState = 1
 
-phi_ext = np.linspace(0,0.5,101)
+phi_ext = np.linspace(0.45,0.55,201)
 element = np.zeros(len(phi_ext))
 for idx, phi in enumerate(phi_ext):
-    element[idx]=abs(nem(N, E_l, E_c, E_j, phi*2*np.pi, iState, fState))
+    element[idx]=abs(pem(N, E_l, E_c, E_j, phi*2*np.pi, iState, fState))
 fig1 = plt.figure(1)
 plt.plot(phi_ext, element)
 # for idx, phi in enumerate(phi_ext):

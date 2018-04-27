@@ -136,12 +136,11 @@ def flux_dispersive_shift(N, level_num, E_l, E_c, E_j, phi_ext, iState, fState, 
 
     return g ** 2 * (shift_iState - shift_fState)
 
-def relaxation_rate_cap(E_l, E_c, E_j, Q_cap, w, pem):
+def relaxation_rate_cap(E_l, E_c, E_j, Q_cap, w, pem, T):
     #Convert to appropriate parameters
     w=w*2*np.pi*1e9
     hbar = h / (2 * np.pi)
     kB = 1.38064852e-23
-    T = 1e-2
     E_c = E_c / 1.509190311677e+24  # convert GHz to J
     E_l = E_l / 1.509190311677e+24  # convert to J
     E_j = E_j / 1.509190311677e+24  # convert to J
@@ -167,10 +166,10 @@ def relaxation_rate_fluxNoise(E_l, E_c, E_j, A, w, pem):
     E_j = E_j / 1.509190311677e+24  # convert to J
     delta_alum = 5.447400321e-23  # J
 
-    # L = hbar**2/(4*e**2*E_l)
-    L = 600e-12
+    L = hbar**2/(4*e**2*E_l)
+    # L = 600e-12
     S = A**2/w
-    gamma_flux = (phi_o * pem / (2 * np.pi*L)) ** 2 * S
+    gamma_flux = (phi_o * pem / (2 * np.pi*L*hbar)) ** 2 * S
     return gamma_flux
 
 def relaxation_rate_cap_Z(E_l, E_c, E_j, Q_cap, w, nem):
@@ -196,12 +195,11 @@ def relaxation_rate_cap_Z(E_l, E_c, E_j, Q_cap, w, nem):
     1 + 1.0 / np.tanh(hbar * w / (2 * kB * T)))
     return gamma_cap
 
-def relaxation_rate_ind(E_l, E_c, E_j, Q_ind, w, pem):
+def relaxation_rate_ind(E_l, E_c, E_j, Q_ind, w, pem, T):
     # Convert to appropriate parameters
     w = w * 2 * np.pi * 1e9
     hbar = h / (2 * np.pi)
     kB = 1.38064852e-23
-    T = 1e-2
     E_c = E_c / 1.509190311677e+24  # convert GHz to J
     E_l = E_l / 1.509190311677e+24  # convert to J
     E_j = E_j / 1.509190311677e+24  # convert to J
@@ -218,12 +216,11 @@ def relaxation_rate_ind(E_l, E_c, E_j, Q_ind, w, pem):
     return gamma_ind
 
 
-def relaxation_rate_qp(E_l, E_c, E_j, Q_qp, w, qpem):
+def relaxation_rate_qp(E_l, E_c, E_j, Q_qp, w, qpem, T):
     # Convert to appropriate parameters
     w = w * 2.0 * np.pi * 1e9
     hbar = h / (2 * np.pi)
     kB = 1.38064852e-23
-    T = 1.0e-2
     E_c = E_c / 1.509190311677e+24  # convert GHz to J
     E_l = E_l / 1.509190311677e+24  # convert to J
     E_j = E_j / 1.509190311677e+24  # convert to J
@@ -238,11 +235,10 @@ def relaxation_rate_qp(E_l, E_c, E_j, Q_qp, w, qpem):
     gamma_qp = (qpem) ** 2.0 * w * Y_qp/(np.pi*gk)
     return gamma_qp
 
-def relaxation_rate_qp_array(E_l, E_c, E_j, Q_qp, w, pem):
+def relaxation_rate_qp_array(E_l, E_c, E_j, Q_qp, w, pem, T):
     # Convert to appropriate parameters
     w = w * 2.0 * np.pi * 1e9
     hbar = h / (2 * np.pi)
-    T = 1e-2
     E_c = E_c / 1.509190311677e+24  # convert GHz to J
     E_l = E_l / 1.509190311677e+24  # convert to J
     E_j = E_j / 1.509190311677e+24  # convert to J
