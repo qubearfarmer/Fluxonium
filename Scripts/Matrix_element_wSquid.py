@@ -7,9 +7,9 @@ from Fluxonium_hamiltonians.Squid_small_junctions import phase_matrix_element as
 from Fluxonium_hamiltonians.Squid_small_junctions import qp_matrix_element as qpem
 
 #Define file directory
-directory = "C:\Data\Fluxonium #10 simulations"
-simulation = "MElements_wSquid"
-path = directory + "\\" + simulation
+directory = "C:\\Users\\nguyen89\Box\Python Codes\Fluxonium simulation results"
+fname = "MElements_wSquid"
+path = directory + "\\" + fname
 
 #Define constants
 e = 1.602e-19    #Fundamental charge
@@ -35,13 +35,11 @@ qp_element = np.zeros((len(current),2))
 n_element = np.zeros(len(current))
 p_element = np.zeros(len(current))
 
-iState = 2
-fState = 3
+iState = 0
+fState = 1
 
 path = path+'_'+str(iState)+'to'+str(fState)+'_from_' + str(current[0]*1e3) +'to'+ str(current[-1]*1e3) +'mA'
 ########################################################################################################################
-# Compute eigenenergies and matrix elements
-# '''
 for idx, curr in enumerate(current):
     flux_squid = curr*B_coeff*A_j*1e-4
     flux_ext = curr*B_coeff*A_c*1e-4
@@ -51,7 +49,7 @@ for idx, curr in enumerate(current):
         energies[idx, idy] = H.eigenenergies()[idy]
     n_element [idx] = nem(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
                          2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
-    p_element[idx] = pem(  N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
+    p_element[idx] = pem(N, E_l, E_c, E_j_sum, d, 2 * np.pi * (flux_squid / phi_o - beta_squid),
                          2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
     qp_element[idx,:] = qpem(N, E_l, E_c, E_j_sum, d, 2*np.pi*(flux_squid/phi_o - beta_squid),
                          2 * np.pi * (flux_ext / phi_o - beta_ext), iState, fState)
@@ -60,42 +58,44 @@ np.savetxt(path+'_energies.txt', energies)
 np.savetxt(path+'_chargeElement.txt', n_element)
 np.savetxt(path+'_phaseElement.txt', p_element)
 np.savetxt(path+'_qpElement.txt', qp_element)
-# '''
 ########################################################################################################################
 energies = np.genfromtxt(path+'_energies.txt')
 n_element = np.genfromtxt(path+'_chargeElement.txt')
 p_element = np.genfromtxt(path+'_phaseElement.txt')
 qp_element = np.genfromtxt(path+'_qpElement.txt')
-trans_energy = energies[:, 1] - energies[:, 0]
-fig, ax1 = plt.subplots()
-ax1.plot(current * 1e3, trans_energy, color='b', linewidth='2')
-trans_energy = energies[:, 2] - energies[:, 0]
-ax1.plot(current * 1e3, trans_energy, color='b', linewidth='2')
-trans_energy = energies[:, 3] - energies[:, 0]
-ax1.plot(current * 1e3, trans_energy, color='b', linewidth='2')
-trans_energy = energies[:, 4] - energies[:, 0]
-ax1.plot(current * 1e3, trans_energy, color='b', linewidth='2')
-trans_energy = energies[:, 2] - energies[:, 1]
-ax1.plot(current * 1e3, trans_energy, color='r', linewidth='2')
-trans_energy = energies[:, 3] - energies[:, 1]
-ax1.plot(current * 1e3, trans_energy, color='r', linewidth='2')
-trans_energy = energies[:, 4] - energies[:, 1]
-ax1.plot(current * 1e3, trans_energy, color='r', linewidth='2')
-ax1.set_ylabel('Transition energy')
-ax1.set_xlabel('Current (mA)')
-for tl in ax1.get_yticklabels():
-    tl.set_color('k')
+# trans_energy = energies[:, 1] - energies[:, 0]
+# fig, ax1 = plt.subplots()
+# ax1.plot(current * 1e3, trans_energy, color='b', linewidth='2')
+# trans_energy = energies[:, 2] - energies[:, 0]
+# ax1.plot(current * 1e3, trans_energy, color='b', linewidth='2')
+# trans_energy = energies[:, 3] - energies[:, 0]
+# ax1.plot(current * 1e3, trans_energy, color='b', linewidth='2')
+# trans_energy = energies[:, 4] - energies[:, 0]
+# ax1.plot(current * 1e3, trans_energy, color='b', linewidth='2')
+# trans_energy = energies[:, 2] - energies[:, 1]
+# ax1.plot(current * 1e3, trans_energy, color='r', linewidth='2')
+# trans_energy = energies[:, 3] - energies[:, 1]
+# ax1.plot(current * 1e3, trans_energy, color='r', linewidth='2')
+# trans_energy = energies[:, 4] - energies[:, 1]
+# ax1.plot(current * 1e3, trans_energy, color='r', linewidth='2')
+# ax1.set_ylabel('Transition energy')
+# ax1.set_xlabel('Current (mA)')
+# for tl in ax1.get_yticklabels():
+#     tl.set_color('k')
 
-ax2 = ax1.twinx()
-ax2.plot(current * 1e3, n_element, 'm--')
-# ax2.plot(current*1e3, qp_element[:,0]**2 + qp_element[:,1]**2, 'g--')
-ax2.set_ylabel('Matrix element')
-ax2.set_ylim([0.0, 1])
-# ax1.set_ylim([2.5,3.5])
-for t2 in ax2.get_yticklabels():
-    t2.set_color('b')
-ax1.tick_params(labelsize=18)
-ax2.tick_params(labelsize=18)
+# ax2 = ax1.twinx()
+# ax2.plot(current * 1e3, n_element, 'm--')
+# # ax2.plot(current*1e3, qp_element[:,0]**2 + qp_element[:,1]**2, 'g--')
+# ax2.set_ylabel('Matrix element')
+# ax2.set_ylim([0.0, 1])
+# # ax1.set_ylim([2.5,3.5])
+# for t2 in ax2.get_yticklabels():
+#     t2.set_color('b')
+# ax1.tick_params(labelsize=18)
+# ax2.tick_params(labelsize=18)
 
+
+plt.plot(current, p_element)
+#plt.plot(current, qp_element[:,1])
 plt.grid()
 plt.show()

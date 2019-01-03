@@ -1,29 +1,29 @@
-from Fluxonium_hamiltonians.Single_small_junction import charge_dispersive_shift as nChi
-from Fluxonium_hamiltonians.Single_small_junction import flux_dispersive_shift as pChi
 import numpy as np
 from matplotlib import pyplot as plt
 
+from Fluxonium_hamiltonians.Single_small_junction import charge_dispersive_shift as nChi
+
 N = 50
-E_l=0.352641790002
-E_c=0.851452213992
-E_j=2.81307030808
+E_l = 0.5919
+E_c = 1.1763
+E_j = 2.048
 
 level_num = 30
-g = 0.09
+g = 0.24
 
-iState = 1
-fState = 2
+iState = 0
+fState = 1
 
 #plot dispersive shift as a function of flux
-phi_ext = np.linspace(0.0,0.5,501)
-w = 7.345
+phi_ext = np.linspace(0.0,1,201)
+w = 7.1808
 chi = np.zeros(len(phi_ext))
-chi1 = np.zeros(len(phi_ext))
-chi2 = np.zeros(len(phi_ext))
-chi3 = np.zeros(len(phi_ext))
-kappa = 5 #MHz
+# chi1 = np.zeros(len(phi_ext))
+# chi2 = np.zeros(len(phi_ext))
+# chi3 = np.zeros(len(phi_ext))
+kappa = 15 #MHz
 for idx, phi in enumerate(phi_ext):
-    chi[idx]= nChi(N, level_num, E_l, E_c, E_j, phi*2*np.pi, iState, fState, w, g)
+    chi[idx]= nChi(N, level_num, E_l, E_c, E_j, phi*2*np.pi, 0, 1, w, g)
     # chi1[idx] = pChi(N, level_num, E_l, E_c, E_j, phi*2*np.pi, 2, 0, w, g)
     # chi2[idx] = nChi(N, level_num, E_l, E_c, E_j, phi * 2 * np.pi, 2, 0, w, g)
     # chi3[idx] = nChi(N, level_num, E_l, E_c, E_j, phi * 2 * np.pi, 3, 0, w, g)
@@ -58,14 +58,14 @@ plt.plot(phi_ext, chi*1e3 , 'k-')
 
 # plot dispersive shift as a function of cavity frequency
 # phi_ext = 0.5
-# w = np.linspace(5,12,701)
+# w = np.linspace(3,12,901)
 # chi = np.zeros(len(w))
 # kappa = 5 #MHz
 # #
-# iState = 0
-# fState = 1
+iState = 0
+fState = 1
 # for idx, freq in enumerate(w):
-#     chi[idx]= pChi(N, level_num, E_l, E_c, E_j, phi_ext*2*np.pi, iState, fState, freq, g)
+#     chi[idx]= nChi(N, level_num, E_l, E_c, E_j, phi_ext*2*np.pi, iState, fState, freq, g)
 
 # chi_angle = chi*1e3/(kappa/2) *180/np.pi
 # plt.plot(w, chi*1e3, '.')

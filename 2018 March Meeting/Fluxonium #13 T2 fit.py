@@ -1,7 +1,8 @@
+import h5py
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import curve_fit
-import h5py
+
 plt.figure(figsize=(5, 5))
 plt.rc('font', family='serif')
 
@@ -11,11 +12,11 @@ def func(x,a,b,c,d):
 
 
 directory = 'G:\Projects\Fluxonium\Data\Fluxonium #13\T2E'
-'''
-measurement = '090717_T2E_YOKO_61.04mA_Cav7.36923GHz_-30dBm_Qubit0.992GHz_25dBm_PiPulse211ns_Count30_TimeStep800_Avg_10000.h5'
+# '''
+measurement = '090517_T2E_YOKO_61.115mA_Cav7.36923GHz_-30dBm_Qubit0.7936GHz_25dBm_PiPulse268ns_Count30_TimeStep10000_Avg_10000.h5'
 path = directory + '\\' + measurement
 pts_num = 30
-time_step = 800
+time_step = 1000
 time = np.linspace(0, pts_num*time_step, pts_num)
 t2_guess = 12e-6
 #Read data and fit
@@ -41,7 +42,7 @@ plt.plot(time_nice*1e-3, phase_fit, color='black')
 # plt.title(str(b*1e6)+ r'$\pm$' +str(perr[1]*1e6))
 plt.tick_params(labelsize = 20.0)
 
-'''
+# '''
 def func(x,a,b,c,d):
     return a*np.exp(-(x-c)/b) + d
 measurement = '090517_T2E_YOKO_61.105mA_Cav7.36923GHz_-30dBm_Qubit0.7936GHz_25dBm_PiPulse267ns_Count30_TimeStep10000_Avg_10000.h5'

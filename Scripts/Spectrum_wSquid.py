@@ -22,7 +22,7 @@ beta_squid = 0.129912406349
 beta_ext = 0.356925557542
 B_coeff = 95.75
 level_num = 5
-current = np.linspace(0.0277, 0.029, 501)
+current = np.linspace(0.028, 0.029, 101)
 energies = np.zeros((len(current),level_num))
 sim_dat = np.zeros((len(current),3))
 iState = 0
@@ -38,7 +38,7 @@ for idx, curr in enumerate(current):
 
 plt.plot(current * 1e3, energies[:, 1] - energies[:, 0], 'k-')
 plt.plot(current*1e3, energies[:,2]-energies[:,0], 'k-')
-plt.plot(current*1e3, energies[:,3]-energies[:,0], 'k-')
+# plt.plot(current*1e3, energies[:,3]-energies[:,0], 'k-')
 plt.plot(current*1e3, energies[:,2]-energies[:,1], 'b--')
 
 #Plot transition energies
@@ -61,10 +61,10 @@ plt.plot(current*1e3, energies[:,2]-energies[:,1], 'b--')
 ##############################################################################################
 #Measured spectrum
 #01 transition
-# directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\Corrected flux"
+# directory = "G:\Projects\Fluxonium\Data\Summary of T1_T2_vs flux_Fluxonium#10\\Summary of corrected flux"
 #
-# simulation = "T1avg(0to1)vs flux 41p52 to 42p0mA.csv"
-# path = directory + "\\" + simulation
+# fname = "T1 avg_T2_qubit f(0to1) vs flux_all_new fit_012317_corrected flux.csv"
+# path = directory + "\\" + fname
 # data = np.genfromtxt(path, delimiter =',',dtype=float)
 # plt.plot(data[1::,0], data[1::,1], 'ro')
 #

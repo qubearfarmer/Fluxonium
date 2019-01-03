@@ -1,9 +1,11 @@
-from matplotlib import pyplot as plt
-import numpy as np
-import h5py
-from scipy.optimize import curve_fit
-from scipy.optimize import OptimizeWarning
 import warnings
+
+import h5py
+import numpy as np
+from matplotlib import pyplot as plt
+from scipy.optimize import OptimizeWarning
+from scipy.optimize import curve_fit
+
 warnings.simplefilter("error", OptimizeWarning)
 warnings.simplefilter("error", RuntimeWarning)
 
@@ -107,18 +109,28 @@ with h5py.File(path,'r') as hf:
 # print len(loop_index)
 # print len(T1_array)
 # print len(T2_array)
-plt.figure(3, figsize=[5,5])
-plt.errorbar(loop_index, T1_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'b', ecolor = 'b')
-plt.errorbar(loop_index, T2_array, yerr=T1_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g')
+plt.figure(3, figsize=[7,2.5])
+plt.errorbar(loop_index, T1_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'b', ecolor = 'b', label=r'$T_1$')
+plt.errorbar(loop_index, T2_array, yerr=T1_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g', label=r'$T_2e$')
 # plt.errorbar(loop_index, (T2_array**-1 - (2*T1_array)**-1)**-1 , yerr=T2_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
 # plt.yscale("log")
 
-plt.tick_params(labelsize = 18)
-plt.yticks([100,200,300,400])
-# plt.ylim([50,400])
+plt.tick_params(labelsize = 16)
+plt.yticks([0,100,200,300,400])
+plt.ylim([0,400])
 plt.xticks([0,5,10,15,20])
+plt.xlim(0,20)
 #plt.errorbar(loop_index, Tp_array, fmt = 'd', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
 # plt.xlabel('Index')
 # plt.ylabel(r'$\mu s$')
 # plt.grid()
+plt.legend()
+
+# plt.figure(4, figsize=[7,5])
+# plt.errorbar(T1_array, T2_array, xerr = T1_err_array, yerr=T2_err_array, fmt = 's', mfc = 'none', mew = 2.0)
+# plt.tick_params(labelsize = 16)
+# plt.xticks([100,200,300])
+# plt.yticks([200,300,400])
 plt.show()
+
+print (np.corrcoef(T2_array, T1_array)[0,1])

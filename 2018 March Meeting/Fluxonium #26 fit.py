@@ -1,8 +1,6 @@
-from scipy.optimize import curve_fit
 import numpy as np
 from matplotlib import pyplot as plt
 from qutip import *
-from Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian
 
 ##########################################################################################
 contrast_min = -0.5
@@ -146,14 +144,14 @@ def trans_energy(current, E_l, E_c, E_j, A, offset, iState, fState):
         H = 4.0 * E_c * na ** 2.0 + 0.5 * E_l * phi ** 2.0 - 0.5 * E_j * (ope.expm() + (-ope).expm())
         energy[idx] = H.eigenenergies()[fState] - H.eigenenergies()[iState]
     return energy
-plt.plot(current*1e3, trans_energy(current, E_l, E_c, E_j, A, offset, 0, 1),linestyle ='--',dashes=(10,10), linewidth = 1, color ='black')
-plt.plot(current*1e3, trans_energy(current, E_l, E_c, E_j, A, offset, 1, 2),linestyle ='--',dashes=(10,10), linewidth = 1, color ='black')
-plt.plot(current*1e3, trans_energy(current, E_l, E_c, E_j, A, offset, 0, 2),linestyle ='--',dashes=(10,10), linewidth = 1, color ='black')
+plt.plot(current*1e3, trans_energy(current, E_l, E_c, E_j, A, offset, 0, 1),linestyle ='--',dashes=(10,10), linewidth = 0.5, color ='black')
+plt.plot(current*1e3, trans_energy(current, E_l, E_c, E_j, A, offset, 1, 2),linestyle ='--',dashes=(10,10), linewidth = 0.5, color ='black')
+plt.plot(current*1e3, trans_energy(current, E_l, E_c, E_j, A, offset, 0, 2),linestyle ='--',dashes=(10,10), linewidth = 0.5, color ='black')
 
 plt.tick_params(labelsize=18.0)
 plt.ylim([0.4,4.2])
 plt.yticks([1,2,3,4])
 plt.xlim([0,2])
-plt.xticks(np.linspace(0,2,5))
+plt.xticks([])
 
 plt.show()
