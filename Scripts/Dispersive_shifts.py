@@ -16,12 +16,12 @@ fState = 1
 
 #plot dispersive shift as a function of flux
 phi_ext = np.linspace(0.0,1,201)
-w = 7.1808
+w = 7.179
 chi = np.zeros(len(phi_ext))
 # chi1 = np.zeros(len(phi_ext))
 # chi2 = np.zeros(len(phi_ext))
 # chi3 = np.zeros(len(phi_ext))
-kappa = 15 #MHz
+kappa = 7 #MHz
 for idx, phi in enumerate(phi_ext):
     chi[idx]= nChi(N, level_num, E_l, E_c, E_j, phi*2*np.pi, 0, 1, w, g)
     # chi1[idx] = pChi(N, level_num, E_l, E_c, E_j, phi*2*np.pi, 2, 0, w, g)

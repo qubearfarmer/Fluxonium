@@ -9,10 +9,10 @@ from Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian
 #Qubit and computation parameters
 N = 30
 E_l = 0.9
-E_c = 1.13
-E_j = 4
+E_c = 1.0
+E_j = 4.03
 
-phi_ext = np.linspace(0.45,0.55,11)
+phi_ext = np.linspace(0.0,0.55,101)
 level_num = 20
 energies = np.zeros((len(phi_ext),level_num))
 
@@ -91,12 +91,8 @@ plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 2 , linestyle = '-', 
 # plt.pcolormesh(X,Y,Z, cmap= 'GnBu', vmin = 0.3, vmax = 0.5)
 
 E_l = 0.7
-E_c = 1.13
-E_j = 3.85
-
-phi_ext = np.linspace(0.45,0.55,11)
-level_num = 20
-energies = np.zeros((len(phi_ext),level_num))
+E_c = 1.0
+E_j = 3.88
 
 # Compute eigensnergies
 for idx, phi in enumerate(phi_ext):

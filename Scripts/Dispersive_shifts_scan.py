@@ -37,7 +37,7 @@ charge_chi_01 = np.zeros(len(wr))
 #Plotting
 E_l = 0.7
 E_c = 1
-E_j = 5
+E_j = 4
 phi_ext = 0.5
 for idx in range(len(wr)):
     charge_chi_01[idx] = nChi(N, level_num, E_l, E_c, E_j, phi_ext * 2 * np.pi, 0, 1, wr[idx], g)
