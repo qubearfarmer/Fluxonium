@@ -16,7 +16,7 @@ g = 0.1
 # iState = 0
 # fState = 1
 phi_ext = 0.5
-wr = np.linspace(3,10,101)
+wr = np.linspace(3,10,701)
 charge_chi_01 = np.zeros(len(wr))
 # charge_chi_12 = np.zeros(len(wr))
 # charge_chi_02 = np.zeros(len(wr))
@@ -35,9 +35,9 @@ charge_chi_01 = np.zeros(len(wr))
 
 
 #Plotting
-E_l = 0.7
-E_c = 1
-E_j = 4
+E_l=1.076188026577402
+E_c=1.0245922439188155
+E_j=4.817434033496316
 phi_ext = 0.5
 for idx in range(len(wr)):
     charge_chi_01[idx] = nChi(N, level_num, E_l, E_c, E_j, phi_ext * 2 * np.pi, 0, 1, wr[idx], g)

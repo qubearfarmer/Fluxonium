@@ -7,7 +7,7 @@ from Fluxonium_hamiltonians.Single_small_junction import relaxation_rate_cap as 
 # plt.rc('font', family='sans-serif')
 # Define file directory
 root = "C:\\Users\\nguyen89"
-directory = "Box\Python Codes\Fluxonium simulation results"
+directory = "Documents\Python Codes\Fluxonium simulation results"
 fname = "Relaxation_freq"
 path = root + "\\" + directory + "\\" + fname
 

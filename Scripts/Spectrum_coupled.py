@@ -21,11 +21,11 @@ level_num = 7
 energies = np.zeros((len(phi_ext),level_num))
 
 ########################################################################################
-for idx, phi in enumerate(phi_ext):
-    H = coupled_hamiltonian(Na, E_l, E_c, E_j, phi*2*np.pi, Nr, wr, g)
-    for idy in range(level_num):
-        energies[idx,idy] = abs(H.eigenenergies()[idy])
-np.savetxt(path + '_energies.txt', energies)
+# for idx, phi in enumerate(phi_ext):
+#     H = coupled_hamiltonian(Na, E_l, E_c, E_j, phi*2*np.pi, Nr, wr, g)
+#     for idy in range(level_num):
+#         energies[idx,idy] = abs(H.eigenenergies()[idy])
+# np.savetxt(path + '_energies.txt', energies)
 ########################################################################################
 energies = np.genfromtxt(path+'_energies.txt')
 
