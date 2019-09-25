@@ -2,15 +2,16 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 from Fluxonium_hamiltonians.Single_small_junction import charge_matrix_element as nem
+from Fluxonium_hamiltonians.Single_small_junction import phase_matrix_element as pem
 
-N = 50
-E_l=0.617
-E_c=1.177
-E_j=2.045
+N = 30
+E_l=1
+E_c=5.0
+E_j=15
 iState = 0
-fState = 3
+fState = 1
 
-phi_ext = np.linspace(0.4,0.5,101)
+phi_ext = np.linspace(0,1,101)
 element = np.zeros(len(phi_ext))
 # for idx, phi in enumerate(phi_ext):
 #     element[idx]=abs(pem(N, E_l, E_c, E_j, phi*2*np.pi, iState, fState))

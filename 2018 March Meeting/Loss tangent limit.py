@@ -21,14 +21,14 @@ phi_o = h / (2 * e)  # Flux quantum
 kB = 1.38e-23
 
 # Define file directory
-directory = "C:\\Users\\nguyen89\\Box\\Python Codes\\Fluxonium simulation results"
+directory = "C:\\Users\\nguyen89\Documents\Python Codes\Fluxonium simulation results"
 fname = "Relaxation_"
-qubit_name = np.array(['13', '28', '10', '23', '12', '22', '32', '33'])
-E_j_array = np.array([3, 4.86, 2.2, 2.2, 1.6, 3.4, 1.65, 4.43])
-E_c_array = np.array([0.84, 0.84, 0.8, 0.83, 0.86, 0.8, 1.14, 1])
-E_l_array = np.array([1, 1.14, 0.72, 0.52, 0.5, 0.41, 0.19, 0.79])
-chain_num_array = np.array([100, 136, 102, 196, 100, 348, 400, 100])
-T1_array = np.array([110, 250, 260, 70, 108, 270, 110, 230])
+qubit_name = np.array(['13', '28', '10', '23', '12', '22', '32', '33', 'JuliusIV'])
+E_j_array = np.array([3, 4.86, 2.2, 2.2, 1.6, 3.4, 1.65, 4.43,3.44])
+E_c_array = np.array([0.84, 0.84, 0.8, 0.83, 0.86, 0.8, 1.14, 1, 1])
+E_l_array = np.array([1, 1.14, 0.72, 0.52, 0.5, 0.41, 0.19, 0.79, 0.58])
+chain_num_array = np.array([100, 136, 102, 196, 100, 348, 400, 100, 144])
+T1_array = np.array([110, 250, 260, 70, 108, 270, 110, 230, 500])
 T_diel = 20.0e-3
 T_qp = 20.0e-3
 tan_diel = np.zeros(len(E_j_array))
@@ -76,6 +76,6 @@ for idx in range(len(E_j_array)):
     # tan_ind[idx] = 1.0 / Q_ind
 
 print("tan_diel x 1e6 = " + str(tan_diel * 1e6))
-print("tan_diel_chain x 1e6 = " + str(tan_diel_chain * 1e6))
+print("tan_diel_chain x 1e4 = " + str(tan_diel_chain * 1e4))
 print("x_qp_chain x 1e8 = " + str(x_qp_chain * 1e8))
 print("tan_ind x 1e8 = " + str(tan_ind * 1e8))

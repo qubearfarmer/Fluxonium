@@ -35,7 +35,8 @@ T2_array = []
 T2_err_array = []
 Tp_array = []
 loop_index = []
-
+phase_t1_avg = 0
+phase_t2_avg = 0
 #Read data and fit
 with h5py.File(path,'r') as hf:
     print('List of arrays in this file: \n', hf.keys())
@@ -53,7 +54,8 @@ with h5py.File(path,'r') as hf:
         phase_t2 = np.unwrap(phase_t2)*180/np.pi
         phase_t2 = phase_t2 - np.min(phase_t2)
         phase_t2 = abs(phase_t2)
-
+        phase_t1_avg = phase_t1_avg + phase_t1
+        phase_t2_avg = phase_t2_avg + phase_t2
         guess = [phase_t1[0]-phase_t1[-1], T1_guess, 0, phase_t1[-1]]
         try:
             popt, pcov = curve_fit(func, time_t1*1e-9, phase_t1, guess)
@@ -120,7 +122,7 @@ plt.errorbar(loop_index, T2_array, yerr=T2_err_array, fmt = 'h', mfc = 'none', m
 plt.tick_params(labelsize = 16)
 plt.yticks([0,50,100,150,200])
 plt.ylim([0,200])
-plt.xlim([0,50])
+plt.xlim([-0.5,50.5])
 plt.xticks([0, 10, 20, 30, 40,50])
 #plt.errorbar(loop_index, Tp_array, fmt = 'd', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
 # plt.xlabel('Index')
@@ -129,7 +131,39 @@ plt.xticks([0, 10, 20, 30, 40,50])
 
 # x = np.linspace(1,1000,1001)
 # plt.plot(x,2*x)
-plt.legend()
+# plt.legend()
 plt.show()
 
-print (np.corrcoef(T2_array, T1_array)[0,1])
+# print (np.corrcoef(T2_array, T1_array)[0,1])
+plt.figure(4)
+phase_t1_avg = phase_t1_avg/loop_num
+guess = [phase_t1_avg[0]-phase_t1_avg[-1], T1_guess, 0, phase_t1_avg[-1]]
+popt, pcov = curve_fit(func, time_t1*1e-9, phase_t1_avg, guess)
+a,b,c,d = popt #b is T1
+time_nice  = np.linspace(0, pts_num*time_step_T1, pts_num*100)
+phase_fit = func(time_nice*1e-9, a,b,c,d)
+perr = np.sqrt(abs(np.diag(pcov)))
+T1 = b*1e6
+T1_err = perr[1]*1e6
+plt.plot(time_t1/1e3, phase_t1_avg, 'bs', linewidth = 2)
+plt.plot(time_nice/1e3, phase_fit)
+plt.yscale('log')
+print (T1, T1_err)
+plt.tick_params(labelsize = 18)
+
+plt.figure(5)
+phase_t2_avg = phase_t2_avg/loop_num
+guess = [phase_t2_avg[0]-phase_t2_avg[-1], T2_guess, 0, phase_t2_avg[-1]]
+popt, pcov = curve_fit(func, time_t2*1e-9, phase_t2_avg, guess)
+a,b,c,d = popt #b is T1
+time_nice  = np.linspace(0, pts_num*time_step_T2E, pts_num*100)
+phase_fit = func(time_nice*1e-9, a, b, c, d)
+perr = np.sqrt(abs(np.diag(pcov)))
+T2 = b*1e6
+T2_err = perr[1]*1e6
+plt.plot(time_t2/1e3, phase_t2_avg, 'gd')
+plt.plot(time_nice/1e3,phase_fit, linewidth = 2)
+print (T2, T2_err)
+plt.tick_params(labelsize = 18)
+
+plt.plot()

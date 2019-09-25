@@ -40,9 +40,10 @@ thermal_factor_diel = (1 + np.exp(-h * w * 1e9 / (kB * T_diel)))
 #         gamma_cap[idx] = r_cap(E_l, E_c, E_j, Q_cap*(5.0/w[idx])**alpha, w[idx], p_element[idx], T_diel)*thermal_factor_diel[idx]
 #     plt.loglog(w, 1.0 / gamma_cap*1e6 * p_element ** 2, linewidth=2.0, linestyle='--')
 
-directory = 'Box\Research\Paper Images\Coherence summary\\Fluxonium #13'
-fname = 'T1_60to62mA.txt'
-path = root + "\\" + directory + "\\" + fname
+# directory = 'Box\Research\Paper Images\Coherence summary\\Fluxonium #13'
+# fname = 'T1_60to62mA.txt'
+# path = root + "\\" + directory + "\\" + fname
+path = 'C:\\Users\\nguyen89\Box\Research\Paper Images\Coherence summary\Fluxonium #13\T1_60to62mA.txt'
 data = np.genfromtxt(path, skip_header=1)  # , delimiter= ',')
 current = data[:, 0]
 freq = data[:, 1]
@@ -153,6 +154,7 @@ plt.errorbar(freq, T1 * matrix_element_interp ** 2 * 0.84 / 0.985, fmt='s', mfc=
 
 plt.tick_params(labelsize=18.0)
 plt.legend()
+plt.grid(b=True, which='both', axis='both')
 plt.xticks([])
 plt.yticks([])
 plt.show()

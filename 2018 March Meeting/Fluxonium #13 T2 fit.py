@@ -3,8 +3,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import curve_fit
 
-plt.figure(figsize=(5, 5))
-plt.rc('font', family='serif')
+plt.figure(figsize=(3.5, 3.5))
+plt.rc('font', family='san-serif')
 
 
 def func(x,a,b,c,d):
@@ -12,8 +12,8 @@ def func(x,a,b,c,d):
 
 
 directory = 'G:\Projects\Fluxonium\Data\Fluxonium #13\T2E'
-# '''
-measurement = '090517_T2E_YOKO_61.115mA_Cav7.36923GHz_-30dBm_Qubit0.7936GHz_25dBm_PiPulse268ns_Count30_TimeStep10000_Avg_10000.h5'
+'''
+measurement = '090717_T2E_YOKO_61.04mA_Cav7.36923GHz_-30dBm_Qubit0.992GHz_25dBm_PiPulse211ns_Count30_TimeStep800_Avg_10000.h5'
 path = directory + '\\' + measurement
 pts_num = 30
 time_step = 1000
@@ -39,13 +39,15 @@ time_nice  = np.linspace(0, pts_num*time_step, pts_num*100)
 phase_fit = func(time_nice*1e-9, a, b, c, d)
 perr = np.sqrt(abs(np.diag(pcov)))
 plt.plot(time_nice*1e-3, phase_fit, color='black')
-# plt.title(str(b*1e6)+ r'$\pm$' +str(perr[1]*1e6))
-plt.tick_params(labelsize = 20.0)
+plt.xticks([0,15,30])
+plt.yticks([0,2,4])
+plt.xlim([0,30])
+plt.ylim([-0.2,4.2])
 
-# '''
+'''
 def func(x,a,b,c,d):
     return a*np.exp(-(x-c)/b) + d
-measurement = '090517_T2E_YOKO_61.105mA_Cav7.36923GHz_-30dBm_Qubit0.7936GHz_25dBm_PiPulse267ns_Count30_TimeStep10000_Avg_10000.h5'
+measurement = '090517_T2E_YOKO_61.115mA_Cav7.36923GHz_-30dBm_Qubit0.7895GHz_25dBm_PiPulse268ns_Count30_TimeStep10000_Avg_10000.h5'
 path = directory + '\\' + measurement
 pts_num = 30
 time_step = 10000
@@ -71,8 +73,10 @@ time_nice  = np.linspace(0, pts_num*time_step, pts_num*100)
 phase_fit = func(time_nice*1e-9, a, b, c, d)
 perr = np.sqrt(abs(np.diag(pcov)))
 plt.plot(time_nice*1e-3, phase_fit, color='black')
+plt.yticks([0,1,2])
+plt.xticks([0,150,300])
 # plt.title(str(b*1e6)+ r'$\pm$' +str(perr[1]*1e6))
-plt.tick_params(labelsize = 20.0)
-# '''
 
+#'''
+plt.tick_params(labelsize = 18.0)
 plt.show()

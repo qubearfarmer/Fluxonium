@@ -7,13 +7,14 @@ from Fluxonium_hamiltonians.Single_small_junction import phase_matrix_element as
 from Fluxonium_hamiltonians.Single_small_junction import charge_matrix_element as nem
 from Fluxonium_hamiltonians.Single_small_junction import qp_matrix_element as qpem
 from Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian as H
+from Fluxonium_hamiltonians.Single_small_junction import relaxation_rate_qp_array as r_qp_array
 
 plt.rc('text', usetex=True)
 plt.rc('font', family='sans-serif')
 #Define file directory
 
 directory = "C:\\Users\\nguyen89\Documents\Python Codes\Fluxonium simulation results"
-fname = "Relaxation_blochnium"
+fname = "Relaxation_vool"
 path = directory + "\\" + fname
 
 #Define constants
@@ -22,9 +23,9 @@ h = 6.626e-34    #Placnk's constant
 phi_o = h/(2*e) #Flux quantum
 #######################################################################################
 N = 50
-E_l = 196e-3
-E_c = 7.55
-E_j = 7.25
+E_l = 0.46
+E_c = 3.6
+E_j = 10
 level_num = 15
 chain_num = 460
 kB = 1.38e-23
@@ -72,7 +73,7 @@ thermal_factor_qp = (1+np.exp(-h*w*1e9/(kB*T_qp)))
 # C_chain = 36.0e-15
 # Cg = 36.0e-18
 #
-# for Q_cap in [0.2e6]:
+# for Q_cap in [(1.1e-6)**-1.0]:
 #     for idx in range(len(phi_ext)):
 #         gamma_cap[idx] = r_cap(E_l, E_c, E_j, Q_cap, w[idx], p_element[idx], T_diel)*thermal_factor_diel[idx]
 #     plt.semilogy(phi_ext, 1.0/gamma_cap *1e6, linewidth= 2.0, linestyle ='-')
@@ -87,12 +88,12 @@ thermal_factor_qp = (1+np.exp(-h*w*1e9/(kB*T_qp)))
 #         gamma_cap_chain2[idx] = r_cap_chain2(Cg, chain_num, Q_cap, w[idx], p_element[idx], T_diel)*thermal_factor_diel[idx]
 #     plt.semilogy(phi_ext, 1.0/gamma_cap_chain2 *1e6, linewidth= 2.0, linestyle ='-')
 
-for x_qp in [20e-7,100e-7]:
+for x_qp in [1e-8]:
     Q_qp = 1.0/x_qp
     for idx in range(len(phi_ext)):
         gamma_qp[idx] = r_qp(E_l, E_c, E_j, Q_qp, w[idx], qp_element[idx])
-    # plt.semilogy(w, 1.0/(gamma_qp)*1e6, linewidth = 2.0, linestyle='--')
-    plt.semilogy(phi_ext, 1.0/(gamma_qp)*1e6, linewidth = 2.0, linestyle='--', color='k')
+#     # plt.semilogy(w, 1.0/(gamma_qp)*1e6, linewidth = 2.0, linestyle='--')
+#     plt.semilogy(phi_ext, 1.0/(gamma_qp)*1e6, linewidth = 2.0, linestyle='--', color='k')
 
 # for T_qp in [0.25, 0.28]:
 #     thermal_factor_qp = (1 + np.exp(-h * w * 1e9 / (kB * T_qp)))
@@ -101,13 +102,14 @@ for x_qp in [20e-7,100e-7]:
 #     # plt.semilogy(w, 1.0/(gamma_qp)*1e6, linewidth = 2.0, linestyle='--')
 #     plt.semilogy(w, 1.0/(gamma_qp+gamma_cap)*1e6, linewidth = 2.0, linestyle='-.', color='r')
 
-# for x_qp in [4e-8]:
-#     Q_qp = 1.0 / x_qp
-#     for idx in range(len(phi_ext)):
-#         gamma_qp_array[idx] = r_qp_array(E_l, E_c, E_j, Q_qp, w[idx], p_element[idx])*thermal_factor_qp[idx]
-#     plt.semilogy(phi_ext, 1.0 / (gamma_qp_array) * 1e6, linewidth=2.0, linestyle='--', color = 'orange')
+for x_qp in [1e-8]:
+    Q_qp = 1.0 / x_qp
+    for idx in range(len(phi_ext)):
+        gamma_qp_array[idx] = r_qp_array(E_l, E_c, E_j, Q_qp, w[idx], p_element[idx])
+    # plt.semilogy(phi_ext, 1.0 / (gamma_qp_array) * 1e6, linewidth=2.0, linestyle='--', color = 'orange')
     # plt.semilogy(w, 1.0/(gamma_qp+gamma_cap+gamma_qp_array)*1e6, linewidth = 2.5, linestyle='-', color ='black')
 
+plt.semilogy(phi_ext, 1.0 / (gamma_qp) * 1e6, linewidth=2.0, linestyle='--', color = 'm')
 # for T_qp in [0.25]:
 #     thermal_factor_qp = (1 + np.exp(-h * w * 1e9 / (kB * T_qp)))
 #     for idx in range(len(phi_ext)):
@@ -147,4 +149,118 @@ for x_qp in [20e-7,100e-7]:
 #plt.xlim([0.1,6])
 # plt.ylim([1e1,1e3])
 #plt.xlim([np.min(w),np.max(w)])
+
+##################################################################################
+directory = "C:\\Users\\nguyen89\Documents\Python Codes\Fluxonium simulation results"
+fname = "Relaxation_JuliusIV"
+path = directory + "\\" + fname
+E_l=0.5825088902476563
+E_c=1.0019222206424947
+E_j=3.4376199557356957
+energies = np.genfromtxt(path+'_energies.txt')
+n_element = np.genfromtxt(path+'_chargeElement.txt')
+p_element = np.genfromtxt(path+'_fluxElement.txt')
+qp_element = np.genfromtxt(path+'_qpElement.txt')
+w = energies[:,fState]-energies[:,iState]
+T_diel = 20.0e-3
+thermal_factor_diel = (1+np.exp(-h*w*1e9/(kB*T_diel)))
+T_qp=20.0e-3
+thermal_factor_qp = (1+np.exp(-h*w*1e9/(kB*T_qp)))
+# C_chain = 36.0e-15
+# Cg = 36.0e-18
+#
+# for Q_cap in [(1.1e-6)**-1.0]:
+#     for idx in range(len(phi_ext)):
+#         gamma_cap[idx] = r_cap(E_l, E_c, E_j, Q_cap, w[idx], p_element[idx], T_diel)*thermal_factor_diel[idx]
+#     plt.semilogy(phi_ext, 1.0/gamma_cap *1e6, linewidth= 2.0, linestyle ='-')
+#
+# for Q_cap in [1e3]:
+#     for idx in range(len(phi_ext)):
+#         gamma_cap_chain1[idx] = r_cap_chain1(C_chain, chain_num, Q_cap, w[idx], p_element[idx], T_diel)*thermal_factor_diel[idx]
+#     plt.semilogy(phi_ext, 1.0/gamma_cap_chain1 *1e6, linewidth= 2.0, linestyle ='-')
+
+# for Q_cap in [0.2e6]:
+#     for idx in range(len(phi_ext)):
+#         gamma_cap_chain2[idx] = r_cap_chain2(Cg, chain_num, Q_cap, w[idx], p_element[idx], T_diel)*thermal_factor_diel[idx]
+#     plt.semilogy(phi_ext, 1.0/gamma_cap_chain2 *1e6, linewidth= 2.0, linestyle ='-')
+
+for x_qp in [1e-8]:
+    Q_qp = 1.0/x_qp
+    for idx in range(len(phi_ext)):
+        gamma_qp[idx] = r_qp(E_l, E_c, E_j, Q_qp, w[idx], qp_element[idx])
+#     # plt.semilogy(w, 1.0/(gamma_qp)*1e6, linewidth = 2.0, linestyle='--')
+#     plt.semilogy(phi_ext, 1.0/(gamma_qp)*1e6, linewidth = 2.0, linestyle='--', color='k')
+
+# for T_qp in [0.25, 0.28]:
+#     thermal_factor_qp = (1 + np.exp(-h * w * 1e9 / (kB * T_qp)))
+#     for idx in range(len(phi_ext)):
+#         gamma_qp[idx] = r_qp_finiteT(E_l, E_c, E_j, w[idx], qp_element[idx], T_qp)*thermal_factor_qp[idx]
+#     # plt.semilogy(w, 1.0/(gamma_qp)*1e6, linewidth = 2.0, linestyle='--')
+#     plt.semilogy(w, 1.0/(gamma_qp+gamma_cap)*1e6, linewidth = 2.0, linestyle='-.', color='r')
+
+for x_qp in [1e-8]:
+    Q_qp = 1.0 / x_qp
+    for idx in range(len(phi_ext)):
+        gamma_qp_array[idx] = r_qp_array(E_l, E_c, E_j, Q_qp, w[idx], p_element[idx])
+    # plt.semilogy(phi_ext, 1.0 / (gamma_qp_array) * 1e6, linewidth=2.0, linestyle='--', color = 'orange')
+    # plt.semilogy(w, 1.0/(gamma_qp+gamma_cap+gamma_qp_array)*1e6, linewidth = 2.5, linestyle='-', color ='black')
+
+plt.semilogy(phi_ext, 1.0 / (gamma_qp) * 1e6, linewidth=2.0, linestyle='--', color = 'r')
+
+directory = "C:\\Users\\nguyen89\Documents\Python Codes\Fluxonium simulation results"
+fname = "Relaxation_JuliusII"
+path = directory + "\\" + fname
+E_l=0.79
+E_c=0.98
+E_j=4.43
+energies = np.genfromtxt(path+'_energies.txt')
+n_element = np.genfromtxt(path+'_chargeElement.txt')
+p_element = np.genfromtxt(path+'_fluxElement.txt')
+qp_element = np.genfromtxt(path+'_qpElement.txt')
+w = energies[:,fState]-energies[:,iState]
+T_diel = 20.0e-3
+thermal_factor_diel = (1+np.exp(-h*w*1e9/(kB*T_diel)))
+T_qp=20.0e-3
+thermal_factor_qp = (1+np.exp(-h*w*1e9/(kB*T_qp)))
+# C_chain = 36.0e-15
+# Cg = 36.0e-18
+#
+# for Q_cap in [(1.1e-6)**-1.0]:
+#     for idx in range(len(phi_ext)):
+#         gamma_cap[idx] = r_cap(E_l, E_c, E_j, Q_cap, w[idx], p_element[idx], T_diel)*thermal_factor_diel[idx]
+#     plt.semilogy(phi_ext, 1.0/gamma_cap *1e6, linewidth= 2.0, linestyle ='-')
+#
+# for Q_cap in [1e3]:
+#     for idx in range(len(phi_ext)):
+#         gamma_cap_chain1[idx] = r_cap_chain1(C_chain, chain_num, Q_cap, w[idx], p_element[idx], T_diel)*thermal_factor_diel[idx]
+#     plt.semilogy(phi_ext, 1.0/gamma_cap_chain1 *1e6, linewidth= 2.0, linestyle ='-')
+
+# for Q_cap in [0.2e6]:
+#     for idx in range(len(phi_ext)):
+#         gamma_cap_chain2[idx] = r_cap_chain2(Cg, chain_num, Q_cap, w[idx], p_element[idx], T_diel)*thermal_factor_diel[idx]
+#     plt.semilogy(phi_ext, 1.0/gamma_cap_chain2 *1e6, linewidth= 2.0, linestyle ='-')
+
+for x_qp in [1e-8]:
+    Q_qp = 1.0/x_qp
+    for idx in range(len(phi_ext)):
+        gamma_qp[idx] = r_qp(E_l, E_c, E_j, Q_qp, w[idx], qp_element[idx])
+#     # plt.semilogy(w, 1.0/(gamma_qp)*1e6, linewidth = 2.0, linestyle='--')
+#     plt.semilogy(phi_ext, 1.0/(gamma_qp)*1e6, linewidth = 2.0, linestyle='--', color='k')
+
+# for T_qp in [0.25, 0.28]:
+#     thermal_factor_qp = (1 + np.exp(-h * w * 1e9 / (kB * T_qp)))
+#     for idx in range(len(phi_ext)):
+#         gamma_qp[idx] = r_qp_finiteT(E_l, E_c, E_j, w[idx], qp_element[idx], T_qp)*thermal_factor_qp[idx]
+#     # plt.semilogy(w, 1.0/(gamma_qp)*1e6, linewidth = 2.0, linestyle='--')
+#     plt.semilogy(w, 1.0/(gamma_qp+gamma_cap)*1e6, linewidth = 2.0, linestyle='-.', color='r')
+
+for x_qp in [1e-8]:
+    Q_qp = 1.0 / x_qp
+    for idx in range(len(phi_ext)):
+        gamma_qp_array[idx] = r_qp_array(E_l, E_c, E_j, Q_qp, w[idx], p_element[idx])
+    # plt.semilogy(phi_ext, 1.0 / (gamma_qp_array) * 1e6, linewidth=2.0, linestyle='--', color = 'orange')
+    # plt.semilogy(w, 1.0/(gamma_qp+gamma_cap+gamma_qp_array)*1e6, linewidth = 2.5, linestyle='-', color ='black')
+
+plt.semilogy(phi_ext, 1.0 / (gamma_qp) * 1e6, linewidth=2.0, linestyle='--', color = 'b')
+
 plt.show()

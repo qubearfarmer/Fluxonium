@@ -319,9 +319,14 @@ energies = np.genfromtxt(path)
 # for idx in range(1,level_num):
 #     plt.plot(current*1e3, energies[:,idx] - energies[:,0], color ='k', linestyle ='--', alpha = 0.6)
 
+#Qubit transitions
+# plt.plot(current*1e3, energies[:,1] - energies[:,0], color = 'k', linestyle ='--', label=r'$|00\rangle \rightarrow |10\rangle$')
+# plt.plot(current*1e3, energies[:,2] - energies[:,0], color = 'k', linestyle ='--', label=r'$|00\rangle \rightarrow |01\rangle$')
+#
+
 #Transitions near gate
-# plt.plot(current*1e3, energies[:,4] - energies[:,0], color = 'k', linestyle ='--', label=r'$|00\rangle \rightarrow |20\rangle$')
-# plt.plot(current*1e3, energies[:,5] - energies[:,0], color = 'k', linestyle ='--', label=r'$|00\rangle \rightarrow |02\rangle$')
+plt.plot(current*1e3, energies[:,2] - energies[:,0], color = 'k', linestyle ='--', label=r'$|00\rangle \rightarrow |20\rangle$')
+plt.plot(current*1e3, energies[:,3] - energies[:,1], color = 'k', linestyle ='--', label=r'$|00\rangle \rightarrow |02\rangle$')
 #
 # plt.plot(current*1e3, energies[:,4] - energies[:,1], linestyle ='--', label=r'$|10\rangle \rightarrow |20\rangle$')
 # plt.plot(current*1e3, energies[:,5] - energies[:,1], linestyle ='--', label=r'$|10\rangle \rightarrow |02\rangle$')
@@ -336,7 +341,7 @@ energies = np.genfromtxt(path)
 # plt.plot(current*1e3, energies[:,4] - energies[:,3], linestyle ='-', label=r'$|11\rangle \rightarrow |20\rangle$')
 # plt.plot(current*1e3, energies[:,5] - energies[:,3], linestyle ='-', label=r'$|11\rangle \rightarrow |02\rangle$')
 # plt.plot(current*1e3, energies[:,6] - energies[:,3], linestyle ='-', label=r'$|11\rangle \rightarrow |21\rangle$')
-# plt.plot(current*1e3, energies[:,7] - energies[:,3],color = 'm', linestyle ='-',linewidth = 2, label=r'$|11\rangle \rightarrow |12\rangle$')
+plt.plot(current*1e3, energies[:,7] - energies[:,3],color = 'm', linestyle ='-',linewidth = 2, label=r'$|11\rangle \rightarrow |12\rangle$')
 
 
 #transitions near cavity

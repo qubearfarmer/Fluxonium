@@ -15,153 +15,27 @@ Na = 20
 Nb = 20
 B_coeff = 30
 
-E_la=1.076188026577402
-E_ca=1.0245922439188155
-E_ja=4.817434033496316
-A=2.1415963616712136e-10
-offset=0.028043712988006286
+E_la=1
+E_ca=1
+E_ja=4.5
 
-E_lb=1.4989850921941266
-E_cb=1.0172194919268065
-E_jb=5.257475161569078
-A=2.1086704960372626e-10
-offset=0.02347013794896157
 
-J_c = 0.3
+E_lb=1
+E_cb=5
+E_jb=15
+
+J_l = 0.5
 # J_c_array = np.linspace(0,1,101)
-level_num = 20
-current = np.linspace(0,1.0,51)*1e-3
-energies = np.zeros((len(current), level_num))
+# level_num = 20
+# current = np.linspace(0,1.0,51)*1e-3
+# energies = np.zeros((len(current), level_num))
 
 level_num = 20
-phi_ext_array = np.linspace(0, 0.5, 11)
+phi_ext_array = np.linspace(0, 1, 101)
 # phi_ext = 0.5
 spectrum = np.zeros((len(phi_ext_array), level_num))
 nem = np.zeros((len(phi_ext_array), level_num * 2))
 #########################################################
-# for idx, phi_ext in enumerate(phi_ext_array):
-#     a = tensor(destroy(Na), qeye(Nb))
-#     phi_a = (a + a.dag()) * (8.0 * E_ca / E_la) ** (0.25) / np.sqrt(2.0)
-#     na_a = 1.0j * (a.dag() - a) * (E_la / (8 * E_ca)) ** (0.25) / np.sqrt(2.0)
-#     ope_a = 1.0j * (phi_a - 2 * np.pi * phi_ext)
-#     H_a = 4.0 * E_ca * na_a ** 2.0 + 0.5 * E_la * phi_a ** 2.0 - 0.5 * E_ja * (ope_a.expm() + (-ope_a).expm())
-#
-#     b = tensor(qeye(Na), destroy(Nb))
-#     phi_b = (b + b.dag()) * (8.0 * E_cb / E_lb) ** (0.25) / np.sqrt(2.0)
-#     na_b = 1.0j * (b.dag() - b) * (E_lb / (8 * E_cb)) ** (0.25) / np.sqrt(2.0)
-#     ope_b = 1.0j * (phi_b - 2 * np.pi * phi_ext)
-#     H_b = 4.0 * E_cb * na_b ** 2.0 + 0.5 * E_lb * phi_b ** 2.0 - 0.5 * E_jb * (ope_b.expm() + (-ope_b).expm())
-#
-#     Hc = J_c * na_a * na_b
-#     H = H_a + H_b + Hc
-#     eigenenergies, eigenstates = H.eigenstates()
-#     for idy in range(level_num):
-#         spectrum[idx, idy] = eigenenergies[idy]
-#     print(str(round((idx + 1) / len(phi_ext_array) * 100, 2)) + "%")
-#
-# np.savetxt(path, spectrum)
-#########################################################
-energies = np.genfromtxt(path)
-
-for idx in range(1,5):
-    plt.plot(phi_ext_array, energies[:,idx]-energies[:,0], 'k-')
-
-
-# Na = 30
-# Nb = 30
-# for idx, phi_ext in enumerate(phi_ext_array):
-#     a = tensor(destroy(Na), qeye(Nb))
-#     phi_a = (a + a.dag()) * (8.0 * E_ca / E_la) ** (0.25) / np.sqrt(2.0)
-#     na_a = 1.0j * (a.dag() - a) * (E_la / (8 * E_ca)) ** (0.25) / np.sqrt(2.0)
-#     ope_a = 1.0j * (phi_a - 2 * np.pi * phi_ext)
-#     H_a = 4.0 * E_ca * na_a ** 2.0 + 0.5 * E_la * phi_a ** 2.0 - 0.5 * E_ja * (ope_a.expm() + (-ope_a).expm())
-#
-#     b = tensor(qeye(Na), destroy(Nb))
-#     phi_b = (b + b.dag()) * (8.0 * E_cb / E_lb) ** (0.25) / np.sqrt(2.0)
-#     na_b = 1.0j * (b.dag() - b) * (E_lb / (8 * E_cb)) ** (0.25) / np.sqrt(2.0)
-#     ope_b = 1.0j * (phi_b - 2 * np.pi * phi_ext)
-#     H_b = 4.0 * E_cb * na_b ** 2.0 + 0.5 * E_lb * phi_b ** 2.0 - 0.5 * E_jb * (ope_b.expm() + (-ope_b).expm())
-#
-#     Hc = J_c * na_a * na_b
-#     H = H_a + H_b + Hc
-#     eigenenergies, eigenstates = H.eigenstates()
-#     for idy in range(level_num):
-#         spectrum[idx, idy] = eigenenergies[idy]
-#     print(str(round((idx + 1) / len(phi_ext_array) * 100, 2)) + "%")
-
-fname = "Coupled_fluxonium_AugustusVI_spectrum_test_N=30.txt"
-path = directory + '\\' + fname
-# np.savetxt(path, spectrum)
-energies = np.genfromtxt(path)
-
-for idx in range(1,5):
-    plt.plot(phi_ext_array, energies[:,idx]-energies[:,0], 'b--')
-
-
-# Na = 40
-# Nb = 40
-# for idx, phi_ext in enumerate(phi_ext_array):
-#     a = tensor(destroy(Na), qeye(Nb))
-#     phi_a = (a + a.dag()) * (8.0 * E_ca / E_la) ** (0.25) / np.sqrt(2.0)
-#     na_a = 1.0j * (a.dag() - a) * (E_la / (8 * E_ca)) ** (0.25) / np.sqrt(2.0)
-#     ope_a = 1.0j * (phi_a - 2 * np.pi * phi_ext)
-#     H_a = 4.0 * E_ca * na_a ** 2.0 + 0.5 * E_la * phi_a ** 2.0 - 0.5 * E_ja * (ope_a.expm() + (-ope_a).expm())
-#
-#     b = tensor(qeye(Na), destroy(Nb))
-#     phi_b = (b + b.dag()) * (8.0 * E_cb / E_lb) ** (0.25) / np.sqrt(2.0)
-#     na_b = 1.0j * (b.dag() - b) * (E_lb / (8 * E_cb)) ** (0.25) / np.sqrt(2.0)
-#     ope_b = 1.0j * (phi_b - 2 * np.pi * phi_ext)
-#     H_b = 4.0 * E_cb * na_b ** 2.0 + 0.5 * E_lb * phi_b ** 2.0 - 0.5 * E_jb * (ope_b.expm() + (-ope_b).expm())
-#
-#     Hc = J_c * na_a * na_b
-#     H = H_a + H_b + Hc
-#     eigenenergies, eigenstates = H.eigenstates()
-#     for idy in range(level_num):
-#         spectrum[idx, idy] = eigenenergies[idy]
-#     print(str(round((idx + 1) / len(phi_ext_array) * 100, 2)) + "%")
-
-fname = "Coupled_fluxonium_AugustusVI_spectrum_test_N=40.txt"
-path = directory + '\\' + fname
-# np.savetxt(path, spectrum)
-energies = np.genfromtxt(path)
-
-for idx in range(1,5):
-    plt.plot(phi_ext_array, energies[:,idx]-energies[:,0], 'g--')
-# plt.plot(J_c_array, abs((energies[:,3]-energies[:,1])-(energies[:,2]-energies[:,0]))*100*1e3)
-# plt.plot(J_c_array, abs((energies[:,7]-energies[:,3])-(energies[:,5]-energies[:,2]))*1e3)
-
-# Na = 10
-# Nb = 10
-# for idx, phi_ext in enumerate(phi_ext_array):
-#     a = tensor(destroy(Na), qeye(Nb))
-#     phi_a = (a + a.dag()) * (8.0 * E_ca / E_la) ** (0.25) / np.sqrt(2.0)
-#     na_a = 1.0j * (a.dag() - a) * (E_la / (8 * E_ca)) ** (0.25) / np.sqrt(2.0)
-#     ope_a = 1.0j * (phi_a - 2 * np.pi * phi_ext)
-#     H_a = 4.0 * E_ca * na_a ** 2.0 + 0.5 * E_la * phi_a ** 2.0 - 0.5 * E_ja * (ope_a.expm() + (-ope_a).expm())
-#
-#     b = tensor(qeye(Na), destroy(Nb))
-#     phi_b = (b + b.dag()) * (8.0 * E_cb / E_lb) ** (0.25) / np.sqrt(2.0)
-#     na_b = 1.0j * (b.dag() - b) * (E_lb / (8 * E_cb)) ** (0.25) / np.sqrt(2.0)
-#     ope_b = 1.0j * (phi_b - 2 * np.pi * phi_ext)
-#     H_b = 4.0 * E_cb * na_b ** 2.0 + 0.5 * E_lb * phi_b ** 2.0 - 0.5 * E_jb * (ope_b.expm() + (-ope_b).expm())
-#
-#     Hc = J_c * na_a * na_b
-#     H = H_a + H_b + Hc
-#     eigenenergies, eigenstates = H.eigenstates()
-#     for idy in range(level_num):
-#         spectrum[idx, idy] = eigenenergies[idy]
-#     print(str(round((idx + 1) / len(phi_ext_array) * 100, 2)) + "%")
-
-fname = "Coupled_fluxonium_AugustusVI_spectrum_test_N=10.txt"
-path = directory + '\\' + fname
-# np.savetxt(path, spectrum)
-energies = np.genfromtxt(path)
-
-for idx in range(1,5):
-    plt.plot(phi_ext_array, energies[:,idx]-energies[:,0], 'y--')
-
-Na = 50
-Nb = 50
 for idx, phi_ext in enumerate(phi_ext_array):
     a = tensor(destroy(Na), qeye(Nb))
     phi_a = (a + a.dag()) * (8.0 * E_ca / E_la) ** (0.25) / np.sqrt(2.0)
@@ -175,19 +49,24 @@ for idx, phi_ext in enumerate(phi_ext_array):
     ope_b = 1.0j * (phi_b - 2 * np.pi * phi_ext)
     H_b = 4.0 * E_cb * na_b ** 2.0 + 0.5 * E_lb * phi_b ** 2.0 - 0.5 * E_jb * (ope_b.expm() + (-ope_b).expm())
 
-    Hc = J_c * na_a * na_b
+    # Hc = J_c * na_a * na_b
+    # H = H_a + H_b + Hc
+    Hc = J_l * phi_a * phi_b
     H = H_a + H_b + Hc
     eigenenergies, eigenstates = H.eigenstates()
     for idy in range(level_num):
         spectrum[idx, idy] = eigenenergies[idy]
     print(str(round((idx + 1) / len(phi_ext_array) * 100, 2)) + "%")
 
-fname = "Coupled_fluxonium_AugustusVI_spectrum_test_N=50.txt"
-path = directory + '\\' + fname
 np.savetxt(path, spectrum)
+#########################################################
 energies = np.genfromtxt(path)
 
-for idx in range(1,5):
-    plt.plot(phi_ext_array, energies[:,idx]-energies[:,0], 'm--')
+for idx in range(1,level_num):
+    plt.plot(phi_ext_array, energies[:,idx]-energies[:,0], 'k-')
 
+plt.ylim([0,15])
+plt.xlim([0,1])
+plt.ylabel("Frequency (GHz)")
+plt.xlabel('Flux (flux quantum)')
 plt.show()

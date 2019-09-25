@@ -35,21 +35,21 @@ from qutip import *
 # Q_interp = np.interp(x=w, xp=mode, fp=Q, period = 4)
 # plt.plot(w, Q_interp)
 
-def charge_matrix_element_resonator(N, w, E_c):
-    E_l = w ** 2 / (8 * E_c)
-    a = tensor(destroy(N))
-    phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / np.sqrt(2.0)
-    na = 1.0j * (a.dag() - a) * (E_l / (8 * E_c)) ** (0.25) / np.sqrt(2.0)
-    H = 4.0 * E_c * na ** 2.0 + 0.5 * E_l * phi ** 2.0
-
-    eigen_energies, eigen_states = H.eigenstates()
-    element = na.matrix_element(eigen_states[0], eigen_states[1])
-    return abs(element)
+# def charge_matrix_element_resonator(N, w, E_c):
+#     E_l = w ** 2 / (8 * E_c)
+#     a = tensor(destroy(N))
+#     phi = (a + a.dag()) * (8.0 * E_c / E_l) ** (0.25) / np.sqrt(2.0)
+#     na = 1.0j * (a.dag() - a) * (E_l / (8 * E_c)) ** (0.25) / np.sqrt(2.0)
+#     H = 4.0 * E_c * na ** 2.0 + 0.5 * E_l * phi ** 2.0
+#
+#     eigen_energies, eigen_states = H.eigenstates()
+#     element = na.matrix_element(eigen_states[0], eigen_states[1])
+#     return abs(element)
 
 
 # print (charge_matrix_element_resonator(10, 6.468, 1.017))
-print(6.5e9 / 50000)
-print((6.5e9 / 50000) * (0.228 / 0.63) ** 2)
+# print(6.5e9 / 50000)
+# print((6.5e9 / 50000) * (0.228 / 0.63) ** 2)
 # nem = np.zeros(len(mode))
 # for idx, freq in enumerate(mode):
 #     nem[idx] = charge_matrix_element_resonator(30, freq, 0.93)
@@ -58,3 +58,8 @@ print((6.5e9 / 50000) * (0.228 / 0.63) ** 2)
 # plt.semilogy(mode, T1_qubit, '.')
 # plt.grid()
 # plt.show()
+
+g=0.15e9
+delta = 1.5e9
+kappa = 4e6*2*np.pi
+print (((g/delta)**2*kappa)**-1 *1e6)

@@ -95,7 +95,7 @@ for Q_cap in [Q1, Q2]:
 #     plt.semilogy(w, 1.0 / (gamma_qp_array) * 1e6, linewidth=2.0, linestyle='--', color = 'green')
 #     plt.semilogy(w, 1.0/(gamma_qp+gamma_cap+gamma_qp_array)*1e6, linewidth = 2.5, linestyle='-', color ='black')
 
-w = np.array([0.8, 0.3, 0.5, 0.6, 0.9, 0.18, 0.55, 0.32])
+w = np.array([0.8, 0.3, 0.5, 0.6, 0.9, 0.18, 0.55, 0.32, 0.39])
 T1_A = np.array([
     98.6617873, 95.5015335, 95.25972457, 96.47774671,
     93.80886189, 92.02312106, 92.00390993, 104.64146104,
@@ -168,11 +168,13 @@ T1_H = np.array([164.67191539, 142.24824189, 143.42348887, 138.005341,
                  174.3841941, 133.55528938, 165.0890997, 178.2466385,
                  182.13058878, 157.24213999, 141.74139706
                  ])
+path ='G:\Projects\Fluxonium\Data\Julius IV\Summary\heroT1_3.txt'
+T1_I = np.genfromtxt(path)
 # T1 = np.array ([110, 250, 260, 70, 100, 270, 110*0.84/1.14])
-T1 = np.array([T1_A, T1_B, T1_C, T1_D, T1_E, T1_F, T1_G * 0.84 / 1.14, T1_H * 0.84 / 1.0])
+T1 = np.array([T1_A, T1_B, T1_C, T1_D, T1_E, T1_F, T1_G * 0.84 / 1.14, T1_H * 0.84 / 1.0, T1_I * 0.84 / 1.0])
 T2 = np.array([160, 150, 350, 90, 140, 165, 140])
-Ec_a = np.array([0.84, 0.84, 0.8, 0.83, 0.86, 0.83, 1.14, 1])
-m_element = np.array([1.875, 2.243, 1.896, 2.127, 1.923, 2.645, 2.51, 2.4])
+Ec_a = np.array([0.84, 0.84, 0.8, 0.83, 0.86, 0.83, 1.14, 1, 1])
+m_element = np.array([1.875, 2.243, 1.896, 2.127, 1.923, 2.645, 2.51, 2.4, 2.38])
 N = np.array([100, 136, 102, 196, 100, 348, 400])
 tan = np.array([1.7, 1.5, 1.25, 3.1, 1.6, 2.2, 2])
 x = w
@@ -181,6 +183,7 @@ for xe, ye in zip(x, y):
     plt.errorbar([xe] * len(ye), ye, fmt='s', mfc='none', mew=2.0, mec='blue')
 plt.yscale('log')
 plt.xscale('log')
+plt.grid(b=True, which='both', axis='both')
 # T2_lf = np.array ([28, 14, 40, 1e100, 48, 55])
 # plt.yscale('log')
 # plt.xscale('log')
@@ -194,7 +197,9 @@ plt.xscale('log')
 # plt.yticks([0, 100, 200, 300, 400])
 plt.tick_params(labelsize=18.0)
 # plt.grid()
-plt.yticks([])
-plt.xticks([])
-plt.legend()
+# plt.yticks([])
+# plt.xticks([])
+plt.xlim([0.15,1.05])
+
+# plt.legend()
 plt.show()

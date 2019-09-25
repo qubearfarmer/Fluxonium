@@ -46,17 +46,17 @@ energies = np.zeros((len(phi_ext),level_num))
 
 #######################################################################################
 # '''
-for idx, phi in enumerate(phi_ext):
-    p_element[idx]=abs(pem(N, E_l, E_c, E_j, phi*2.0*np.pi, iState, fState))
-    n_element[idx]=abs(nem(N, E_l, E_c, E_j, phi*2.0*np.pi, iState, fState))
-    qp_element[idx] = abs(qpem(N, E_l, E_c, E_j, phi * 2.0 * np.pi, iState, fState))
-    for idy in range(level_num):
-        energies[idx,idy] = H(N, E_l, E_c, E_j, phi*2.0*np.pi).eigenenergies()[idy]
-
-np.savetxt(path + '_energies.txt', energies)
-np.savetxt(path + '_chargeElement.txt', n_element)
-np.savetxt(path + '_fluxElement.txt', p_element)
-np.savetxt(path + '_qpElement.txt', qp_element)
+# for idx, phi in enumerate(phi_ext):
+#     p_element[idx]=abs(pem(N, E_l, E_c, E_j, phi*2.0*np.pi, iState, fState))
+#     n_element[idx]=abs(nem(N, E_l, E_c, E_j, phi*2.0*np.pi, iState, fState))
+#     qp_element[idx] = abs(qpem(N, E_l, E_c, E_j, phi * 2.0 * np.pi, iState, fState))
+#     for idy in range(level_num):
+#         energies[idx,idy] = H(N, E_l, E_c, E_j, phi*2.0*np.pi).eigenenergies()[idy]
+#
+# np.savetxt(path + '_energies.txt', energies)
+# np.savetxt(path + '_chargeElement.txt', n_element)
+# np.savetxt(path + '_fluxElement.txt', p_element)
+# np.savetxt(path + '_qpElement.txt', qp_element)
 # '''
 #######################################################################################
 phi_ext = np.genfromtxt(path+'_flux.txt')
@@ -78,11 +78,11 @@ for Q_cap in [0.2e6]:
     # plt.semilogy(w ** alpha, 1.0 / gamma_cap * 1e6 , linewidth=2.0, linestyle='--', color='orange')
     # plt.semilogy(phi_ext, 1.0/gamma_cap *1e6, linewidth= 2.0, linestyle ='--', color='orange')
 
-# for x_qp in [10e-7]:
-#     Q_qp = 1.0/x_qp
-#     for idx in range(len(phi_ext)):
-#         gamma_qp[idx] = r_qp(E_l, E_c, E_j, Q_qp*5.0/w[idx], w[idx], qp_element[idx])
-    # plt.semilogy(w, 1.0/(gamma_qp)*1e6, linewidth = 2.0, linestyle='--')
+for x_qp in [10e-7]:
+    Q_qp = 1.0/x_qp
+    for idx in range(len(phi_ext)):
+        gamma_qp[idx] = r_qp(E_l, E_c, E_j, Q_qp*5.0/w[idx], w[idx], qp_element[idx])
+    plt.semilogy(w, 1.0/(gamma_qp)*1e6, linewidth = 2.0, linestyle='--')
     # plt.semilogy(phi_ext, 1.0/(gamma_qp+gamma_cap)*1e6, linewidth = 2.0, linestyle='-.', color='k')
 #
 # for T_qp in [0.25, 0.27]:

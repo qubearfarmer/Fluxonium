@@ -11,7 +11,7 @@ plt.rc('font', family='sans-serif')
 
 
 #Define file directory
-directory = "C:\\Users\\nguyen89\\Box\\Python Codes\\Fluxonium simulation results"
+directory = "Documents\\Python Codes\\Fluxonium simulation results"
 simulation = "Relaxation_22"
 path = directory + "\\" + simulation
 
