@@ -5,9 +5,9 @@ from Fluxonium_hamiltonians.Single_small_junction import charge_matrix_element a
 from Fluxonium_hamiltonians.Single_small_junction import phase_matrix_element as pem
 
 N = 30
-E_l=1
-E_c=5.0
-E_j=15
+E_l=0
+E_c=0.31
+E_j=16.4
 iState = 0
 fState = 1
 
@@ -18,7 +18,7 @@ element = np.zeros(len(phi_ext))
 # fig1 = plt.figure(1)
 # plt.plot(phi_ext, element)
 for idx, phi in enumerate(phi_ext):
-    element[idx]=abs(nem(N, E_l, E_c, E_j, phi*2*np.pi, 0, 1))
+    element[idx]=abs(pem(N, E_l, E_c, E_j, phi*2*np.pi, 0, 1))
 plt.plot(phi_ext, element)
 # for idx, phi in enumerate(phi_ext):
 #     element[idx]=abs(nem(N, E_l, E_c, E_j, phi*2*np.pi, 0, 3))

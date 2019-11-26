@@ -63,4 +63,6 @@ T1 = data[:,2]
 ax2.set_xlim([0.45,0.51])
 ax2.set_yticks([0.8,1.0,1.2,1.4])
 ax1.set_ylim([5,200])
+path_save = "C:\\Users\\nguyen89\\Desktop\\Paper figures 2019_11_24\Fig4a.pdf"
+plt.savefig(path_save,dpi=300,format='pdf')
 plt.show()

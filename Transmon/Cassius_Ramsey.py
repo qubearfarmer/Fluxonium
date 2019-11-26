@@ -16,8 +16,8 @@ def IQ_rotate(signal):
     demod_imag_rotate = -demod_real * np.sin(theta) + demod_imag * np.cos(theta)
     return demod_real_rotate + 1j*demod_imag_rotate
 
-def osc_func_decay(x,amp,freq,offset1,offset2,t2):
-    return amp * np.cos(2 * np.pi * freq * (x - offset1))*np.exp(-(x-offset1)/t2) - offset2
+def osc_func_decay(x,amp,freq,offset1,offset2,gamma2):
+    return amp * np.cos(2 * np.pi * freq * (x - offset1))*np.exp(-(x-offset1)*gamma2) - offset2
 
 def exp_decay(x, amp, tau, offset1, offset2):
     return amp*np.exp(-(x-offset1)/tau) - offset2
@@ -34,6 +34,16 @@ def find_freq2(y_data, x_data):
     period = abs(x_data[np.argmax(y_data)] - x_data[np.argmin(y_data)]) * 2
     freq_guess = period ** -1
     return freq_guess
+
+def acStark_dephasing_rate(w_ac, w_c, kappa, chi):
+    numerator = 8*kappa*chi**2
+    denominator = (kappa**2+4*(w_ac-w_c)**2-chi**2)**2+4*chi**2*kappa**2
+    return numerator*denominator**-1
+
+def acStark_shift(w_ac, w_c, kappa, chi):
+    numerator = 4*chi*(kappa**2+4*(w_ac-w_c)**2-chi**2)
+    denominator = (kappa**2+4*(w_ac-w_c)-chi**2)**2 + 4*chi**2*kappa**2
+    return numerator*denominator**-1
 
 '''
 ################################################################################
@@ -100,13 +110,166 @@ plt.show()
 '''
 ##################################################################
 #Ramsey with cavity photons
-path = 'G:\Projects\Fluxonium\Data\Cassius I\\2019\\09\Data_0914\Ramsey_cavity photons_3.hdf5'
+# path = 'G:\Projects\Fluxonium\Data\Cassius I\\2019\\09\Data_0914\Ramsey_cavity photons_3.hdf5'
+# f = Labber.LogFile(path)
+# d = f.getEntry(0)
+# # for (channel, value) in d.items():
+# #     print(channel, ":", value)
+# # print ("Number of entries: ", f.getNumberOfEntries())
+#
+# time = f.getData('Multi-Qubit Pulse Generator - Sequence duration')[0]
+# stark_freq = f.getData('R&S IQ 2 - Frequency')[:,0]
+# stark_power = f.getData('R&S IQ 2 - Power')[:,0]
+# signal_raw = f.getData('Signal Demodulation - Value')
+# # print(signal_raw.shape)
+# stark_freq = stark_freq[0:51]
+# stark_power = stark_power[0::51]
+# stark_power = stark_power[0:7]
+# stark_power_W = 10.0**(stark_power/10.0)
+# signal = np.zeros((len(time), len(stark_freq), len(stark_power)))
+# gamma2_array = np.zeros((len(stark_freq), len(stark_power)))
+# gamma2_err_array = np.zeros((len(stark_freq), len(stark_power)))
+# freq_array = np.zeros((len(stark_freq), len(stark_power)))
+# freq_err_array = np.zeros((len(stark_freq), len(stark_power)))
+#
+# freq_guess = 6.077e9 - 6.07533e9
+# gamma2_guess = 0.5e6
+#
+# for idx in range(len(stark_power)):
+#     for idy in range(len(stark_freq)):
+#         signal_real = np.real(IQ_rotate(signal_raw[idy+51*idx,:]))
+#         signal[:,idy,idx]=signal_real
+#
+# X,Y = np.meshgrid(time,stark_freq)
+# for idx in range(len(stark_power)):
+#     # plt.figure(idx)
+#     # Z = signal[:,:,idx].transpose()
+#     # plt.pcolormesh(X,Y,Z)
+#     # print(stark_power[idx])
+#     for idy in range(len(stark_freq)):
+#         signal_real = signal[:, idy, idx]
+#         amplitude_guess = (np.max(signal_real) - np.min(signal_real))
+#         amplitude_offset = np.mean(signal_real)
+#         # plt.plot(time,signal_real,'-o')
+#         # try:
+#         guess_list = ([-amplitude_guess, freq_guess, 0, amplitude_offset, gamma2_guess])
+#         popt, pcov = curve_fit(osc_func_decay, ydata=signal_real, xdata=time, p0=guess_list)
+#         perr = np.sqrt(np.diag(pcov))
+#         # plt.plot(time,osc_func_decay(time,*popt))
+#         # except RuntimeError:
+#         #     print ('Fit error with power and freq', stark_freq[idy], stark_power[idx])
+#         #     continue
+#         # if perr[-1] > t2_guess:
+#         #     print('Not a good fit')
+#         #     continue
+#         gamma2_array[idy,idx] = popt[-1]
+#         gamma2_err_array[idy,idx] = perr[-1]
+#         freq_array[idy,idx] = popt[1]
+#         freq_err_array[idy,idx] = perr[1]
+#
+# gamma2 = np.mean(gamma2_array[:,0])
+# freq_ramsey = np.mean(freq_array[:,0])
+# plt.figure(1)
+# for idx in range(2,len(stark_power)-1):
+#     gamma = (gamma2_array[:,idx]-gamma2)/(stark_power_W[idx])
+#     plt.errorbar(stark_freq*1e-9, gamma, linestyle='none', marker='d', mfc='none', ms=5,
+#               mew=2)
+#
+# # plt.plot(stark_freq*1e-9,acStark_dephasing_rate(stark_freq,7.517e9, 3.5e6, 5e6)*2*np.pi)
+#
+# plt.figure(2)
+#
+# for idx in range(2,len(stark_power)-1):
+#     print(stark_power[idx])
+#     plt.errorbar(stark_freq*1e-9, (freq_array[:,idx]-freq_ramsey)/(stark_power_W[idx]), linestyle='none', marker='d', mfc='none', ms=5,
+#               mew=2)
+# plt.plot(stark_freq*1e-9,acStark_shift(stark_freq,7.517e9, 3.5e6, 5e6)*2*np.pi)
+
+# plt.figure(3)
+# for idx in range(0,len(stark_power)):
+#     plt.errorbar(stark_power_W, freq_array[idx, :] -freq_ramsey,yerr = freq_err_array[idx, :], linestyle='-',
+#                  marker='d', mfc='none', ms=5, mew=2, label = stark_freq[idx])
+# # plt.legend()
+# plt.figure(4)
+# for idx in range(2,len(stark_freq)):
+#     plt.errorbar(stark_power_W, gamma2_array[idx,:]-gamma2, gamma2_err_array[idx,:], linestyle='-',
+#                  marker='d', mfc='none', ms=5, mew=2, label = stark_freq[idx])
+# plt.legend()
+
+#############################################################################################################
+path = 'G:\Projects\Fluxonium\Data\Cassius I\\2019\\09\Data_0927\Ramsey_starkDephasing.hdf5'
 f = Labber.LogFile(path)
 d = f.getEntry(0)
-for (channel, value) in d.items():
-    print(channel, ":", value)
-print ("Number of entries: ", f.getNumberOfEntries())
+# for (channel, value) in d.items():
+#     print(channel, ":", value)
+# print ("Number of entries: ", f.getNumberOfEntries())
 
-# time = f.getData('Multi-Qubit Pulse Generator - Sequence duration')[0]
-# qubit_freq = f.getData('Qubit RF - Frequency')[:,0]
-# signal = f.getData('AlazarTech Signal Demodulator - Channel A - Average demodulated value')
+time = f.getData('Multi-Qubit Pulse Generator - Sequence duration')[0]
+stark_freq = f.getData('R&S IQ 2 - Frequency')[:,0]
+stark_power = f.getData('R&S IQ 2 - Power')[:,0]
+signal_raw = f.getData('Signal Demodulation - Value')
+# print(signal_raw.shape)
+stark_freq = stark_freq[0:71]
+stark_power = stark_power[0::71]
+stark_power = stark_power[0:7]
+stark_power_W = 10.0**(stark_power/10.0)
+signal = np.zeros((len(time), len(stark_freq), len(stark_power)))
+gamma2_array = np.zeros((len(stark_freq), len(stark_power)))
+gamma2_err_array = np.zeros((len(stark_freq), len(stark_power)))
+freq_array = np.zeros((len(stark_freq), len(stark_power)))
+freq_err_array = np.zeros((len(stark_freq), len(stark_power)))
+
+freq_guess = 6.0765e9 - 6.07533e9
+gamma2_guess = 0.5e6
+
+for idx in range(len(stark_power)):
+    for idy in range(len(stark_freq)):
+        signal_real = np.real(IQ_rotate(signal_raw[idy+51*idx,:]))
+        signal[:,idy,idx]=signal_real
+
+X,Y = np.meshgrid(time,stark_freq)
+for idx in range(len(stark_power)):
+    # plt.figure(idx)
+    # Z = signal[:,:,idx].transpose()
+    # plt.pcolormesh(X,Y,Z)
+    # print(stark_power[idx])
+    for idy in range(len(stark_freq)):
+        signal_real = signal[:, idy, idx]
+        amplitude_guess = (np.max(signal_real) - np.min(signal_real))
+        amplitude_offset = np.mean(signal_real)
+        # plt.plot(time,signal_real,'-o')
+        # try:
+        guess_list = ([-amplitude_guess, freq_guess, 0, amplitude_offset, gamma2_guess])
+        popt, pcov = curve_fit(osc_func_decay, ydata=signal_real, xdata=time, p0=guess_list)
+        perr = np.sqrt(np.diag(pcov))
+        # plt.plot(time,osc_func_decay(time,*popt))
+        # except RuntimeError:
+        #     print ('Fit error with power and freq', stark_freq[idy], stark_power[idx])
+        #     continue
+        # if perr[-1] > t2_guess:
+        #     print('Not a good fit')
+        #     continue
+        gamma2_array[idy,idx] = popt[-1]
+        gamma2_err_array[idy,idx] = perr[-1]
+        freq_array[idy,idx] = popt[1]
+        freq_err_array[idy,idx] = perr[1]
+
+gamma2 = np.mean(gamma2_array[:,0])
+freq_ramsey = np.mean(freq_array[:,0])
+plt.figure(1)
+for idx in range(2,len(stark_power)):
+    gamma = (gamma2_array[:,idx]-gamma2)/(stark_power_W[idx])
+    plt.errorbar(stark_freq*1e-9, gamma, linestyle='none', marker='d', mfc='none', ms=5,
+              mew=2)
+
+# plt.plot(stark_freq*1e-9,acStark_dephasing_rate(stark_freq,7.517e9, 3.5e6, 5e6)*2*np.pi)
+
+plt.figure(2)
+
+for idx in range(2,len(stark_power)):
+    print(stark_power[idx])
+    plt.errorbar(stark_freq*1e-9, (freq_array[:,idx]-freq_ramsey)/(stark_power_W[idx]), linestyle='none', marker='d', mfc='none', ms=5,
+              mew=2)
+
+
+plt.show()

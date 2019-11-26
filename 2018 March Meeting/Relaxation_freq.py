@@ -199,7 +199,10 @@ plt.tick_params(labelsize=18.0)
 # plt.grid()
 # plt.yticks([])
 # plt.xticks([])
-plt.xlim([0.15,1.05])
+plt.xlim([0.16,1.0])
+plt.ylim([100,4000])
 
 # plt.legend()
+path_save = "C:\\Users\\nguyen89\\Desktop\\Paper figures 2019_11_24\Fig3bottom.pdf"
+plt.savefig(path_save,dpi=300,format='pdf')
 plt.show()

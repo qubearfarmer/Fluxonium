@@ -115,7 +115,7 @@ plt.figure(3, figsize=[7,2.5])
 plt.errorbar(loop_index, T1_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'b', ecolor = 'b', label=r'$T_1$')
 # plt.errorbar(T1_array, T2_array, xerr=T1_err_array, yerr=T2_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g')
 # plt.errorbar(T1_array, (T2_array**-1-(T1_array*2)**-1)**-1, xerr=T1_err_array, yerr=T2_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g')
-plt.errorbar(loop_index, T2_array, yerr=T2_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g', label=r'$T_2e$')
+plt.errorbar(loop_index, T2_array, yerr=T2_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g', label=r'$T_2$')
 # plt.errorbar(loop_index, (T2_array**-1 - (2*T1_array)**-1)**-1 , yerr=T2_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
 # plt.yscale("log")
 
@@ -131,7 +131,9 @@ plt.xticks([0, 10, 20, 30, 40,50])
 
 # x = np.linspace(1,1000,1001)
 # plt.plot(x,2*x)
-# plt.legend()
+plt.legend()
+path_save = "C:\\Users\\nguyen89\\Desktop\\Paper figures 2019_11_24\Fig4ctop.pdf"
+plt.savefig(path_save,dpi=300,format='pdf')
 plt.show()
 
 # print (np.corrcoef(T2_array, T1_array)[0,1])

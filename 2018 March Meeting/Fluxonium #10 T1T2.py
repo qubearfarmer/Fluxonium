@@ -111,7 +111,7 @@ with h5py.File(path,'r') as hf:
 # print len(T2_array)
 plt.figure(3, figsize=[7,2.5])
 plt.errorbar(loop_index, T1_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'b', ecolor = 'b', label=r'$T_1$')
-plt.errorbar(loop_index, T2_array, yerr=T1_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g', label=r'$T_2e$')
+plt.errorbar(loop_index, T2_array, yerr=T1_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g', label=r'$T_2$')
 # plt.errorbar(loop_index, (T2_array**-1 - (2*T1_array)**-1)**-1 , yerr=T2_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
 # plt.yscale("log")
 
@@ -119,7 +119,10 @@ plt.tick_params(labelsize = 16)
 plt.yticks([0,100,200,300,400])
 plt.ylim([0,400])
 plt.xticks([0,5,10,15,20])
-plt.xlim(-0.5,20)
+plt.xlim(-0.2,20)
+path_save = "C:\\Users\\nguyen89\\Desktop\\Paper figures 2019_11_24\Fig4cmid.pdf"
+plt.savefig(path_save,dpi=300,format='pdf')
+
 #plt.errorbar(loop_index, Tp_array, fmt = 'd', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
 # plt.xlabel('Index')
 # plt.ylabel(r'$\mu s$')

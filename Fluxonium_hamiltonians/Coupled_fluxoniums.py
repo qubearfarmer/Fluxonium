@@ -8,23 +8,22 @@ h = 6.626e-34  # Placnk's constant
 phi_o = h / (2 * e)  # Flux quantum
 
 directory = 'C:\\Users\\nguyen89\Documents\Python Codes\Fluxonium simulation results'
-fname = "Coupled_fluxonium_AugustusVI_spectrum_test_N=20.txt"
+fname = "Coupled_fluxonium_AugustusVIII_spectrum_test_N=20.txt"
 path = directory + '\\' + fname
 
-Na = 20
-Nb = 20
+Na = 25
+Nb = 25
 B_coeff = 30
 
-E_la=1
-E_ca=1
-E_ja=4.5
+E_la=0.45128451566691613
+E_ca=0.9605239907246711
+E_ja=5.9190643872351485
 
+E_lb=0.722809860436973
+E_cb=1.0161030829798336
+E_jb=5.744246275094001
 
-E_lb=1
-E_cb=5
-E_jb=15
-
-J_l = 0.5
+J_c = 0.1
 # J_c_array = np.linspace(0,1,101)
 # level_num = 20
 # current = np.linspace(0,1.0,51)*1e-3
@@ -49,9 +48,7 @@ for idx, phi_ext in enumerate(phi_ext_array):
     ope_b = 1.0j * (phi_b - 2 * np.pi * phi_ext)
     H_b = 4.0 * E_cb * na_b ** 2.0 + 0.5 * E_lb * phi_b ** 2.0 - 0.5 * E_jb * (ope_b.expm() + (-ope_b).expm())
 
-    # Hc = J_c * na_a * na_b
-    # H = H_a + H_b + Hc
-    Hc = J_l * phi_a * phi_b
+    Hc = J_c * na_a * na_b
     H = H_a + H_b + Hc
     eigenenergies, eigenstates = H.eigenstates()
     for idy in range(level_num):
@@ -63,7 +60,7 @@ np.savetxt(path, spectrum)
 energies = np.genfromtxt(path)
 
 for idx in range(1,level_num):
-    plt.plot(phi_ext_array, energies[:,idx]-energies[:,0], 'k-')
+    plt.plot(phi_ext_array, energies[:,idx]-energies[:,0])
 
 plt.ylim([0,15])
 plt.xlim([0,1])

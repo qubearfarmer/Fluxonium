@@ -7,13 +7,13 @@ from Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian
 # contrast_max = 1
 
 #Qubit and computation parameters
-N = 30
-E_l=0.6455327197108344
-E_c=1.0287998197688306
-E_j=3.1948994748937576
+N = 35
+E_l=0.45
+E_c=1
+E_j=5.84
 
 phi_ext = np.linspace(0,1,101)
-level_num = 20
+level_num = 10
 energies = np.zeros((len(phi_ext),level_num))
 
 # Compute eigensnergies
@@ -30,16 +30,16 @@ for idx, phi in enumerate(phi_ext):
 # plt.ylabel(r'Energy (GHz)')
 # plt.ylim(top=30)
 # plt.grid()
-
+# plt.title(N)
 #Plot transition energies
 
-# for idx in range(1,level_num):
-#     plt.plot(phi_ext, energies[:,idx]-energies[:,0], linewidth = '2', color = 'k')
-plt.plot(phi_ext, energies[:,1]-energies[:,0], linewidth = 1 , linestyle = '-', color = 'k')
-plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 1 , linestyle = '-', color = 'k')
-plt.plot(phi_ext, energies[:,2]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
-plt.plot(phi_ext, energies[:,3]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
+for idx in range(1,level_num):
+    plt.plot(phi_ext, energies[:,idx]-energies[:,0], linewidth = '2', color = 'k')
+# plt.plot(phi_ext, energies[:,1]-energies[:,0], linewidth = 1 , linestyle = '-', color = 'k')
+plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 1 , linestyle = '--', color = 'k')
+# plt.plot(phi_ext, energies[:,2]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
 # plt.plot(phi_ext, energies[:,3]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
+# plt.plot(phi_ext, energies[:,3]-energies[:,1], linewidth = 2 , linestyle = '--', color = 'k')
 # plt.plot(phi_ext, energies[:,5]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
 # plt.plot(phi_ext, energies[:,6]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
 # plt.plot(phi_ext, energies[:,7]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
@@ -95,20 +95,20 @@ plt.plot(phi_ext, energies[:,3]-energies[:,0], linewidth = 2 , linestyle = '-', 
 # Z = np.genfromtxt(path).transpose()
 # plt.pcolormesh(X,Y,Z, cmap= 'GnBu', vmin = 0.3, vmax = 0.5)
 
-E_l=0.8751435686148983
-E_c=1.0690006772511425
-E_j=2.9378419957349036
+E_l=0.72
+E_c=1
+E_j=5.88
 #
 # Compute eigensnergies
 for idx, phi in enumerate(phi_ext):
     H = bare_hamiltonian(N, E_l, E_c, E_j, phi*2*np.pi)
     for idy in range(level_num):
         energies[idx,idy] = H.eigenenergies()[idy]
-#
-# #Plot eigensnergies
-# # fig1 = plt.figure(1)
+
+#Plot eigensnergies
+# fig1 = plt.figure(1)
 # for idx in range(level_num):
-#     plt.plot(phi_ext, energies[:,idx], linewidth = '2')
+#     plt.plot(phi_ext, energies[:,idx], linewidth = '2', color = 'b')
 # # plt.xlabel(r'$\varphi_\mathrm{ext}/2\pi$')
 # # plt.ylabel(r'Energy (GHz)')
 # # plt.ylim(top=30)
@@ -116,20 +116,20 @@ for idx, phi in enumerate(phi_ext):
 #
 # #Plot transition energies
 #
-# for idx in range(1,level_num):
-#     plt.plot(phi_ext, energies[:,idx]-energies[:,0], linewidth = '2', color = 'k')
-plt.plot(phi_ext, energies[:,1]-energies[:,0], linewidth = 2 , linestyle = '--', color = 'b')
+for idx in range(1,level_num):
+    plt.plot(phi_ext, energies[:,idx]-energies[:,0], linewidth = '2', color = 'b')
+# plt.plot(phi_ext, energies[:,1]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'b')
 plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 2 , linestyle = '--', color = 'b')
-plt.plot(phi_ext, energies[:,2]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'b')
-plt.plot(phi_ext, energies[:,3]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'b')
+# plt.plot(phi_ext, energies[:,2]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'b')
 # plt.plot(phi_ext, energies[:,3]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'b')
+# plt.plot(phi_ext, energies[:,3]-energies[:,1], linewidth = 2 , linestyle = '--', color = 'b')
 # plt.plot(phi_ext, energies[:,4]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'b')
 # plt.plot(phi_ext, energies[:,4]-energies[:,1], linewidth = 2 , linestyle = '--', color = 'b')
 #
 # plt.plot(phi_ext, np.ones(len(phi_ext))*7.5, linewidth = 2 , linestyle = '-', color = 'r')
-plt.plot(phi_ext, np.ones(len(phi_ext))*6.22)
-plt.ylabel("Frequency (GHz)")
-plt.xlabel('Flux (flux quantum)')
+# plt.plot(phi_ext, np.ones(len(phi_ext))*7.5)
+# plt.ylabel("Frequency (GHz)")
+# plt.xlabel('Flux (flux quantum)')
 # plt.ylim([0,15])
 # plt.xlim([0,1])
 plt.show()

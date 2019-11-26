@@ -157,4 +157,8 @@ plt.legend()
 plt.grid(b=True, which='both', axis='both')
 plt.xticks([])
 plt.yticks([])
+plt.xlim([0.32,5.5])
+plt.ylim([1,1500])
+path_save = "C:\\Users\\nguyen89\\Desktop\\Paper figures 2019_11_24\Fig3top.pdf"
+plt.savefig(path_save,dpi=300,format='pdf')
 plt.show()

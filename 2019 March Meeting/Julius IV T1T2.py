@@ -91,6 +91,7 @@ with h5py.File(path,'r') as hf:
     plt.errorbar(index, t2e_array, yerr=t2e_error_array, linestyle='none', marker='d', mfc='none', ecolor = 'green', mec='green', ms=5,
                  mew=2, label='$T_2$')
 
+    np.savetxt('G:\\Projects\Fluxonium\Data\Julius IV\Summary\heroT1_3.txt', t1_array)
     # plt.xlabel('Index')
     # plt.ylabel('T1, T2e (us)')
     plt.tick_params(labelsize = 18.0)

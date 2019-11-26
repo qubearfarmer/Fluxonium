@@ -15,16 +15,17 @@ E_ja = 4.
 
 E_lb = 1.
 E_cb = 1.
-E_jb = 3.8
+E_jb = 2
 phi_ext = 0.5 * 2 * np.pi
 
 Jc = 1
-na_element = np.zeros(len(Jc))
-na2_element = np.zeros(len(Jc))
-energies = np.zeros((len(Jc), 4))
+# na_element = np.zeros(len(Jc))
+# na2_element = np.zeros(len(Jc))
+# energies = np.zeros((len(Jc), 4))
 a = tensor(destroy(Na), qeye(Nb))
 phi_a = (a + a.dag()) * (8.0 * E_ca / E_la) ** (0.25) / np.sqrt(2.0)
 na = 1.0j * (a.dag() - a) * (E_la / (8 * E_ca)) ** (0.25) / np.sqrt(2.0)
+na2 = na**2
 
 b = tensor(qeye(Na), destroy(Nb))
 phi_b = (b + b.dag()) * (8.0 * E_cb / E_lb) ** (0.25) / np.sqrt(2.0)
@@ -39,9 +40,11 @@ Hc = Jc * na * nb
 
 H = Ha + Hb + Hc
 eigen_energies, eigen_states = H.eigenstates()
-drive_freq = eigen_energies[3] - eigen_energies[0]
-t_list  = np.linspace(0,5,20)
-H_drive  = na*np.cos(2*np.pi*drive_freq*t)
-H =
-output = mesolve(H, eigen_energies[0]
+
+print(na2.matrix_element(eigen_states[0],eigen_states[3]))
+# drive_freq = eigen_energies[3] - eigen_energies[0]
+# t_list  = np.linspace(0,5,20)
+# H_drive  = na*np.cos(2*np.pi*drive_freq*t)
+# H =
+# output = mesolve(H, eigen_energies[0]
 

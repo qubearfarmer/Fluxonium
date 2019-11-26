@@ -41,10 +41,10 @@ perr = np.sqrt(abs(np.diag(pcov)))
 plt.plot(time_nice*1e-3, phase_fit, color='black')
 plt.xticks([0,15,30])
 plt.yticks([0,2,4])
-plt.xlim([0,30])
-plt.ylim([-0.2,4.2])
+plt.xlim([-0.1,30])
+plt.ylim([-0.01,4.2])
 
-'''
+# '''
 def func(x,a,b,c,d):
     return a*np.exp(-(x-c)/b) + d
 measurement = '090517_T2E_YOKO_61.115mA_Cav7.36923GHz_-30dBm_Qubit0.7895GHz_25dBm_PiPulse268ns_Count30_TimeStep10000_Avg_10000.h5'
@@ -75,8 +75,12 @@ perr = np.sqrt(abs(np.diag(pcov)))
 plt.plot(time_nice*1e-3, phase_fit, color='black')
 plt.yticks([0,1,2])
 plt.xticks([0,150,300])
+plt.ylim([-0.01,2])
+plt.xlim([-1,300])
 # plt.title(str(b*1e6)+ r'$\pm$' +str(perr[1]*1e6))
 
-#'''
+# '''
 plt.tick_params(labelsize = 18.0)
+path_save = "C:\\Users\\nguyen89\\Desktop\\Paper figures 2019_11_24\Fig4bbottom.pdf"
+plt.savefig(path_save,dpi=300,format='pdf')
 plt.show()
