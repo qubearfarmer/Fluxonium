@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-from Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian
+from Fluxonium.Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian
 
 # contrast_min = -1
 # contrast_max = 1
