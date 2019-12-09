@@ -10,9 +10,10 @@ from scipy.optimize import curve_fit
 kB = 1.38e-23
 h = 6.626e-34
 
-f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\11\Data_1119\Histogram.hdf5')
-# f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1205\Histogram_3.hdf5')
-
+# f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\11\Data_1120\Histogram.hdf5')
+# guess1D = np.array([435, -480, 715, -305, 1300, -78, 1400, 86, 60])
+f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1205\Histogram_heralding_check.hdf5')
+guess1D = np.array([1435, -800, 715, -605, 2300, -150, 2400, 86, 60])
 # d = f.getEntry(0)
 # for (channel, value) in d.items():
 #     print(channel, ":", value)
@@ -86,8 +87,7 @@ H = H.T
 plt.figure(2)
 counts, edges = np.histogram(sReal, bins = 100)
 plt.plot(edges[:-1], counts)
-guess = np.array([435, -480, 715, -305, 1300, -78, 1400, 86, 60])
-opt,cov = curve_fit(gaussian4, edges[:-1],counts, guess)
+opt,cov = curve_fit(gaussian4, edges[:-1],counts, guess1D)
 axis_nice = np.linspace(edges[0], edges[-1], 1001)
 plt.plot(axis_nice, gaussian4(axis_nice,*opt))
 a1,x1,a2,x2,a3,x3,a4,x4,sigma = opt

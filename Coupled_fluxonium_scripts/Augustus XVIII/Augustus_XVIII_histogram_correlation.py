@@ -11,9 +11,9 @@ kB = 1.38e-23
 h = 6.626e-34
 
 f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\11\Data_1120\Histogram_correlation_3.hdf5')
-# f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\11\Data_1120\Histogram_correlation_3.hdf5')
-# f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\11\Data_1120\Histogram_correlation_3.hdf5')
-
+guess2D = np.array([4350, -800, 7150, -500, 13000, -200, 14000, 200, 20])
+f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\11\Data_1120\Histogram_correlation_3.hdf5')
+guess2D = np.array([4350, -800, 7150, -500, 13000, -200, 14000, 200, 20])
 def gaussian (x,a,x0,sigma):
     return a*np.exp(-(x-x0)**2/sigma**2)
 def gaussian4(x,a1,x1,a2,x2,a3,x3,a4,x4,sigma):
@@ -86,8 +86,8 @@ plt.pcolormesh(X,Y,H, cmap = 'GnBu')
 plt.figure(2)
 counts, edges = np.histogram(sReal, bins = 100)
 plt.plot(edges[:-1], counts, label = 'Second pulse')
-guess = np.array([4350, -800, 7150, -500, 13000, -200, 14000, 200, 20])
-opt,cov = curve_fit(gaussian4, edges[:-1],counts, guess)
+
+opt,cov = curve_fit(gaussian4, edges[:-1],counts, guess2D)
 axis_nice = np.linspace(edges[0], edges[-1], 1001)
 # plt.plot(axis_nice, gaussian4(axis_nice,*opt))
 a1,x1,a2,x2,a3,x3,a4,x4,sigma = opt
