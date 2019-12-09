@@ -107,10 +107,25 @@ plt.legend()
 ##########################################################################################
 selected_signal = []
 preselected_signal = []
-xmax = -70e-6
-xmin = -250e-6
-ymax = -700e-6
-ymin = -900e-6
+# xmax = -70e-6
+# xmin = -250e-6
+# ymax = -700e-6
+# ymin = -900e-6
+
+# xmax = 250e-6
+# xmin = 50e-6
+# ymax = -350e-6
+# ymin = -550e-6
+
+xmax = -400e-6
+xmin = -600e-6
+ymax = 200e-6
+ymin = -50e-6
+
+# xmax = -650e-6
+# xmin = -850e-6
+# ymax = -100e-6
+# ymin = -300e-6
 for idx in range(len(herald_signal)):
     if (np.real(herald_signal[idx]) > xmin) and (np.real(herald_signal[idx]) < xmax) \
             and (np.imag(herald_signal[idx]) > ymin) and (np.imag(herald_signal[idx]) < ymax):
@@ -143,8 +158,8 @@ T_b = h*f_b/(-kB*np.log((pee+pge)/(pgg+peg)))
 populations = dict({'P_gg=': round(pgg,3), 'P_eg=': round(peg,3), 'P_ge=': round(pge,3), 'P_ee=': round(pee,3)})
 temperatures = dict({'T_A(mK)=': round(T_a*1e3,3), 'T_B(mK)=':round(T_b*1e3,3)})
 print (temperatures)
-sReal = np.real(selected_signal)*1e6
-counts, edges = np.histogram(sReal, bins = 100)
-plt.plot(edges[:-1], counts, label = 'Ideal signal')
+# sReal = np.real(selected_signal)*1e6
+# counts, edges = np.histogram(sReal, bins = 100)
+# plt.plot(edges[:-1], counts, label = 'Ideal signal')
 plt.legend()
 plt.show()
