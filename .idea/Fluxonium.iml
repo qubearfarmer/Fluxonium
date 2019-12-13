@@ -6,12 +6,13 @@
     </content>
     <orderEntry type="jdk" jdkName="Python 3.7 (qutip-env)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="Quantum optics" />
+    <orderEntry type="module" module-name="Quantum optics" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="renderExternalDocumentation" value="true" />
   </component>
   <component name="TestRunnerService">
-    <option name="projectConfiguration" value="Nosetests" />
     <option name="PROJECT_TEST_RUNNER" value="Nosetests" />
   </component>
 </module>
