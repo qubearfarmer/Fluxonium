@@ -21,7 +21,7 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 #Vary heralding wait time
-f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1213\Rabi_heralded_qubit_A_I_2.hdf5')
+f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1213\Rabi_heralded_qubit_B_I_2.hdf5')
 # d = f.getEntry(0)
 # for (channel, value) in d.items():
 #     print(channel, ":", value)
