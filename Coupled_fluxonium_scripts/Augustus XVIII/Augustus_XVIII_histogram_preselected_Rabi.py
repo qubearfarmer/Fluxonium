@@ -21,7 +21,7 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 #Vary heralding wait time
-f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1213\Rabi_heralded_qubit_B_I_2.hdf5')
+f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1216\Rabi_heralded_qubit_cz_IQ3_noPu_6.hdf5')
 # d = f.getEntry(0)
 # for (channel, value) in d.items():
 #     print(channel, ":", value)
@@ -95,9 +95,25 @@ plt.ylabel('Q (uV)')
 
 plt.figure(2)
 plt.plot(pulseAmp, np.real(rabi_signal_preselected_1))
-freq_guess = 0.4
-guess = ([np.max(np.real(rabi_signal_preselected_1)) - np.min(np.real(rabi_signal_preselected_1)),freq_guess,0,np.real(rabi_signal_preselected_1)[0]])
-opt, cov = curve_fit(osc_func,ydata = np.real(rabi_signal_preselected_1), xdata = pulseAmp, p0=guess)
+freq_guess = 1.5
+# guess = ([np.max(np.real(rabi_signal_preselected_1)) - np.min(np.real(rabi_signal_preselected_1)),freq_guess,0,np.real(rabi_signal_preselected_1)[0]])
+# opt, cov = curve_fit(osc_func,ydata = np.real(rabi_signal_preselected_1), xdata = pulseAmp, p0=guess)
+# axis_nice = np.linspace(pulseAmp[0], pulseAmp[-1], 1001)
+# plt.plot(axis_nice, osc_func(axis_nice,*opt))
+
+plt.figure(3)
+plt.plot(pulseAmp, np.real(rabi_signal_preselected_3))
+freq_guess = 1.5
+# guess = ([np.max(np.real(rabi_signal_preselected_3)) - np.min(np.real(rabi_signal_preselected_3)),freq_guess,0,np.real(rabi_signal_preselected_3)[0]])
+# opt, cov = curve_fit(osc_func,ydata = np.real(rabi_signal_preselected_3), xdata = pulseAmp, p0=guess)
+# axis_nice = np.linspace(pulseAmp[0], pulseAmp[-1], 1001)
+# plt.plot(axis_nice, osc_func(axis_nice,*opt))
+#
+plt.figure(4)
+plt.plot(pulseAmp, np.real(rabi_signal_preselected_4))
+freq_guess = 2
+guess = ([np.max(np.real(rabi_signal_preselected_4)) - np.min(np.real(rabi_signal_preselected_4)),freq_guess,0,np.real(rabi_signal_preselected_4)[0]])
+opt, cov = curve_fit(osc_func,ydata = np.real(rabi_signal_preselected_4), xdata = pulseAmp, p0=guess)
 axis_nice = np.linspace(pulseAmp[0], pulseAmp[-1], 1001)
 plt.plot(axis_nice, osc_func(axis_nice,*opt))
 

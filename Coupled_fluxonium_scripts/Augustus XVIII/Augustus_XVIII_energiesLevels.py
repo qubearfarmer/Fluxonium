@@ -29,16 +29,16 @@ for idx, phi in enumerate(phi_ext):
     H = bare_hamiltonian(Na, E_la, E_ca, E_ja, phi*2*np.pi)
     for idy in range(level_num):
         energies[idx,idy] = H.eigenenergies()[idy]
-plt.plot(phi_ext, energies[:,1]-energies[:,0], color='k', linestyle = '-', label = 'bare 00-10')
-plt.plot(phi_ext, energies[:,2]-energies[:,0], color='k', linestyle = '-.', label = 'bare 00-20')
+# plt.plot(phi_ext, energies[:,1]-energies[:,0], color='k', linestyle = '-', label = 'bare 00-10')
+# plt.plot(phi_ext, energies[:,2]-energies[:,0], color='k', linestyle = '-.', label = 'bare 00-20')
 plt.plot(phi_ext, energies[:,2]-energies[:,1], color='k', linestyle = '--', label = 'bare 10-20 & 11-21')
 
 for idx, phi in enumerate(phi_ext):
     H = bare_hamiltonian(Nb, E_lb, E_cb, E_jb, phi*2*np.pi)
     for idy in range(level_num):
         energies[idx,idy] = H.eigenenergies()[idy]
-plt.plot(phi_ext, energies[:, 1] - energies[:, 0], color='b', linestyle='-', label = 'bare 00-01')
-plt.plot(phi_ext, energies[:, 2] - energies[:, 0], color='b', linestyle='-.', label = 'bare 00-02')
+# plt.plot(phi_ext, energies[:, 1] - energies[:, 0], color='b', linestyle='-', label = 'bare 00-01')
+# plt.plot(phi_ext, energies[:, 2] - energies[:, 0], color='b', linestyle='-.', label = 'bare 00-02')
 plt.plot(phi_ext, energies[:, 2] - energies[:, 1], color='b', linestyle='--', label = 'bare 01-02 & 11-12')
 
 #coupled levels
@@ -70,12 +70,13 @@ directory = 'C:\\Users\\nguyen89\Box\Python Codes\Fluxonium simulation results'
 fname = "Coupled_fluxonium_spectrum_AugustusXVIII_levels.txt"
 path = directory + '\\' + fname
 energies =  np.genfromtxt(path)
-plt.plot(phi_ext, energies[:,1] - energies[:,0], label = '00-10')
-plt.plot(phi_ext, energies[:,2] - energies[:,0], label = '00-01')
+# plt.plot(phi_ext, energies[:,1] - energies[:,0], label = '00-10')
+# plt.plot(phi_ext, energies[:,2] - energies[:,0], label = '00-01')
 plt.plot(phi_ext, energies[:,5] - energies[:,3], label = '11-12')
 plt.plot(phi_ext, energies[:,4] - energies[:,2], label = '01-02')
 plt.plot(phi_ext, energies[:,7] - energies[:,3], label = '11-21')
 plt.plot(phi_ext, energies[:,6] - energies[:,1], label = '10-20')
+plt.plot(phi_ext, energies[:,5] - energies[:,0], label = '00-12')
 
 # plt.plot(phi_ext, energies[:,4] - energies[:,0])
 # plt.plot(phi_ext, energies[:,5] - energies[:,0])
@@ -89,6 +90,9 @@ plt.plot(phi_ext, energies[:,6] - energies[:,1], label = '10-20')
 # plt.plot(phi_ext, energies[:,5] - energies[:,2])
 # plt.plot(phi_ext, energies[:,6] - energies[:,2])
 # plt.plot(phi_ext, energies[:,7] - energies[:,2])
+plt.plot(phi_ext, energies[:,6] - energies[:,3], label = '11-20')
+plt.plot(phi_ext, energies[:,4] - energies[:,3], label = '11-02')
+
 
 plt.legend()
 plt.show()

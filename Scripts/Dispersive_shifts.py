@@ -4,9 +4,9 @@ from matplotlib import pyplot as plt
 from Fluxonium_hamiltonians.Single_small_junction import charge_dispersive_shift as nChi
 
 N = 50
-E_l=0.45
-E_c=0.97
-E_j=5.84
+E_l=0.77
+E_c=1
+E_j=9.12
 level_num = 30
 g = 0.1
 
@@ -14,8 +14,8 @@ iState = 0
 fState = 1
 
 #plot dispersive shift as a function of flux
-phi_ext = np.linspace(0.4,0.6,201)
-w = 7.5
+phi_ext = np.linspace(0,0.6,201)
+w = 11
 chi = np.zeros(len(phi_ext))
 chi1 = np.zeros(len(phi_ext))
 chi2 = np.zeros(len(phi_ext))

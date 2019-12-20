@@ -22,7 +22,7 @@ def IQ_rotate(signal):
 def lorentzian(x, amp ,x0,y0, width):
     return amp*width/((x-x0)**2 + width**2)+y0
 #####################################################################################
-path = 'C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1213\Two_tone_spec_IQ1_6.hdf5'
+path = 'C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1213\Two_tone_spec_IQ1_5.hdf5'
 f = Labber.LogFile(path)
 d = f.getEntry(0)
 for (channel, value) in d.items():

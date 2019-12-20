@@ -12,7 +12,7 @@ h = 6.626e-34
 
 # f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\11\Data_1120\Histogram.hdf5')
 # guess1D = np.array([435, -480, 715, -305, 1300, -78, 1400, 86, 60])
-f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1212\AllXY_heralded_qubit_A.hdf5')
+f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1214\AllXY_heralded_qubit_A_I.hdf5')
 # d = f.getEntry(0)
 # for (channel, value) in d.items():
 #     print(channel, ":", value)
@@ -20,15 +20,15 @@ f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
 freq = f.getData('IQ 1 - Frequency')[:21, 0]
 amplitude = f.getData('Multi-Qubit Pulse Generator - Amplitude #1')[::21, 0]
-# print (signal.shape)
-# print (freq/1e9)
-# print (amplitude)
+print (signal.shape)
+print (freq/1e9)
+print (amplitude)
 
 xmin1 = -350
 xmax1 = -100
 ymin1 = -1000
 ymax1 = -750
-allxy_signal_preselected = np.zeros((11,21,21), dtype = complex)
+allxy_signal_preselected = np.zeros(((len(amplitude)),len(freq),21), dtype = complex)
 for amplitude_index in range(len(amplitude)):
     for freq_index in range(len(freq)):
         for pulse_index in range(21):
@@ -43,9 +43,12 @@ for amplitude_index in range(len(amplitude)):
             allxy_signal_preselected[amplitude_index, freq_index, pulse_index] = np.average(preselected_signal1)
 #
 plt.figure(1)
-for idy in range(11):
-    for idx in range(21):
+for idy in range(len(amplitude)):
+    for idx in range(len(freq)):
         plt.plot(np.real(allxy_signal_preselected[idy, idx, :]))
+        xmin = 0
+        y = np.real(allxy_signal_preselected[idy, idx, 0])
+        plt.text(xmin - 0.2, y, str(freq[idx]*1e-6), horizontalalignment='right')
 
 # plt.figure(2)
 # plt.plot(np.imag(allxy_signal_preselected))
