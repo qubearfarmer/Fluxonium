@@ -26,3 +26,4 @@ def find_freq1(y_data, x_data):
     y = np.fft.fft((np.max(y_data) - np.min(y_data)) ** -1.0 * y_data)
     f = np.fft.fftfreq(len(x_data)) * (x_data[1] - x_data[0]) ** -1
     return abs(f[np.argmax(y)])
+

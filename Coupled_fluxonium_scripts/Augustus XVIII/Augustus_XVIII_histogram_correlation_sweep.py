@@ -17,7 +17,7 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 #Vary heralding wait time
-f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1205\Histogram_heralding_sweep.hdf5')
+# f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0103\Histogram_correlation_delayTime_sweep.hdf5')
 # d = f.getEntry(0)
 # for (channel, value) in d.items():
 #     print(channel, ":", value)
@@ -82,7 +82,7 @@ f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1
 # plt.ylabel('Temperatures (mK)')
 ############################################################################################
 #Measure variation in 24h
-f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1206\Histogram_correlation_repeat.hdf5')
+# f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1206\Histogram_correlation_repeat.hdf5')
 
 # signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
 # repetition = len(signal[:,0])
@@ -141,12 +141,12 @@ f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1
 # plt.xlabel('Attempt')
 # plt.ylabel('Temperatures (mK)')
 ############################################################################################
-f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1206\Histogram_correlation_v_cavity_power.hdf5')
+# f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1206\Histogram_correlation_v_cavity_power.hdf5')
 # d = f.getEntry(0)
 # for (channel, value) in d.items():
 #     print(channel, ":", value)
-signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
-power = f.getData('Cavity RF - Power')[0]
+# signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
+# power = f.getData('Cavity RF - Power')[0]
 
 # repetition = 10
 # corr_array = np.zeros(len(power))
@@ -207,31 +207,122 @@ power = f.getData('Cavity RF - Power')[0]
 
 ###########################################################################################
 #Vary int time
-f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1206\Histogram_correlation_v_intTime.hdf5')
+# f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1206\Histogram_correlation_v_intTime.hdf5')
 # d = f.getEntry(0)
 # for (channel, value) in d.items():
 #     print(channel, ":", value)
+# signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
+# intTime = f.getData('AlazarTech Signal Demodulator - Number of samples')[:13,0]
+# repetition = 10
+# corr_array = np.zeros(len(intTime ))
+# T_A1 = np.zeros(len(intTime ))
+# T_B1 = np.zeros(len(intTime ))
+# T_A2 = np.zeros(len(intTime ))
+# T_B2 = np.zeros(len(intTime ))
+#
+# for idy in range(len(intTime)):
+#     signal_avg = []
+#     for idx in range(repetition):
+#         signal_avg = np.append(signal_avg, signal[idy*repetition+idx, :])
+#     herald_signal = signal_avg[0::2]
+#     select_signal = signal_avg[1::2]
+#     cov = np.corrcoef(herald_signal, select_signal)
+#     corr_array[idy] = abs(cov[0,1])
+#
+# plt.figure(1)
+# plt.plot(intTime*1e-3, corr_array, linewidth = 2.0)
+# plt.xlabel('Integration time (ns)')
+# plt.ylabel('Correlation between readout (max = 1)')
+
+
+
+###################################################################################
+f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0104\Histogram_correlation_delayTime_sweep.hdf5')
+# d = f.getEntry(0)
+# for (channel, value) in d.items():
+#     print(channel, ":", value)
+
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
-intTime = f.getData('AlazarTech Signal Demodulator - Number of samples')[:13,0]
-repetition = 10
-corr_array = np.zeros(len(intTime ))
-T_A1 = np.zeros(len(intTime ))
-T_B1 = np.zeros(len(intTime ))
-T_A2 = np.zeros(len(intTime ))
-T_B2 = np.zeros(len(intTime ))
+pulseAmp = f.getData('Multi-Qubit Pulse Generator - Delay after heralding')[0]
+rabi_signal = np.zeros(len(pulseAmp), dtype = complex)
+rabi_signal_preselected_1 = np.zeros(len(pulseAmp), dtype = complex)
+rabi_signal_preselected_2 = np.zeros(len(pulseAmp), dtype = complex)
+rabi_signal_preselected_3 = np.zeros(len(pulseAmp), dtype = complex)
+rabi_signal_preselected_4 = np.zeros(len(pulseAmp), dtype = complex)
+corr_array = np.zeros(len(pulseAmp))
 
-for idy in range(len(intTime)):
-    signal_avg = []
-    for idx in range(repetition):
-        signal_avg = np.append(signal_avg, signal[idy*repetition+idx, :])
-    herald_signal = signal_avg[0::2]
-    select_signal = signal_avg[1::2]
+xmin1 = -174
+xmax1 = -16
+ymin1 = -376
+ymax1 = -204
+
+xmin2= -5
+xmax2= 126
+ymin2= -515
+ymax2= -325
+
+xmin3 = 172
+xmax3 = 340
+ymin3 = -20
+ymax3 = 160
+
+xmin4 = 388
+xmax4 = 554
+ymin4 = -205
+ymax4 = -40
+for idx in range(len(pulseAmp)):
+    herald_signal = signal[idx,0::2]* 1e6
+    select_signal = signal[idx,1::2]* 1e6
+    sReal = np.real(herald_signal)
+    sImag = np.imag(herald_signal)
     cov = np.corrcoef(herald_signal, select_signal)
-    corr_array[idy] = abs(cov[0,1])
+    corr_array[idx] = abs(cov[0,1])
+    if idx == 0:
+        H, xedges, yedges = np.histogram2d(sReal, sImag, bins=[100, 100])
+        H = H.T
+        X, Y = np.meshgrid(xedges, yedges)
+        plt.pcolormesh(X, Y, H, cmap='GnBu')
+        # plt.colorbar()
+    rabi_signal[idx] = np.average(select_signal)
+    preselected_signal1 = []
+    preselected_signal2 = []
+    preselected_signal3 = []
+    preselected_signal4 = []
+    for idy in range(len(herald_signal)):
+        if (sReal[idy]>xmin1) and (sReal[idy]<xmax1) and (sImag[idy]>ymin1) and (sImag[idy]<ymax1):
+            preselected_signal1 = np.append(preselected_signal1, select_signal[idy])
+        elif (sReal[idy]>xmin2) and (sReal[idy]<xmax2) and (sImag[idy]>ymin2) and (sImag[idy]<ymax2):
+            preselected_signal2 = np.append(preselected_signal2, select_signal[idy])
+        elif (sReal[idy]>xmin3) and (sReal[idy]<xmax3) and (sImag[idy]>ymin3) and (sImag[idy]<ymax3):
+            preselected_signal3 = np.append(preselected_signal3, select_signal[idy])
+        elif (sReal[idy]>xmin4) and (sReal[idy]<xmax4) and (sImag[idy]>ymin4) and (sImag[idy]<ymax4):
+            preselected_signal4 = np.append(preselected_signal4, select_signal[idy])
 
-plt.figure(1)
-plt.plot(intTime*1e-3, corr_array, linewidth = 2.0)
-plt.xlabel('Integration time (ns)')
-plt.ylabel('Correlation between readout (max = 1)')
+    rabi_signal_preselected_1[idx] = np.average(preselected_signal1)
+    rabi_signal_preselected_2[idx] = np.average(preselected_signal2)
+    rabi_signal_preselected_3[idx] = np.average(preselected_signal3)
+    rabi_signal_preselected_4[idx] = np.average(preselected_signal4)
+
+plt.plot(np.real(rabi_signal), np.imag(rabi_signal), label='raw Rabi')
+plt.plot(np.real(rabi_signal_preselected_1), np.imag(rabi_signal_preselected_1), label = 'preselect gg')
+plt.plot(np.real(rabi_signal_preselected_2), np.imag(rabi_signal_preselected_2), label = 'preselect eg')
+plt.plot(np.real(rabi_signal_preselected_3), np.imag(rabi_signal_preselected_3), label = 'preselect ge')
+plt.plot(np.real(rabi_signal_preselected_4), np.imag(rabi_signal_preselected_4), label = 'preselect ee')
+plt.legend()
+plt.xlabel('I (uV)')
+plt.ylabel('Q (uV)')
+
+plt.figure(2)
+plt.plot(pulseAmp, np.real(rabi_signal_preselected_1))
+plt.figure(3)
+plt.plot(pulseAmp, np.real(rabi_signal_preselected_2))
+plt.figure(4)
+plt.plot(pulseAmp, np.real(rabi_signal_preselected_3))
+plt.figure(5)
+plt.plot(pulseAmp, np.real(rabi_signal_preselected_4))
+plt.figure(6)
+plt.plot(pulseAmp, corr_array)
+
+
 plt.show()
 

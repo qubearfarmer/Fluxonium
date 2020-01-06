@@ -8,7 +8,7 @@ import Labber
 
 ##############single qubit tomography##############
 #beta calibration
-f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1216\Tomography_twoQubit_calibration_I_3.hdf5')
+f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1216\Tomography_twoQubit_calibration_I_2.hdf5')
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
 s = np.zeros(4, dtype = complex)
 # xmin = -350
@@ -39,7 +39,7 @@ sII, sZI, sIZ, sZZ = s
 sMatrix = np.array([[1, 1, 1, 1], [1, -1, 1, -1], [1, 1, -1, -1], [1, -1, -1, 1]])
 betaII, betaZI, betaIZ, betaZZ = np.linalg.inv(sMatrix).dot(np.array([sII,sZI,sIZ,sZZ]).transpose()).transpose()
 #Gate sequence in Labber is I, X2p, Y2m
-f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1216\Tomography_twoQubit_bell0.hdf5')
+f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1216\Tomography_twoQubit_bell.hdf5')
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
 m = np.zeros(15, dtype = complex)
 
@@ -200,8 +200,11 @@ def fidelity(rho,rho_ideal):
     return abs(np.trace(np.sqrt(np.sqrt(rho_ideal).dot(rho).dot(np.sqrt(rho_ideal)))))
 
 guess = np.zeros(15)
-guess[0]=1
-guess[7]=1
+# guess[0]=1
+# guess[8]=-1
+guess[1]=0.5
+guess[2]=0.5
+guess[10]=0.5
 res = minimize(likelihood, guess, method='powell',tol=1.e-10,
             options={'maxiter': 10000})
 t = res.x
@@ -209,7 +212,7 @@ rho_reconstructed_mle = Qobj(density_matrix(*t))
 rho_ideal = density_matrix(*guess)
 
 matrix_histogram_complex(rho_reconstructed_mle)
-plt.title(fidelity(rho_reconstructed_mle, rho_ideal))
+print (fidelity(rho_reconstructed_mle, rho_ideal))
 matrix_histogram_complex(rho_ideal)
 #######################################################################
 plt.show()

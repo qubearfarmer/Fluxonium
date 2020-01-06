@@ -10,13 +10,13 @@ import Labber
 #beta calibration
 
 #Gate sequence in Labber is I, X2p, Y2m
-f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1214\Tomography_qubit_A_I.hdf5')
+f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0105\SingleQubit_tomo_qubitA.hdf5')
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
 preselected_data = np.zeros(len(signal[:,0]), dtype = complex)
-xmin = -350
-xmax = -100
-ymin = -1000
-ymax = -750
+xmin = 172
+xmax = 340
+ymin = -20
+ymax = 160
 
 for pulse_idx in range(len(signal[:,0])):
     preselected_signal = []
@@ -39,24 +39,24 @@ measurement_matrix = 0.5*np.array([[0, 0, betaZ], [0, betaZ, 0], [betaZ, 0, 0]])
 avgX, avgY, avgZ = np.linalg.inv(measurement_matrix).dot(m.transpose()-0.5*betaI).transpose()
 rho_reconstructed = 0.5*(qeye(2) + avgX*sigmax() + avgY*sigmay() + avgZ*sigmaz())
 matrix_histogram_complex(rho_reconstructed)
-rho_ideal = ket2dm(basis(2,0))
-plt.title(fidelity(rho_ideal, rho_reconstructed))
+# rho_ideal = ket2dm(basis(2,0))
+# plt.title(fidelity(rho_ideal, rho_reconstructed))
 # matrix_histogram_complex(rho_ideal)
 #Start in excited state
 m = preselected_data[6:9]
 avgX, avgY, avgZ = np.linalg.inv(measurement_matrix).dot(m.transpose()-0.5*betaI).transpose()
 rho_reconstructed = 0.5*(qeye(2) + avgX*sigmax() + avgY*sigmay() + avgZ*sigmaz())
 matrix_histogram_complex(rho_reconstructed)
-rho_ideal = ket2dm(basis(2,1))
-plt.title(fidelity(rho_ideal, rho_reconstructed))
+# rho_ideal = ket2dm(basis(2,1))
+# plt.title(fidelity(rho_ideal, rho_reconstructed))
 # matrix_histogram_complex(rho_ideal)
 #Start in superposition state
 m = preselected_data[9:]
 avgX, avgY, avgZ = np.linalg.inv(measurement_matrix).dot(m.transpose()-0.5*betaI).transpose()
 rho_reconstructed = 0.5*(qeye(2) + avgX*sigmax() + avgY*sigmay() + avgZ*sigmaz())
 matrix_histogram_complex(rho_reconstructed)
-rho_ideal = ket2dm(rx(phi=np.pi/2)*basis(2,0))
-plt.title(fidelity(rho_ideal, rho_reconstructed))
+# rho_ideal = ket2dm(rx(phi=np.pi/2)*basis(2,0))
+# plt.title(fidelity(rho_ideal, rho_reconstructed))
 # matrix_histogram_complex(rho_ideal)
 
 #####################################################################################################

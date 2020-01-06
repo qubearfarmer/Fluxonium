@@ -197,7 +197,7 @@ plt.show()
 # plt.legend()
 
 #############################################################################################################
-path = 'G:\Projects\Fluxonium\Data\Cassius I\\2019\\09\Data_0927\Ramsey_starkDephasing.hdf5'
+path = 'Z:\Projects\Fluxonium\Data\Cassius I\\2019\\09\Data_0927\Ramsey_starkDephasing.hdf5'
 f = Labber.LogFile(path)
 d = f.getEntry(0)
 # for (channel, value) in d.items():
