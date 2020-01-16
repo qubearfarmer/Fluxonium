@@ -10,7 +10,7 @@ import Labber
 #beta calibration
 
 #Gate sequence in Labber is I, X2p, Y2m
-f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0105\SingleQubit_tomo_qubitA.hdf5')
+f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0105\SingleQubit_tomo_qubitB.hdf5')
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
 preselected_data = np.zeros(len(signal[:,0]), dtype = complex)
 xmin = 172

@@ -13,7 +13,7 @@ h = 6.626e-34
 def osc_func(x,amp,freq,offset1,offset2):
     return amp * np.cos(2 * np.pi * freq * (x - offset1)) - offset2
 
-f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1212\Ramsey_heralded_qubit_A.hdf5')
+f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1231\Ramsey_AWG_qubitA_SS.hdf5')
 # d = f.getEntry(0)
 # for (channel, value) in d.items():
 #     print(channel, ":", value)
@@ -22,13 +22,13 @@ signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated valu
 freq = f.getData('IQ 1 - Frequency')[:,0]
 delayTime = f.getData('Multi-Qubit Pulse Generator - Sequence duration')[0]
 
-freq_idx = 4
+freq_idx = 0
 rabi_signal_preselected_1 = np.zeros(len(delayTime), dtype = complex)
 
-xmin1 = -350
-xmax1 = -100
-ymin1 = -1000
-ymax1 = -750
+xmin1 = 172
+xmax1 = 340
+ymin1 = -20
+ymax1 = 160
 
 for time_idx in range(len(delayTime)):
     herald_signal = signal[freq_idx*len(delayTime)+time_idx, 0::2]* 1e6

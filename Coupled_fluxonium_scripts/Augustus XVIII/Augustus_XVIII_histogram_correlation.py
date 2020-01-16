@@ -11,7 +11,7 @@ kB = 1.38e-23
 h = 6.626e-34
 
 #Read file
-f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1225\Histogram_correlation_Pulse_off.hdf5')
+f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0116\Histogram_correlation.hdf5')
 # guess2D = np.array([4350, -800, 7150, -500, 13000, -200, 14000, 200, 20])
 # f = Labber.LogFile('C:\Data\Projects\Fluxonium\Data\Augustus 18\\2019\\11\Data_1120\Histogram_correlation_3.hdf5')
 # guess2D = np.array([4350, -800, 7150, -500, 13000, -200, 14000, 200, 20])
@@ -38,28 +38,28 @@ cov = np.corrcoef(herald_signal, select_signal)
 print (abs(cov[0,1]))
 
 ######################################################################
-#Temperatures extract and compare, 4 blobs
-# sReal = np.real(herald_signal)
-# sImag = np.imag(herald_signal)
+# Temperatures extract and compare, 4 blobs
+sReal = np.real(herald_signal)
+sImag = np.imag(herald_signal)
 #
-# plt.figure(1)
-# H, xedges, yedges = np.histogram2d(sReal,sImag, bins = [100,100])
-# H = H.T
-# X,Y = np.meshgrid(xedges, yedges)
-# plt.pcolormesh(X,Y,H, cmap = 'GnBu')
+plt.figure(1)
+H, xedges, yedges = np.histogram2d(sReal,sImag, bins = [100,100])
+H = H.T
+X,Y = np.meshgrid(xedges, yedges)
+plt.pcolormesh(X,Y,H, cmap = 'GnBu')
 #
-# plt.figure(2)
-# counts, edges = np.histogram(sReal, bins = 100)
-# plt.plot(edges[:-1], counts, label = 'First pulse')
+plt.figure(2)
+counts, edges = np.histogram(sReal, bins = 100)
+plt.plot(edges[:-1], counts, label = 'First pulse')
 # guess = np.array([550, -2800, 13150, -1800, 23000, -700, 6000, 100, 20])
 # opt,cov = curve_fit(gaussian4, edges[:-1],counts, guess)
 # axis_nice = np.linspace(edges[0], edges[-1], 1001)
 # plt.plot(axis_nice, gaussian4(axis_nice,*opt))
 # a1,x1,a2,x2,a3,x3,a4,x4,sigma = opt
-# # plt.plot(axis_nice, gaussian(axis_nice,a1,x1,sigma))
-# # plt.plot(axis_nice, gaussian(axis_nice,a2,x2,sigma))
-# # plt.plot(axis_nice, gaussian(axis_nice,a3,x3,sigma))
-# # plt.plot(axis_nice, gaussian(axis_nice,a4,x4,sigma))
+# plt.plot(axis_nice, gaussian(axis_nice,a1,x1,sigma))
+# plt.plot(axis_nice, gaussian(axis_nice,a2,x2,sigma))
+# plt.plot(axis_nice, gaussian(axis_nice,a3,x3,sigma))
+# plt.plot(axis_nice, gaussian(axis_nice,a4,x4,sigma))
 # pgg = a4/(a1+a2+a3+a4)
 # peg = a3/(a1+a2+a3+a4)
 # pge = a1/(a1+a2+a3+a4)

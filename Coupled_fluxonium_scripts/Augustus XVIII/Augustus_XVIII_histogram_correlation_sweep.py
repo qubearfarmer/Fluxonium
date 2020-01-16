@@ -237,13 +237,13 @@ h = 6.626e-34
 
 
 ###################################################################################
-f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0104\Histogram_correlation_delayTime_sweep.hdf5')
+f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0114\Histogram_correlation_delayTime_sweep.hdf5')
 # d = f.getEntry(0)
 # for (channel, value) in d.items():
 #     print(channel, ":", value)
 
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
-pulseAmp = f.getData('Multi-Qubit Pulse Generator - Delay after heralding')[0]
+pulseAmp = f.getData('Multi-Qubit Pulse Generator - Delay after heralding')[0]*1e6
 rabi_signal = np.zeros(len(pulseAmp), dtype = complex)
 rabi_signal_preselected_1 = np.zeros(len(pulseAmp), dtype = complex)
 rabi_signal_preselected_2 = np.zeros(len(pulseAmp), dtype = complex)
@@ -303,6 +303,11 @@ for idx in range(len(pulseAmp)):
     rabi_signal_preselected_3[idx] = np.average(preselected_signal3)
     rabi_signal_preselected_4[idx] = np.average(preselected_signal4)
 
+
+# rabi_signal_preselected_1 = rabi_signal_preselected_1[2:]
+# rabi_signal_preselected_2 = rabi_signal_preselected_2[2:]
+# rabi_signal_preselected_3 = rabi_signal_preselected_3[2:]
+# rabi_signal_preselected_4 = rabi_signal_preselected_4[2:]
 plt.plot(np.real(rabi_signal), np.imag(rabi_signal), label='raw Rabi')
 plt.plot(np.real(rabi_signal_preselected_1), np.imag(rabi_signal_preselected_1), label = 'preselect gg')
 plt.plot(np.real(rabi_signal_preselected_2), np.imag(rabi_signal_preselected_2), label = 'preselect eg')

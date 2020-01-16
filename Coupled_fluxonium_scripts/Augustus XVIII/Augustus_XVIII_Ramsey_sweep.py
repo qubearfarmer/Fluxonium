@@ -42,6 +42,6 @@ for freq_idx, f in enumerate(freq):
 
 plt.figure(2)
 plt.errorbar(x=freq/1e6,y=freqFit[:,0]/1e6,yerr=freqFit_err[:,0]/1e6)
-plt.errorbar(x=freq/1e6,y=freqFit[:,1]/1e6,yerr=freqFit_err[:,1]/1e6)
+# plt.errorbar(x=freq/1e6,y=freqFit[:,1]/1e6,yerr=freqFit_err[:,1]/1e6)
 print (np.mean(freqFit[:,0]))
 plt.show()

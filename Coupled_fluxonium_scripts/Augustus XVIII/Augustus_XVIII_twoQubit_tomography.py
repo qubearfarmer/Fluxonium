@@ -8,28 +8,44 @@ import Labber
 
 ##############single qubit tomography##############
 #beta calibration
-f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1216\Tomography_twoQubit_calibration_I_2.hdf5')
+f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0115\Tomography_twoQubits_ROCal_2.hdf5')
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
 s = np.zeros(4, dtype = complex)
+#old data
 # xmin = -350
 # xmax = -100
 # ymin = -1000
 # ymax = -700
 
-xmin = -30
-xmax = 250
-ymin = -700
-ymax = -300
+# xmin = -30
+# xmax = 250
+# ymin = -700
+# ymax = -300
+
+#00
+xmin = 172
+xmax = 340
+ymin = -20
+ymax = 160
+
 
 for pulse_idx in range(4):
     preselected_signal = []
     herald_signal = signal[pulse_idx, 0::2]*1e6
     select_signal = signal[pulse_idx, 1::2]*1e6
+    sReal = np.real(herald_signal)
+    sImag = np.imag(herald_signal)
+    # if pulse_idx == 0:
+    #     H, xedges, yedges = np.histogram2d(sReal, sImag, bins=[100, 100])
+    #     H = H.T
+    #     X, Y = np.meshgrid(xedges, yedges)
+    #     plt.pcolormesh(X, Y, H, cmap='GnBu')
     for record_idx in range(len(herald_signal)):
         if (xmin <= np.real(herald_signal[record_idx]) <= xmax) and (ymin <= np.imag(herald_signal[record_idx]) <= ymax):
             preselected_signal = np.append(preselected_signal, select_signal[record_idx])
     s[pulse_idx] = np.average(preselected_signal)
 sII, sZI, sIZ, sZZ = s
+# plt.plot(np.real(s), np.imag(s), 'o')
 # print (s)
 # sII = -200 - 1j*720
 # sZI = 68 - 1j*430
@@ -39,10 +55,24 @@ sII, sZI, sIZ, sZZ = s
 sMatrix = np.array([[1, 1, 1, 1], [1, -1, 1, -1], [1, 1, -1, -1], [1, -1, -1, 1]])
 betaII, betaZI, betaIZ, betaZZ = np.linalg.inv(sMatrix).dot(np.array([sII,sZI,sIZ,sZZ]).transpose()).transpose()
 #Gate sequence in Labber is I, X2p, Y2m
-f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1216\Tomography_twoQubit_bell.hdf5')
+f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0115\Tomography_twoQubit_cz.hdf5')
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
 m = np.zeros(15, dtype = complex)
+guess_mle = np.zeros(15)
+guess_mle[1]=0.5
+guess_mle[2]=0.5
+guess_mle[9]=0.5
 
+# guess_mle = np.ones(15)
+# guess_mle[0]=1
+
+# guess_mle[1]=0.5
+# guess_mle[9]=0.5
+#11
+# xmin = -174
+# xmax = -16
+# ymin = -376
+# ymax = -204
 
 for pulse_idx in range(15):
     preselected_signal = []
@@ -100,7 +130,7 @@ rho_reconstructed = 0.25*(II + avgIX*IX + avgIY*IY + avgIZ*IZ\
                           + avgXI*XI + avgXX*XX + avgXY*XY + avgXZ*XZ\
                           + avgYI*YI + avgYX*YX + avgYY*YY + avgYZ*YZ\
                           + avgZI*ZI + avgZX*ZX + avgZY*ZY + avgZZ*ZZ)
-matrix_histogram_complex(rho_reconstructed)
+# matrix_histogram_complex(rho_reconstructed)
 
 # rho_ideal = ket2dm(tensor(basis(2,0),basis(2,0)))
 # rho_ideal = ket2dm(tensor(rx(phi=np.pi/2)*basis(2,0),rx(phi=np.pi/2)*basis(2,0)))
@@ -199,20 +229,15 @@ def likelihood(x):
 def fidelity(rho,rho_ideal):
     return abs(np.trace(np.sqrt(np.sqrt(rho_ideal).dot(rho).dot(np.sqrt(rho_ideal)))))
 
-guess = np.zeros(15)
-# guess[0]=1
-# guess[8]=-1
-guess[1]=0.5
-guess[2]=0.5
-guess[10]=0.5
-res = minimize(likelihood, guess, method='powell',tol=1.e-10,
+res = minimize(likelihood, guess_mle, method='powell',tol=1.e-10,
             options={'maxiter': 10000})
 t = res.x
 rho_reconstructed_mle = Qobj(density_matrix(*t))
-rho_ideal = density_matrix(*guess)
 
 matrix_histogram_complex(rho_reconstructed_mle)
-print (fidelity(rho_reconstructed_mle, rho_ideal))
-matrix_histogram_complex(rho_ideal)
+# print (fidelity(rho_reconstructed_mle, rho_ideal))
+# matrix_histogram_complex(density_matrix(*guess_mle))
+# matrix_histogram(np.real(rho_reconstructed_mle))
+# matrix_histogram(np.imag(rho_reconstructed_mle), limits = [-1,1])
 #######################################################################
 plt.show()

@@ -26,7 +26,7 @@ def randomized_benchmarking_1(x,p,a,b,c):
     return a*p**x++b+c*(x-1)*p**(x-2)
 #############################################################################################
 #Hero RB
-path = 'Z:\Projects\Fluxonium\Data\Augustus 18\\2019\\12\Data_1227\RB_AWG_qubitB_2.hdf5'
+path = 'C:\Data\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0105\RB_AWG_qubitB.hdf5'
 f = Labber.LogFile(path)
 # d = f.getEntry(0)
 # for (channel, value) in d.items():

@@ -21,18 +21,18 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 #Vary heralding wait time
-f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0105\Ramsey_heralded_AWG_qubitA_ch2.hdf5')
-# d = f.getEntry(0)
-# for (channel, value) in d.items():
-#     print(channel, ":", value)
+f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0115\Pulse_timing.hdf5')
+d = f.getEntry(0)
+for (channel, value) in d.items():
+    print(channel, ":", value)
 
 signal = f.getData('AlazarTech Signal Demodulator - Channel A - Demodulated values')
-time = f.getData('Multi-Qubit Pulse Generator - Sequence duration')[0]
-rabi_signal = np.zeros(len(time), dtype = complex)
-rabi_signal_preselected_1 = np.zeros(len(time), dtype = complex)
-rabi_signal_preselected_2 = np.zeros(len(time), dtype = complex)
-rabi_signal_preselected_3 = np.zeros(len(time), dtype = complex)
-rabi_signal_preselected_4 = np.zeros(len(time), dtype = complex)
+pulseAmp = f.getData('Multi-Qubit Pulse Generator - Qubit 1 XY Delay')[0]
+rabi_signal = np.zeros(len(pulseAmp), dtype = complex)
+rabi_signal_preselected_1 = np.zeros(len(pulseAmp), dtype = complex)
+rabi_signal_preselected_2 = np.zeros(len(pulseAmp), dtype = complex)
+rabi_signal_preselected_3 = np.zeros(len(pulseAmp), dtype = complex)
+rabi_signal_preselected_4 = np.zeros(len(pulseAmp), dtype = complex)
 
 xmin1 = -174
 xmax1 = -16
@@ -53,7 +53,7 @@ xmin4 = 388
 xmax4 = 554
 ymin4 = -205
 ymax4 = -40
-for idx in range(len(time)):
+for idx in range(len(pulseAmp)):
     herald_signal = signal[idx,0::2]* 1e6
     select_signal = signal[idx,1::2]* 1e6
     sReal = np.real(herald_signal)
@@ -93,28 +93,33 @@ plt.legend()
 plt.xlabel('I (uV)')
 plt.ylabel('Q (uV)')
 
-# plt.figure(2)
-# plt.plot(time, np.real(rabi_signal_preselected_1))
-# freq_guess = 0.5
+freq_guess = 2.5
+plt.figure(2)
+plt.plot(pulseAmp, np.real(rabi_signal_preselected_1))
 # guess = ([np.max(np.real(rabi_signal_preselected_1)) - np.min(np.real(rabi_signal_preselected_1)),freq_guess,0,np.real(rabi_signal_preselected_1)[0]])
-# opt, cov = curve_fit(osc_func,ydata = np.real(rabi_signal_preselected_1), xdata = time, p0=guess)
-# axis_nice = np.linspace(time[0], time[-1], 1001)
+# opt, cov = curve_fit(osc_func,ydata = np.real(rabi_signal_preselected_1), xdata = pulseAmp, p0=guess)
+# axis_nice = np.linspace(pulseAmp[0], pulseAmp[-1], 1001)
 # plt.plot(axis_nice, osc_func(axis_nice,*opt))
 
 plt.figure(3)
-plt.plot(time, np.real(rabi_signal_preselected_3))
-freq_guess = 0.5
-guess = ([np.max(np.real(rabi_signal_preselected_3)) - np.min(np.real(rabi_signal_preselected_3)),freq_guess,0,np.real(rabi_signal_preselected_3)[0]])
-opt, cov = curve_fit(osc_func,ydata = np.real(rabi_signal_preselected_3), xdata = time, p0=guess)
-axis_nice = np.linspace(time[0], time[-1], 1001)
-plt.plot(axis_nice, osc_func(axis_nice,*opt))
+plt.plot(pulseAmp, np.real(rabi_signal_preselected_2))
+guess = ([np.max(np.real(rabi_signal_preselected_2)) - np.min(np.real(rabi_signal_preselected_2)),freq_guess,0,np.real(rabi_signal_preselected_2)[0]])
+# opt, cov = curve_fit(osc_func,ydata = np.real(rabi_signal_preselected_2), xdata = pulseAmp, p0=guess)
+# axis_nice = np.linspace(pulseAmp[0], pulseAmp[-1], 1001)
+# plt.plot(axis_nice, osc_func(axis_nice,*opt))
+# #
+plt.figure(4)
+plt.plot(pulseAmp, np.real(rabi_signal_preselected_3))
+# guess = ([np.max(np.real(rabi_signal_preselected_3)) - np.min(np.real(rabi_signal_preselected_3)),freq_guess,0,np.real(rabi_signal_preselected_3)[0]])
+# opt, cov = curve_fit(osc_func,ydata = np.real(rabi_signal_preselected_3), xdata = pulseAmp, p0=guess)
+# axis_nice = np.linspace(pulseAmp[0], pulseAmp[-1], 1001)
+# plt.plot(axis_nice, osc_func(axis_nice,*opt))
 #
-# plt.figure(4)
-# plt.plot(time, np.real(rabi_signal_preselected_4))
-# freq_guess = 2
+plt.figure(5)
+plt.plot(pulseAmp, np.real(rabi_signal_preselected_4))
 # guess = ([np.max(np.real(rabi_signal_preselected_4)) - np.min(np.real(rabi_signal_preselected_4)),freq_guess,0,np.real(rabi_signal_preselected_4)[0]])
-# opt, cov = curve_fit(osc_func,ydata = np.real(rabi_signal_preselected_4), xdata = time, p0=guess)
-# axis_nice = np.linspace(time[0], time[-1], 1001)
+# opt, cov = curve_fit(osc_func,ydata = np.real(rabi_signal_preselected_4), xdata = pulseAmp, p0=guess)
+# axis_nice = np.linspace(pulseAmp[0], pulseAmp[-1], 1001)
 # plt.plot(axis_nice, osc_func(axis_nice,*opt))
 
 plt.show()

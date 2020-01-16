@@ -21,7 +21,7 @@ kB = 1.38e-23
 h = 6.626e-34
 ############################################################
 #Vary heralding wait time
-f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0104\TuneUp_heralded_AWG_qubitA_ch2_2.hdf5')
+f = Labber.LogFile('Z:\Projects\Fluxonium\Data\Augustus 18\\2020\\01\Data_0110\TuneUp_heralded_IQRF_CZlower.hdf5')
 # d = f.getEntry(0)
 # for (channel, value) in d.items():
 #     print(channel, ":", value)
@@ -97,15 +97,15 @@ for pulseAmp_idx in range (len(pulseAmp)):
 # plt.ylabel('Q (uV)')
 #
     plt.figure(2)
-    plt.plot(pulseNum, np.real(rabi_signal_preselected_3),label = str(pulseAmp[pulseAmp_idx]))
+    plt.plot(pulseNum, np.real(rabi_signal_preselected_1),label = str(pulseAmp[pulseAmp_idx]))
 
     plt.figure(3)
-    plt.plot(pulseNum, np.imag(rabi_signal_preselected_3),label = str(pulseAmp[pulseAmp_idx]))
+    plt.plot(pulseNum, np.imag(rabi_signal_preselected_1),label = str(pulseAmp[pulseAmp_idx]))
 
     plt.figure(4)
-    plt.plot(pulseNum, abs(rabi_signal_preselected_3),label = str(pulseAmp[pulseAmp_idx]))
+    plt.plot(pulseNum, abs(rabi_signal_preselected_1),label = str(pulseAmp[pulseAmp_idx]))
 
-    error[pulseAmp_idx] = np.std(abs(rabi_signal_preselected_3))
+    error[pulseAmp_idx] = np.std(np.imag(rabi_signal_preselected_1))
 
 plt.figure(2)
 plt.legend()
