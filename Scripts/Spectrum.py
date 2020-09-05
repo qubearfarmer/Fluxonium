@@ -1,16 +1,16 @@
 import numpy as np
 from matplotlib import pyplot as plt
-
-from Fluxonium.Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian
+import plotting_settings
+from Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian
 
 # contrast_min = -1
 # contrast_max = 1
 
 #Qubit and computation parameters
 N = 35
-E_l=0.45
+E_l=1
 E_c=1
-E_j=5.84
+E_j=5
 
 phi_ext = np.linspace(0,1,101)
 level_num = 10
@@ -34,9 +34,9 @@ for idx, phi in enumerate(phi_ext):
 #Plot transition energies
 
 for idx in range(1,level_num):
-    plt.plot(phi_ext, energies[:,idx]-energies[:,0], linewidth = '2', color = 'k')
+    plt.plot(phi_ext, energies[:,idx]-energies[:,0], linewidth = '2')
 # plt.plot(phi_ext, energies[:,1]-energies[:,0], linewidth = 1 , linestyle = '-', color = 'k')
-plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 1 , linestyle = '--', color = 'k')
+# plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 1 , linestyle = '--', color = 'k')
 # plt.plot(phi_ext, energies[:,2]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
 # plt.plot(phi_ext, energies[:,3]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'k')
 # plt.plot(phi_ext, energies[:,3]-energies[:,1], linewidth = 2 , linestyle = '--', color = 'k')
@@ -69,9 +69,10 @@ plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 1 , linestyle = '--',
 # plt.plot(phi_ext, (energies[:,5]-energies[:,2]), linewidth = 1.5 , linestyle = '-.', color = 'b')
 # plt.plot(phi_ext, (energies[:,6]-energies[:,2]), linewidth = 1.5 , linestyle = '-.', color = 'b')
 # plt.plot(phi_ext, (energies[:,4]-energies[:,2]), linewidth = 1.5 , linestyle = '-.', color = 'b')
-# plt.xlabel(r'$\varphi_\mathrm{ext}/2\pi$')
-# plt.ylabel(r'$\mathrm{E_i} - \mathrm{E_0}$')
-# plt.ylim([0,12])
+plt.xlabel(r'$\varphi_\mathrm{ext}/2\pi$')
+plt.ylabel(r'$\mathrm{E_i} - \mathrm{E_0}$')
+plt.ylim([0,12])
+plt.title(r'$E_J = {}, E_C = {}, E_L = {}$'.format(E_j,E_c,E_l))
 # plt.tick_params(labelsize = 18.0)
 # plt.grid()
 
@@ -95,15 +96,15 @@ plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 1 , linestyle = '--',
 # Z = np.genfromtxt(path).transpose()
 # plt.pcolormesh(X,Y,Z, cmap= 'GnBu', vmin = 0.3, vmax = 0.5)
 
-E_l=0.72
-E_c=1
-E_j=5.88
+# E_l=0.72
+# E_c=1
+# E_j=5.88
 #
 # Compute eigensnergies
-for idx, phi in enumerate(phi_ext):
-    H = bare_hamiltonian(N, E_l, E_c, E_j, phi*2*np.pi)
-    for idy in range(level_num):
-        energies[idx,idy] = H.eigenenergies()[idy]
+# for idx, phi in enumerate(phi_ext):
+#     H = bare_hamiltonian(N, E_l, E_c, E_j, phi*2*np.pi)
+#     for idy in range(level_num):
+#         energies[idx,idy] = H.eigenenergies()[idy]
 
 #Plot eigensnergies
 # fig1 = plt.figure(1)
@@ -116,10 +117,10 @@ for idx, phi in enumerate(phi_ext):
 #
 # #Plot transition energies
 #
-for idx in range(1,level_num):
-    plt.plot(phi_ext, energies[:,idx]-energies[:,0], linewidth = '2', color = 'b')
+# for idx in range(1,level_num):
+#     plt.plot(phi_ext, energies[:,idx]-energies[:,0], linewidth = '2', color = 'b')
 # plt.plot(phi_ext, energies[:,1]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'b')
-plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 2 , linestyle = '--', color = 'b')
+# plt.plot(phi_ext, energies[:,2]-energies[:,1], linewidth = 2 , linestyle = '--', color = 'b')
 # plt.plot(phi_ext, energies[:,2]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'b')
 # plt.plot(phi_ext, energies[:,3]-energies[:,0], linewidth = 2 , linestyle = '-', color = 'b')
 # plt.plot(phi_ext, energies[:,3]-energies[:,1], linewidth = 2 , linestyle = '--', color = 'b')
