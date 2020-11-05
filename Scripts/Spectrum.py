@@ -10,7 +10,7 @@ from Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian
 N = 35
 E_l=1
 E_c=1
-E_j=5
+E_j=7
 
 phi_ext = np.linspace(0,1,101)
 level_num = 10
