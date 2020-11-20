@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy.special import eval_hermite as hpoly
 
-from Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian
+from Fluxonium.Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian
 
 plt.rc('font', family='serif')
 

@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-from Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian as H
+from Fluxonium.Fluxonium_hamiltonians.Single_small_junction import bare_hamiltonian as H
 
 #Define constants
 e = 1.602e-19    #Fundamental charge
@@ -28,7 +28,7 @@ for idx,phi in enumerate(phi_ext):
                    H(N, E_l, E_c, E_j , (phi+dPhi) * 2 * np.pi).eigenenergies()[iState]
     sensitivity[idx] = (trans_energy2-trans_energy1)/dPhi
     energy[idx] = trans_energy1
-sensitivity_check = np.diff(energy)/(0.55-0.45)*100
+sensitivity_check = np.diff(energy)/(0.505-0.495)*100
 # for idx,phi in enumerate(phi_ext):
 #     trans_energy1 = H(N, E_l, E_c, E_j, phi*2*np.pi).eigenenergies()[fState]- \
 #                     H(N, E_l, E_c, E_j, phi*2*np.pi).eigenenergies()[iState]
@@ -37,11 +37,12 @@ sensitivity_check = np.diff(energy)/(0.55-0.45)*100
 #     sensitivity[idx] = (trans_energy2-trans_energy1)/dE
 #     energy[idx] = trans_energy1
 #First order
-# plt.plot(abs(sensitivity))
-# plt.plot(abs(sensitivity_check))
+plt.plot(abs(sensitivity))
+plt.plot(abs(sensitivity_check))
+plt.plot(np.gradient(energy)/(0.505-0.495)*100)
 #Second order
-plt.plot(np.diff(np.diff(energy))/((0.505-0.495)/100)**2)
-plt.plot(np.diff(sensitivity)/(0.505-0.495)*100)
+# plt.plot(np.diff(np.diff(energy))/((0.505-0.495)/100)**2)
+# plt.plot(np.diff(sensitivity)/(0.505-0.495)*100)
 # plt.plot(sensitivity_check)
 #Sensitivity unit is GHz/ (flux/flux_q)
 # fig, ax1 = plt.subplots(figsize=(10, 7))
