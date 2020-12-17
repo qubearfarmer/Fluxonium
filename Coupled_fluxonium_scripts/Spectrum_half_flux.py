@@ -31,7 +31,7 @@ Ha = 4.0 * E_ca * na ** 2.0 + 0.5 * E_la * phi_a ** 2.0 - 0.5 * E_ja * (ope_a.ex
 ope_b = 1.0j * (phi_b - phi_ext_b)
 Hb = 4.0 * E_cb * nb ** 2.0 + 0.5 * E_lb * phi_b ** 2.0 - 0.5 * E_jb * (ope_b.expm() + (-ope_b).expm())
 Hc = J_c * na * nb
-Hl = J_l * phi_a*phi_b
+Hl = -J_l * phi_a*phi_b
 H = Ha + Hb + Hc + Hl
 
 eigen_energies, eigen_states = H.eigenstates()

@@ -20,6 +20,7 @@ E_jb=3.8
 phi_ext = 0.5*2*np.pi
 
 Jc = np.linspace(0,1,101)
+Jl = np.linspace(0,1,101)
 na_element = np.zeros(len(Jc))
 na2_element = np.zeros(len(Jc))
 energies = np.zeros((len(Jc), 4))

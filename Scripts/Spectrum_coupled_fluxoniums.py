@@ -50,12 +50,12 @@ for idx, J_l in enumerate(J_l_array):
     H = Ha + Hb + Hc + Hl
     for idy in range(level_num):
         energies[idx,idy] = H.eigenenergies()[idy]
-directory = "C:\\Users\\nguyen89\Box\Python Codes\Fluxonium simulation results"
-simulation = "Spectrum_Augustus_18"
-path = directory + "\\" + simulation
-np.savetxt(path + '_energies.txt', energies)
+# directory = "C:\\Users\\nguyen89\Box\Python Codes\Fluxonium simulation results"
+# simulation = "Spectrum_Augustus_18"
+# path = directory + "\\" + simulation
+# np.savetxt(path + '_energies.txt', energies)
 ################################################
-energies = np.genfromtxt(path+'_energies.txt')
+# energies = np.genfromtxt(path+'_energies.txt')
 for idx in range (level_num):
     plt.plot(phi_ext, energies[:,idx])
 # plt.plot(J_l_array, (energies[:,1]-energies[:,0]))
