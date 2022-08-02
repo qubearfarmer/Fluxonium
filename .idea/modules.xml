@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Fluxonium.iml" filepath="$PROJECT_DIR$/.idea/Fluxonium.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Fluxonium_berkeley/.idea/Fluxonium_berkeley.iml" filepath="$PROJECT_DIR$/../Fluxonium_berkeley/.idea/Fluxonium_berkeley.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Quantum_optics/.idea/Quantum optics.iml" filepath="$PROJECT_DIR$/../Quantum_optics/.idea/Quantum optics.iml" />
     </modules>
   </component>

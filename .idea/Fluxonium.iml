@@ -8,6 +8,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Quantum optics" />
     <orderEntry type="module" module-name="Quantum optics" />
+    <orderEntry type="module" module-name="Fluxonium_berkeley" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="renderExternalDocumentation" value="true" />
